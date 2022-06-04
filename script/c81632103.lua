@@ -54,7 +54,7 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp and Duel.GetLP(1-tp)>0
 end
 
-function s.fdfilter
+function s.fdfilter(c,fc,sumtype,tp)
 	return (c:IsFacedown and c:IsType(TYPE_MONSTER))  
 end
 
