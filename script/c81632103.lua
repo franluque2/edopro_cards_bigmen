@@ -55,7 +55,7 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.fdfilter(c,fc,sumtype,tp)
-	return (c:IsFacedown and c:IsType(TYPE_MONSTER))  
+	return (c:IsFacedown() and c:IsType(TYPE_MONSTER))  
 end
 
 function s.cacon(e,tp,eg,ep,ev,re,r,rp)
