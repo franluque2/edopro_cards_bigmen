@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--set absorbing lamp
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetDescription(aux.Stringid(id,2))
 	e2:SetCategory(CATEGORY_DAMAGE)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
@@ -18,7 +18,7 @@ function s.initial_effect(c)
 
 	--if your opponent takes damage, add a lamp eff monster then flip face down
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,1))
+	e4:SetDescription(aux.Stringid(id,3))
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH) 
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e4:SetRange(LOCATION_MZONE)
@@ -33,7 +33,7 @@ function s.initial_effect(c)
 	--on flip
 	
 	local e5=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,2))
+	e4:SetDescription(aux.Stringid(id,4))
 	e5:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_SEARCH)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCountLimit(1,{id,3})

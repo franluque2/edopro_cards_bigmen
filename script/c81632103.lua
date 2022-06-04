@@ -26,6 +26,7 @@ function s.initial_effect(c)
 
 	--Once per turn, if your opponent takes damage from battle or by card effect: You can target 1 set monster you control, flip that monster face-up, then Special Summon 1 level 4 or lower "Lamp" monster from your GY in Face-Down Defence Position. 
 	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH) 
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e4:SetRange(LOCATION_MZONE)
@@ -39,6 +40,7 @@ function s.initial_effect(c)
 
 	--handes
 	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,2))
 	e5:SetCategory(CATEGORY_HANDES + CATEGORY_DESTROY)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCode(EVENT_TO_GRAVE)

@@ -20,6 +20,7 @@ function s.initial_effect(c)
 
 	-- If your opponent takes damage from battle or by card effect: You can add 1 "Lamp" Normal Monster from your deck to your hand, then flip this monster face-down.
 	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH) 
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e4:SetRange(LOCATION_MZONE)
@@ -34,6 +35,7 @@ function s.initial_effect(c)
 	--If this card is flipped face-up: you can target 1 "Polymerization" in your GY: set that card to your field then inflict 600 damage to your opponent. You can only use each effect of "Purple Lamp" once per turn
 	
 	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,2))
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCode(EVENT_FLIP)
 	e5:SetProperty(EFFECT_FLAG_DELAY)

@@ -21,6 +21,7 @@ function s.initial_effect(c)
 
 	--remove 3 counters to summon a fusion
 	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_SZONE)
@@ -34,6 +35,7 @@ function s.initial_effect(c)
 
 	--steal card
 	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_NEGATE+CATEGORY_TOHAND)
 	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e4:SetRange(LOCATION_SZONE)
@@ -48,6 +50,7 @@ function s.initial_effect(c)
 
 	--shuffle and draw
 	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,2))
 	e5:SetCategory(CATEGORY_TODECK+CATEGORY_DRAW)
 	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -138,7 +141,7 @@ end
 function s.filterfu(c,e,tp)
 	return c:IsType(TYPE_FUSION) and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
 		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) and (c:IsSetCard(0x8654) or 
-		c:IsCode(0x19066538) or c:IsCode(0x72869010) or c:IsCode(0x81997228))
+		c:IsCode(19066538) or c:IsCode(72869010) or c:IsCode(81997228))
 end
 
 function s.etar(e,tp,eg,ep,ev,re,r,rp,chk)
