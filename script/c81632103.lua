@@ -142,7 +142,7 @@ function s.hdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.BreakEffect()
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
 	if #g==0 then return end
-	local atk=Duel.GetMatchingGroupCount(s.filter3,c:GetControler(),LOCATION_MZONE,0,nil)*600
+	local atk=600
 	local tc=g:GetFirst()
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(e:GetHandler())

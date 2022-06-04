@@ -126,6 +126,4 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if tc and tc:IsRelateToEffect(e) and tc:IsSSetable() then
 		Duel.SSet(tp,tc)
 	end
-	Duel.BreakEffect()
-	Duel.Damage(1-tp,600,REASON_EFFECT)
 end
