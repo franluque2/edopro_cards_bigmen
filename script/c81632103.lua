@@ -39,10 +39,10 @@ function s.initial_effect(c)
 
 	--handes
 	local e5=Effect.CreateEffect(c)
-	e5:SetCategory(CATEGORY_HANDES)
+	e5:SetCategory(CATEGORY_HANDES + CATEGORY_DESTROY)
 	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCode(EVENT_TO_GRAVE)
-	e5:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e5:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
 	e5:SetCondition(s.hdcon)
 	e5:SetTarget(s.hdtg)
 	e5:SetOperation(s.hdop)
@@ -54,8 +54,12 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp and Duel.GetLP(1-tp)>0
 end
 
+function s.fdfilter
+	return (c:IsFacedown and c:IsType(TYPE_MONSTER)  
+end
+
 function s.cacon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(Card.IsFacedown,tp,0,LOCATION_ONFIELD,1,nil)
+	return Duel.IsExistingMatchingCard(s.fdfilter,tp,0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
 end
 function s.matfilter1(c,fc,sumtype,tp)
 	return c:IsSetCard(0x8654) and c:IsType(TYPE_EFFECT,fc,sumtype,tp)
@@ -92,10 +96,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFacedown() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFacedown,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEDOWN)
-	Duel.SelectTarget(tp,Card.IsFacedown,tp,LOCATION_MZONE,0,1,1,nil)
+if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 
 function s.filter2(c,e,tp,fc)
@@ -107,11 +112,6 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
 		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE)
-	end
-	local fc=e:GetLabelObject()
-	local g=Duel.SelectMatchingCard(tp,s.filter2,tp,LOCATION_GRAVE,0,1,1,nil,e,tp,fc)
-	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
 	end
 end
 
