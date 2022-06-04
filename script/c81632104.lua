@@ -111,7 +111,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.filter5(c)
-	return (c:IsSetCard(0x8654) or c:IsCode(97590747) or c:IsCode(99510761)) and c:IsAbleToDeck()
+	return (c:IsSetCard(0x8654) or c:IsCode(97590747) or c:IsCode(99510761)) and c:IsType(TYPE_MONSTER) and c:IsAbleToDeck()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter5(chkc) end
