@@ -104,7 +104,10 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 		Duel.BreakEffect()
-		Duel.Damage(1-tp,600,REASON_EFFECT)
+		local c=e:GetHandler()
+		if c:IsRelateToEffect(e) and c:IsFaceup() then
+			Duel.ChangePosition(c,POS_FACEDOWN_DEFENSE)
+		end
 	end
 end
 
