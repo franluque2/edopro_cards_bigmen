@@ -17,11 +17,11 @@ function s.initial_effect(c)
 	--cannot be attacked
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_CANNOT_BE_BATTLE_TARGET)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCode(EFFECT_CANNOT_BE_BATTLE_TARGET)
 	e2:SetCondition(s.cacon)
-	e2:SetValue(aux.imval2)
+	e2:SetValue(aux.imval1)
 	c:RegisterEffect(e2)
 
 	--Once per turn, if your opponent takes damage from battle or by card effect: You can target 1 set monster you control, flip that monster face-up, then Special Summon 1 level 4 or lower "Lamp" monster from your GY in Face-Down Defence Position. 
@@ -54,12 +54,12 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp and Duel.GetLP(1-tp)>0
 end
 
-function s.fdfilter(c,fc,sumtype,tp)
-	return (c:IsFacedown() and c:IsType(TYPE_MONSTER))  
+function s.fdfilter(c)
+	return c:IsFacedown()  
 end
 
-function s.cacon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.fdfilter,tp,0,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+function s.cacon(e,c)
+	return Duel.IsExistingMatchingCard(s.fdfilter,e:GetHandlerPlayer(),LOCATION_MZONE,LOCATION_MZONE,1,nil)
 end
 function s.matfilter1(c,fc,sumtype,tp)
 	return c:IsSetCard(0x8654) and c:IsType(TYPE_EFFECT,fc,sumtype,tp)
