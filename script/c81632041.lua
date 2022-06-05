@@ -82,7 +82,7 @@ function s.sfilter(c,e,tp)
 end
 
 function s.filter3(c)
-	return c:IsSetCard(0x13f) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c:IsSetCard(0x13f) and (not c:IsType(TYPE_MONSTER)) and c:IsAbleToHand()
 end
 function s.tgfilter(c)
 	if chkc then return chkc:GetLocation()==LOCATION_GRAVE and chkc:GetControler()==tp
