@@ -45,6 +45,10 @@ function s.table_filter(c)
 return c:IsCode(100000323)
 end
 
+function s.table_filter_field(c)
+return c:IsCode(100000323) and c:IsFaceup()
+end
+
 function s.set_table(e,tp,eg,ep,ev,re,r,rp)
 	local newtab=Duel.CreateToken(tp,81632109)
 			local e1=Effect.CreateEffect(newtab)
@@ -85,14 +89,16 @@ if #hg>0 then
 	end
 end
 end
-function s.cfilter(c,e,tp)
+function s.cfilter(c)
 	return c:IsCode(81632109) and c:IsSSetable()
 end
+
+
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--opd check
 	if Duel.GetFlagEffect(tp,id+1)>0 then return end
 	--condition
-	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) and not Duel.IsExistingMatchingCard(s.table_filter,tp,LOCATION_FIELD,0,1,nil)
+	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil) and not Duel.IsExistingMatchingCard(s.table_filter2,tp,LOCATION_ONFIELD,0,1,nil)
 end
 
 function s.tdfilter(c)
