@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(0x577)
 	--link summon
-	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),1,1) --,s.lcheck
+	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),1,1,s.lcheck) --
 	c:EnableReviveLimit()
 	--place
 	local e1=Effect.CreateEffect(c)
