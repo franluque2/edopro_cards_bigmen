@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--place
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetDescription(aux.Stringid(id,2))
 	e1:SetCategory(CATEGORY_COUNTER)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	
 	--remove a counter, summon a random draghead
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetDescription(aux.Stringid(id,3))
 	e2:SetCategory(CATEGORY_SUMMON)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	e2:SetCondition(s.spcon)
 	e2:SetCost(s.spcost)
 	e2:SetTarget(s.sptar)
-	e2:SetOperation(s.spsop)
+	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
 s.roll_dice=true
@@ -52,22 +52,66 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return c:IsCanRemoveCounter(tp,0x577,1,REASON_COST) end
 	c:RemoveCounter(tp,0x577,1,REASON_COST)
 end
-function s.spcon(e)
+function s.spcon(e) 
 	return Duel.IsMainPhase() and e:GetHandler():IsInExtraMZone()
 end
 
-function draghead_filter(c)
+function s.draghead_filter(c,e,tp,att)
 return c:IsSetCard(0x1577) and c:IsAttribute(att) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
 end
 
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.draghead_filter_no_att(c,e,tp)
+return c:IsSetCard(0x1577) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+
+function s.draghead_filter_fire(c,e,tp)
+return c:IsCode(81632002) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+function s.draghead_filter_water(c,e,tp)
+return c:IsCode(81632003) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+function s.draghead_filter_earth(c,e,tp)
+return c:IsCode(81632007) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+function s.draghead_filter_wind(c,e,tp)
+return c:IsCode(81632006) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+function s.draghead_filter_light(c,e,tp)
+return c:IsCode(81632005) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+function s.draghead_filter_dark(c,e,tp)
+return c:IsCode(81632004) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
+end
+
+
+
+
+function s.chlimit(e,ep,tp)
+	return tp==ep
+end
+
+function s.sptar(e,tp,eg,ep,ev,re,r,rp,chk)
+	Duel.SetChainLimit(s.chlimit)
 	local att=0
 	for gc in aux.Next(Duel.GetMatchingGroup(s.cfilter,tp,0,LOCATION_MZONE+LOCATION_GRAVE,nil)) do
 		att=att|gc:GetAttribute()
 	end
-	if chk==0 then return att>0 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-		and Duel.IsExistingMatchingCard(s.draghead_filter,tp,LOCATION_EXTRA,0,1,nil,e,tp,att) end
+	if chk==0 and att==0 then return Duel.IsExistingMatchingCard(s.draghead_filter_no_att,tp,LOCATION_EXTRA,0,1,nil,e,tp) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.draghead_filter,tp,LOCATION_EXTRA,0,1,nil,e,tp,att) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
 
@@ -100,43 +144,34 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		local d=Duel.TossDice(tp,1)
 		if d==1 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_EARTH):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_earth,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==2 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_WATER):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_water,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==3 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_FIRE):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_fire,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==4 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_WIND):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_wind,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==5 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_LIGHT):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_light,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		else
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ATTRIBUTE_DARK):GetFirst()
+		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_dark,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		end
 end
-end
-
-function s.chlimit(e,ep,tp)
-	return tp==ep
-end
-
-function s.sptar(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return end
-	Duel.SetChainLimit(s.chlimit)
 end

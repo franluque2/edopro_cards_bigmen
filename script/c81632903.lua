@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetLabel(0)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
-	aux.AddSkillProcedure(c,1,false,s.flipcon2,s.flipop2)
+	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
@@ -173,49 +173,42 @@ function s.tokenfilter(c)
 	return c:IsType(TYPE_TOKEN)
 end
 
+function s.fieldspellfilter(c)
+	return c:IsCode(81632904) and c:IsFaceup()
+end
+
+
 
 function s.flipcon3(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(s.tokenfilter,1,nil)==true then return end
 	--opd check
-	if Duel.GetFlagEffect(ep,id+3)>0 then return end
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil,tp)
+	if Duel.GetFlagEffect(tp,id+3)>0 then return end
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil,tp) and eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 		Duel.Hint(HINT_CARD,tp,id)
+		--disable other parts of the skill
+		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
+		Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 		--opd register
-		Duel.RegisterFlagEffect(ep,id+1,0,0,0)
-		Duel.RegisterFlagEffect(ep,id+2,0,0,0)
-		Duel.RegisterFlagEffect(ep,id+3,0,0,0)
+		Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 
 			local hydra1=Duel.CreateToken(tp,81632002)
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_REMOVE_TYPE)
-			e1:SetValue(TYPE_TOKEN)
-			hydra1:RegisterEffect(e1,true)
-			
- local hydra2=Duel.CreateToken(tp,81632003)
- local hydra3=Duel.CreateToken(tp,81632004)
- local hydra4=Duel.CreateToken(tp,81632005)
- local hydra5=Duel.CreateToken(tp,81632006)
- local hydra6=Duel.CreateToken(tp,81632007)
-hydra2:RegisterEffect(e1,true)
-hydra3:RegisterEffect(e1,true)
-hydra4:RegisterEffect(e1,true)
-hydra5:RegisterEffect(e1,true)
-hydra6:RegisterEffect(e1,true)
+			 local hydra2=Duel.CreateToken(tp,81632003)
+			 local hydra3=Duel.CreateToken(tp,81632004)
+			 local hydra4=Duel.CreateToken(tp,81632005)
+			 local hydra5=Duel.CreateToken(tp,81632006)
+			 local hydra6=Duel.CreateToken(tp,81632007)
 		
-g=Group.CreateGroup()
-g:AddCard(hydra1)
-g:AddCard(hydra2)
-g:AddCard(hydra3)
-g:AddCard(hydra4)
-g:AddCard(hydra5)
-g:AddCard(hydra6)
-Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
+		g=Group.CreateGroup()
+		g:AddCard(hydra1)
+		g:AddCard(hydra2)
+		g:AddCard(hydra3)
+		g:AddCard(hydra4)
+		g:AddCard(hydra5)
+		g:AddCard(hydra6)
+		Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 
 local field=Duel.CreateToken(tp,81632904)
-field:RegisterEffect(e1,true)
 Duel.MoveToField(field,tp,tp,LOCATION_FZONE,POS_FACEUP,false)
 end

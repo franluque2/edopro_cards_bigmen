@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--skill
 		--Activate
-	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2) 
+	aux.AddSkillProcedure(c,2,false,nil,nil)
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -13,6 +13,7 @@ function s.initial_effect(c)
 	e1:SetLabel(0)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
+	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2) 
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
@@ -89,7 +90,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	Debug.Message("HERE")
 	--opd check
-	if Duel.GetFlagEffect(ep,id+1)>0 then return end
+	if Duel.GetFlagEffect(tp,id+1)>0 then return end
 	Debug.Message("HERE2")
 	--condition
 	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) and not Duel.IsExistingMatchingCard(s.table_filter,tp,LOCATION_FIELD,0,1,nil)
@@ -103,7 +104,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--opd register
-	Duel.RegisterFlagEffect(ep,id+1,0,0,0)
+	Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 	local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp):GetFirst()
 	if tc and Duel.SSet(tp,tc)>0 then
 		local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_GRAVE,0,nil)

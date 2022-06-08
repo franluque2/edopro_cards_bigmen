@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_PHASE+PHASE_END)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	e2:SetOperation(EnableReturn)
+	e2:SetOperation(s.EnableReturn)
 	c:RegisterEffect(e2)
 
 	--Unaffected by the opponent's activated effects
@@ -50,7 +50,7 @@ function s.drag_filter(c,e,tp)
 	return c:IsCode(81632008) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCountFromEx(tp,tp,e:GetHandler(),c)>0
 end
 
-function s.EnableReturn(e)
+function s.EnableReturn(e,tp,eg,ep,ev,re,r,rp)
 	--return
 	local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)

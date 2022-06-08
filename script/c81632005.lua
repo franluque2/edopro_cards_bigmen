@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetValue(aux.FALSE)
 	c:RegisterEffect(e1)
 	--can only control 1 draghead
-	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsSetCard,1577),LOCATION_MZONE)
+	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsSetCard,0x1577),LOCATION_MZONE)
 	--return to extra in ep, if possible, summon back dragrid
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_TODECK)
@@ -21,14 +21,13 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_PHASE+PHASE_END)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
-	e2:SetOperation(EnableReturn)
+	e2:SetOperation(s.EnableReturn)
 	c:RegisterEffect(e2)
-
 	--on special summon, destroy all face-up st on the field
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetCategory(CATEGORY_DESTROY)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e3:SetCountLimit(1,id)
@@ -39,12 +38,8 @@ function s.initial_effect(c)
 	
 end
 
-function s.cfilter(c,tp)
-	return c:IsReason(REASON_EFFECT) and c:IsPreviousSetCard(1577)
-		and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousPosition(LOCATION_EXTRA)
-end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil,tp)
+	return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA)
 end
 
 function s.filter2(c)
@@ -64,7 +59,7 @@ function s.drag_filter(c,e,tp)
 	return c:IsCode(81632008) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCountFromEx(tp,tp,e:GetHandler(),c)>0
 end
 
-function s.EnableReturn(e)
+function s.EnableReturn(e,tp,eg,ep,ev,re,r,rp)
 	--return
 	local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)
@@ -83,6 +78,7 @@ function s.EnableReturn(e)
 		end
 	c:RegisterEffect(e1)
 end
+
 
 
 function s.filtermats(c)
