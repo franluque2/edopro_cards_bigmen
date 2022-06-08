@@ -84,14 +84,13 @@ if #hg>0 then
 			
 	end
 end
+end
 function s.cfilter(c,e,tp)
 	return c:IsCode(81632109) and c:IsSSetable()
 end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
-	Debug.Message("HERE")
 	--opd check
 	if Duel.GetFlagEffect(tp,id+1)>0 then return end
-	Debug.Message("HERE2")
 	--condition
 	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) and not Duel.IsExistingMatchingCard(s.table_filter,tp,LOCATION_FIELD,0,1,nil)
 end
@@ -110,5 +109,4 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_GRAVE,0,nil)
 		Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
 	end
-end
 end
