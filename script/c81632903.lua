@@ -23,9 +23,17 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCondition(s.flipcon)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+		e2:SetCondition(s.flipcon3)
+		e2:SetOperation(s.flipop3)
+		Duel.RegisterEffect(e2,tp)
 	end
 	e:SetLabel(1)
 end
+
+
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
@@ -44,9 +52,10 @@ end
 function s.swap_dragid(e,tp,eg,ep,ev,re,r,rp)
 local hg=Duel.GetMatchingGroup(s.dragid_filter,tp,LOCATION_EXTRA,0,nil)
 if #hg>0 then
-		for card in aux.Next(hg)do
+			for card in aux.Next(hg)do
 			Duel.SendtoDeck(card,tp,-2,REASON_EFFECT)
 			local newdrag=Duel.CreateToken(tp,81632008)
+			--newdrag:RegisterEffect(e1,true)
 			Duel.SendtoDeck(newdrag,tp,SEQ_DECKTOP,REASON_EFFECT)
 	end
 
@@ -59,7 +68,7 @@ end
 
 local tableHydra_l1={511009711,511009713,511009714,511600223,511027009}
 local tableHydra_l2={511009716}
-local tableHydra_l3={511009717,511106013,511027010}
+local tableHydra_l3={511106013,511027010} --removed 511009717 (Trident Lord) due to balance concerns
 local tableHydra_l4={511106014}
 
 function s.getcard1()
@@ -153,4 +162,60 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 	end
 end
+end
+
+
+function s.cfilter(c,tp)
+	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsCode(81632008)
+end
+
+function s.tokenfilter(c)
+	return c:IsType(TYPE_TOKEN)
+end
+
+
+function s.flipcon3(e,tp,eg,ep,ev,re,r,rp)
+	if eg:IsExists(s.tokenfilter,1,nil)==true then return end
+	--opd check
+	if Duel.GetFlagEffect(ep,id+3)>0 then return end
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil,tp)
+end
+function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
+		Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
+		Duel.Hint(HINT_CARD,tp,id)
+		--opd register
+		Duel.RegisterFlagEffect(ep,id+1,0,0,0)
+		Duel.RegisterFlagEffect(ep,id+2,0,0,0)
+		Duel.RegisterFlagEffect(ep,id+3,0,0,0)
+
+			local hydra1=Duel.CreateToken(tp,81632002)
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_REMOVE_TYPE)
+			e1:SetValue(TYPE_TOKEN)
+			hydra1:RegisterEffect(e1,true)
+			
+ local hydra2=Duel.CreateToken(tp,81632003)
+ local hydra3=Duel.CreateToken(tp,81632004)
+ local hydra4=Duel.CreateToken(tp,81632005)
+ local hydra5=Duel.CreateToken(tp,81632006)
+ local hydra6=Duel.CreateToken(tp,81632007)
+hydra2:RegisterEffect(e1,true)
+hydra3:RegisterEffect(e1,true)
+hydra4:RegisterEffect(e1,true)
+hydra5:RegisterEffect(e1,true)
+hydra6:RegisterEffect(e1,true)
+		
+g=Group.CreateGroup()
+g:AddCard(hydra1)
+g:AddCard(hydra2)
+g:AddCard(hydra3)
+g:AddCard(hydra4)
+g:AddCard(hydra5)
+g:AddCard(hydra6)
+Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
+
+local field=Duel.CreateToken(tp,81632904)
+field:RegisterEffect(e1,true)
+Duel.MoveToField(field,tp,tp,LOCATION_FZONE,POS_FACEUP,false)
 end
