@@ -38,7 +38,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
 	s.swap_tables(e,tp,eg,ep,ev,re,r,rp)
 	s.set_table(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RegisterFlagEffect(ep,id,0,0,0)
+	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
 
 function s.table_filter(c)
