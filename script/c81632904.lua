@@ -1,21 +1,24 @@
 --Master Storm Access
 local s,id=GetID()
 function s.initial_effect(c)
+--activate
+local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e1)
 
---Prevent destruction by opponent's effect
+	--Cannot be target
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
-	e2:SetTarget(s.indestg)
-	e2:SetValue(aux.indoval)
+	e2:SetTarget(s.target)
+	e2:SetValue(1)
 	c:RegisterEffect(e2)
-	--Prevent effect target
 	local e3=e2:Clone()
 	e3:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-	e3:SetValue(aux.tgoval)
 	c:RegisterEffect(e3)
 
 
@@ -33,7 +36,7 @@ function s.efilter(e,te)
 	return te:GetOwner()~=e:GetOwner()
 end
 
-function s.indestg(e,c)
+function s.target(e,c)
 	return c:IsLink(5)
 end
 

@@ -32,23 +32,23 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	--"cost" check
 	if not (Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_ONFIELD,0,1,nil)) then return false end
 	--condition
-	return aux.CanActivateSkill(tp) and Duel.GetFlagEffect(ep,id)==0
+	return aux.CanActivateSkill(tp) and Duel.GetFlagEffect(tp,id)==0
 end
 
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
-	Duel.RegisterFlagEffect(ep,id,0,0,0)
+	Duel.RegisterFlagEffect(tp,id,0,0,0)
 
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--opd check
-	if Duel.GetFlagEffect(ep,id)==0 then return end
-	if Duel.GetFlagEffect(ep,id+1)>0 and Duel.GetFlagEffect(ep,id+2)>0 then return end
+	if Duel.GetFlagEffect(tp,id)==0 then return end
+	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 then return end
 	--condition
-	local b1=Duel.GetFlagEffect(ep,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
-	local b2=Duel.GetFlagEffect(ep,id+2)==0 and Duel.IsExistingMatchingCard(s.planetfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
+	local b1=Duel.GetFlagEffect(tp,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
+	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.planetfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
 	
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
@@ -87,7 +87,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e3)
 	end
 		--opd register
-		Duel.RegisterFlagEffect(ep,id+1,0,0,0)
+		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 	else
 		local tc=Duel.SelectMatchingCard(tp,s.planetfilter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp):GetFirst()
 		sg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,tc:GetOriginalCode())
@@ -97,7 +97,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		end
 		end
 		--opd register
-		Duel.RegisterFlagEffect(ep,id+2,0,0,0)
+		Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 
 	end
 end

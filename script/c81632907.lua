@@ -136,7 +136,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		end
 	end
-	Duel.RegisterFlagEffect(ep,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 function s.spfilter2(c,e,tp,rmg)
 	return c:IsCode(18891691) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,true,false)
@@ -162,7 +162,7 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 		ssc:CompleteProcedure()
 		ssc:SetMaterial(matg)
 	end
-	Duel.RegisterFlagEffect(ep,id+2,0,0,0)
+	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 end
 --Extra material (aka, allow banishing things also from the GY)
 function s.fextra(e,tp,mg)
@@ -184,5 +184,5 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e2,tp)
-	Duel.RegisterFlagEffect(ep,id+3,0,0,0)
+	Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 end

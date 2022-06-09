@@ -116,10 +116,10 @@ end
 --Add 1 Hydradrive link to extra deck, banish 1 hydradrive to add a hydradrive
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--opt check
-	if Duel.GetFlagEffect(ep,id+1)>0 and Duel.GetFlagEffect(ep,id+2)>0 then return end
+	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 then return end
 	--condition
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
-	local b2=Duel.GetFlagEffect(ep,id+2)==0 and Duel.IsExistingMatchingCard(s.hydra_r_filter,tp,LOCATION_GRAVE,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.hydra_d_filter,tp,LOCATION_DECK,0,1,nil,tp)
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
+	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.hydra_r_filter,tp,LOCATION_GRAVE,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.hydra_d_filter,tp,LOCATION_DECK,0,1,nil,tp)
 	
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
@@ -145,7 +145,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		local g=Duel.CreateToken(tp,tokenid)
 		Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 		--opt register
-		Duel.RegisterFlagEffect(ep,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+		Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	else
 		local g1=Duel.SelectMatchingCard(tp,s.hydra_r_filter,tp,LOCATION_GRAVE,0,1,1,nil)
 		if #g1<=0 then return end
@@ -158,7 +158,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 		--opt register
-		Duel.RegisterFlagEffect(ep,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+		Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 
 	end
 end
@@ -177,7 +177,9 @@ function s.fieldspellfilter(c)
 	return c:IsCode(81632904) and c:IsFaceup()
 end
 
-
+function s.filter(c,tp)
+	return c:IsCode(4064256) and c:GetActivateEffect() and c:GetActivateEffect():IsActivatable(tp,true,true)
+end
 
 function s.flipcon3(e,tp,eg,ep,ev,re,r,rp)
 	--opd check
@@ -210,5 +212,6 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 
 local field=Duel.CreateToken(tp,81632904)
-Duel.MoveToField(field,tp,tp,LOCATION_FZONE,POS_FACEUP,false)
+
+	aux.PlayFieldSpell(field,e,tp,eg,ep,ev,re,r,rp)
 end
