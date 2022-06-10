@@ -124,23 +124,7 @@ function s.fieldfilter(c)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.IsExistingMatchingCard(s.fieldfilter,tp,LOCATION_FZONE,0,1,nil,e,tp,nil) then
-	p=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))
-	else
-		p=0
-	end
-	if p==1 then
-		local att=0
-		for gc in aux.Next(Duel.GetMatchingGroup(s.cfilter,tp,0,LOCATION_MZONE+LOCATION_GRAVE,nil)) do
-			att=att|gc:GetAttribute()
-		end
-		if att==0 then return end
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,att):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
-		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
-		end
-	else
+	
 		local d=Duel.TossDice(tp,1)
 		if d==1 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -172,6 +156,5 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_dark,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
 		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
-		end
 end
 end

@@ -47,7 +47,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToBattle() and c:IsFaceup() and bc:IsRelateToBattle() and bc:IsFaceup() then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetReset(RESET_PHASE+PHASE_DAMAGE_CAL)
 		e1:SetValue(val)
 		c:RegisterEffect(e1)
