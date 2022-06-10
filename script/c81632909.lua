@@ -96,7 +96,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 		local b2=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_hand,tp,LOCATION_HAND,0,1,nil,tp)
-			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,nil)
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,1,nil)
 
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
@@ -108,7 +108,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 		local b2=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_hand,tp,LOCATION_HAND,0,1,nil,tp)
-			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,nil)
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,1,nil)
 
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)})
@@ -129,7 +129,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ShuffleHand(tp)
 	if #g>0 then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g2=Duel.SelectMatchingCard(tp,s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,2,nil)
+	local g2=Duel.SelectMatchingCard(tp,s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,1,2,nil)
 	if #g2>0 then
 		Duel.SendtoHand(g2,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g2)
