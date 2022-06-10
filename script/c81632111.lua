@@ -19,7 +19,6 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_TOSS_DICE_NEGATE)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCondition(s.dicecon)
 	e2:SetOperation(s.diceop)
 	c:RegisterEffect(e2)
 end
@@ -75,10 +74,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.dicecon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:GetOverlayCount()>0 and c:GetFlagEffect(id)==0
-end
 function s.diceop(e,tp,eg,ep,ev,re,r,rp)
 	local cc=Duel.GetCurrentChain()
 	local cid=Duel.GetChainInfo(cc,CHAININFO_CHAIN_ID)
@@ -95,6 +90,5 @@ function s.diceop(e,tp,eg,ep,ev,re,r,rp)
 		dc[ac]=6
 		Duel.SetDiceResult(table.unpack(dc))
 		s[0]=cid
-		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 	end
 end
