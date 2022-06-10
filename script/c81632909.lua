@@ -24,6 +24,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EVENT_PHASE+PHASE_STANDBY)
 		e1:SetCondition(s.flipcon)
 		e1:SetOperation(s.flipop)
+		e1:SetCountLimit(1)
 		Duel.RegisterEffect(e1,tp)
 		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 end
