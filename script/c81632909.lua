@@ -21,7 +21,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e1:SetCode(EVENT_PREDRAW)
+		e1:SetCode(EVENT_PHASE+PHASE_STANDBY)
 		e1:SetCondition(s.flipcon)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
@@ -59,7 +59,7 @@ end
 
 function s.replace_number_seven(e,tp,eg,ep,ev,re,r,rp)
 local hg=Duel.GetMatchingGroup(s.number_seven_filter_extra,tp,LOCATION_EXTRA,0,nil)
-if #hg>0 then			
+if #hg>0 then		   
 			for card in aux.Next(hg)do
 			Duel.SendtoDeck(card,tp,-2,REASON_EFFECT)
 			local newnoseven=Duel.CreateToken(tp,81632111)
