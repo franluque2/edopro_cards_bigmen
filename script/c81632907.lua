@@ -12,7 +12,7 @@ function s.initial_effect(c)
 	e1:SetLabel(0)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
-	aux.AddSkillProcedure(c,1,false,s.flipcon2,s.flipop2)
+	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
 end
 local LOCATION_HDG=LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE
 local LOCATION_RMV_GRV=LOCATION_REMOVED+LOCATION_GRAVE

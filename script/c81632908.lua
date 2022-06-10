@@ -76,7 +76,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	
 	--Select Effect
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
-								  {b2,aux.Stringid(id,1)}
+								  {b2,aux.Stringid(id,1)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
@@ -96,7 +96,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.IsExistingMatchingCard(s.zushin_add_filter,tp,LOCATION_DECK,0,1,nil)
 	local b2=Duel.IsExistingMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,2)},
-								  {b2,aux.Stringid(id,3)}
+								  {b2,aux.Stringid(id,3)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
@@ -108,7 +108,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	end
 	elseif op==1 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-	local g=Duel.SelectMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
 	if #g>0 then
 		Duel.SSet(tp,g:GetFirst())
 	end
