@@ -113,7 +113,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)})
 
-	op=op1-1
+	op=op-1
 	if op==0 then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local cg=Duel.SelectMatchingCard(tp,s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
@@ -134,7 +134,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g2,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g2)
 	end
-	local trace=Duel.CreateToken(tp,10000191)
+	local trace=Duel.CreateToken(tp,100000191)
 	Duel.SSet(tp,trace)
 	end
 		Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
