@@ -27,13 +27,13 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	e:SetLabel(1)
 end
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
+	return Duel.GetCurrentChain()==0 and (Duel.GetTurnCount()==1 or Duel.GetTurnCount()==2) and Duel.GetTurnPlayer()==tp
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	s.summon_genie(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RegisterFlagEffect(ep,id,0,0,0)
+	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
 function s.summon_genie(e,tp,eg,ep,ev,re,r,rp)
 	local genie=Duel.CreateToken(tp,94535485)
@@ -42,80 +42,76 @@ end
 function s.zushin_add_filter(c)
 	return c:IsCode(67547370) and c:IsAbleToHand()
 end
-function s.zushin_fulter(c)
-	return c:IsCode(67547370)
+function s.zushin_filter(c)
+	return c:IsCode(67547370) and c:IsFaceup()
+end
+
+function s.normal_filter(c)
+	return c:IsFaceup() and c:IsType(TYPE_NORMAL) and c:GetLevel()==1 and (c:IsSummonType(SUMMON_TYPE_NORMAL) or c:IsSummonType(SUMMON_TYPE_SPECIAL)) and (c:IsStatus(STATUS_SUMMON_TURN) or c:IsStatus(STATUS_SPSUMMON_TURN))
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
-	if Duel.GetFlagEffect(ep,id+1)>0 and Duel.GetFlagEffect(ep,id+2)>0 and Duel.GetFlagEffect(ep,id+3)>0 then return end
+	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(ep,id+2)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.king_proto_filter,tp,LOCATION_MZONE,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.king_filter_summon,tp,LOCATION_HDG,0,1,nil,e,tp)
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
+			and Duel.IsExistingMatchingCard(s.normal_filter,tp,LOCATION_MZONE,0,1,nil)
+	local b2=Duel.GetFlagEffect(tp,id+2)==0
+			and Duel.IsExistingMatchingCard(s.zushin_filter,tp,LOCATION_MZONE,0,1,nil,tp)
 
-	local fusionparams = {aux.FilterBoolFunction(Card.IsCode,511001057),Fusion.OnFieldMat(Card.IsAbleToRemove),s.fextra,Fusion.BanishMaterial}
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
-			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_MZONE,0,1,nil,tp)
-			and Duel.IsExistingMatchingCard(s.robotic_knight,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil)
-			and Fusion.SummonEffTG(table.unpack(fusionparams))
-
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
-			and Duel.GetLocationCount(tp,LOCATION_MZONE)
-			and Duel.IsExistingMatchingCard(s.king_proto_filter_gy_banish,tp,LOCATION_RMV_GRV,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_RMV_GRV,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.perfect_king_filter_anime,tp,LOCATION_RMV_GRV,0,1,nil)
-
-	return aux.CanActivateSkill(tp) and (b1 or b2 or b3)
+	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
 	--Boolean check for effect 1:
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.king_proto_filter,tp,LOCATION_MZONE,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.king_filter_summon,tp,LOCATION_HDG,0,1,nil,e,tp)
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
+			and Duel.IsExistingMatchingCard(s.normal_filter,tp,LOCATION_MZONE,0,1,nil)
+			and (Duel.IsExistingMatchingCard(s.zushin_add_filter,tp,LOCATION_DECK,0,1,nil) or
+			Duel.IsExistingMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil))
 	
 	--Boolean check for effect2:
-	local fusionparams = {aux.FilterBoolFunction(Card.IsCode,511001057),Fusion.OnFieldMat(Card.IsAbleToRemove),s.fextra,Fusion.BanishMaterial}
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
-			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_MZONE,0,1,nil) 
-			and Duel.IsExistingMatchingCard(s.robotic_knight,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil)
-			and Fusion.SummonEffTG(table.unpack(fusionparams))
+	local b2=Duel.GetFlagEffect(tp,id+2)==0
+			and Duel.IsExistingMatchingCard(s.zushin_filter,tp,LOCATION_MZONE,0,1,nil) 
 	
-	--Boolean check for effect3:
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
-			and Duel.GetLocationCount(tp,LOCATION_MZONE)
-			and Duel.IsExistingMatchingCard(s.king_proto_filter_gy_banish,tp,LOCATION_RMV_GRV,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_RMV_GRV,0,1,nil)
-			and Duel.IsExistingMatchingCard(s.perfect_king_filter_anime,tp,LOCATION_RMV_GRV,0,1,nil)
-
-	--This auxiliary function should simplify what you did with all the Duel.SelectOption you used previously:
+	--Select Effect
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
-								  {b2,aux.Stringid(id,1)},
-								  {b3,aux.Stringid(id,2)})
+								  {b2,aux.Stringid(id,1)}
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
 		s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==1 then
 		s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	elseif op==2 then
-		s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---op=0, Tribute 1 machine king prototype, summon a machine king from Hand/Deck/GY
+function s.st_filter(c)
+	return (c:IsCode(511000027) or c:IsCode(20920083)) and c:IsSSetable()
+end
+
+--op=0, If you normal or ssd a level 1 normal, add zushin or set a floodgate
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TRIBUTE)
-	local tc=Duel.SelectMatchingCard(tp,s.king_proto_filter,tp,LOCATION_MZONE,0,1,1,nil)
-	if tc and Duel.Release(tc,REASON_COST)>0 and Duel.GetMZoneCount(tp)>0 then --i'm not sure if the reason should be cost
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local g=Duel.SelectMatchingCard(tp,s.king_filter_summon,tp,LOCATION_HDG,0,1,1,nil,e,tp)
-		if #g>0 then
-			Duel.BreakEffect()
-			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
-		end
+	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	local b1=Duel.IsExistingMatchingCard(s.zushin_add_filter,tp,LOCATION_DECK,0,1,nil)
+	local b2=Duel.IsExistingMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,2)},
+								  {b2,aux.Stringid(id,3)}
+	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
+
+	if op==0 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.zushin_add_filter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
+	end
+	elseif op==1 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
+	local g=Duel.SelectMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+	if #g>0 then
+		Duel.SSet(tp,g:GetFirst())
+	end
 	end
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
@@ -129,41 +125,13 @@ end
 function s.rescon(sg,e,tp,mg)
 	return sg:IsExists(Card.IsCode,1,nil,46700124) and sg:IsExists(Card.IsCode,1,nil,44203504)
 end
---op=1, Tribute 1 Machine King, fusion summon anime perfect machine king: NOT FINISHED
+
+function s.posfilter(c)
+	return c:IsPosition(POS_DEFENSE) and c:IsCanChangePosition()
+end
+--op=1, If you control Zushin the Sleeping Giant, flip all opponents to attack position
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TRIBUTE)
-	local tc=Duel.SelectMatchingCard(tp,s.king_filter,tp,LOCATION_MZONE,0,1,1,nil)
-	if tc and Duel.Release(tc,REASON_COST)>0 then
-		local rmg=Duel.GetMatchingGroup(s.matfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local ssc=Duel.SelectMatchingCard(tp,s.spfilter2,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,rmg):GetFirst()
-		local matg=aux.SelectUnselectGroup(rmg,e,tp,2,2,s.rescon,1,tp,HINTMSG_FMATERIAL)
-		Duel.Remove(matg,POS_FACEUP,REASON_EFFECT+REASON_MATERIAL)
-		Duel.SpecialSummon(ssc,SUMMON_TYPE_FUSION,tp,tp,true,false,POS_FACEUP)
-		ssc:CompleteProcedure()
-		ssc:SetMaterial(matg)
-	end
-	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
-end
---Extra material (aka, allow banishing things also from the GY)
-function s.fextra(e,tp,mg)
-	if not Duel.IsPlayerAffectedByEffect(tp,69832741) then
-		return Duel.GetMatchingGroup(Fusion.IsMonsterFilter(Card.IsAbleToRemove),tp,LOCATION_GRAVE,0,nil)
-	end
-	return nil
-end
---op=2, Summon tcg perfect machine from outside the duel, then turn the field into machines for 1 turn
-function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-	local perfectking=Duel.CreateToken(tp,18891691)
-	Duel.SpecialSummon(perfectking,0,tp,tp,false,false,POS_FACEUP)
-	--Change things on the field to Machine until the end phase
-	Duel.BreakEffect()
-	local e2=Effect.CreateEffect(e:GetHandler())
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_CHANGE_RACE)
-	e2:SetValue(RACE_MACHINE)
-	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e2,tp)
-	Duel.RegisterFlagEffect(tp,id+3,0,0,0)
+	local g=Duel.GetMatchingGroup(s.posfilter,tp,0,LOCATION_MZONE,nil)
+	Duel.ChangePosition(g,POS_FACEUP_ATTACK)
+	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end

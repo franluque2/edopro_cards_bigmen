@@ -96,8 +96,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(tc,0,tp,tp,true,false,POS_FACEUP)
 		end
 		end
-		--opd register
-		Duel.RegisterFlagEffect(tp,id+2,0,0,0)
+		--opt register
+		Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 
 	end
 end
