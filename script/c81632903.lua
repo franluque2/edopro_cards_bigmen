@@ -93,7 +93,7 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.hydra_d_filter(c,label)
-	return (c:IsSetCard(0x577) and c:IsAbleToHand() and not c:IsCode(label)) or c:IsCode(511009503)
+	return (c:IsSetCard(0x577) and c:IsAbleToHand() and (not c:IsCode(label))) or c:IsCode(511009503)
 end
 
 
