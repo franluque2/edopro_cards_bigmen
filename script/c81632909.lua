@@ -58,6 +58,14 @@ function s.number_seven_filter_extra(c)
 return c:IsCode(82308875)
 end
 
+function s.dice_leveler_filter_hand(c)
+return c:IsCode(100000190)
+end
+
+function s.dice_leveler_filter_deck(c)
+return c:IsCode(100000190) and c:IsAbleToHand()
+end
+
 function s.replace_number_seven(e,tp,eg,ep,ev,re,r,rp)
 local hg=Duel.GetMatchingGroup(s.number_seven_filter_extra,tp,LOCATION_EXTRA,0,nil)
 if #hg>0 then		   
@@ -81,18 +89,54 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 then return end
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.monster_banish_filter,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,1,nil,e,tp)
-	return aux.CanActivateSkill(tp) and b1
+
+		local b2=Duel.GetFlagEffect(ep,id+3)==0
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_hand,tp,LOCATION_HAND,0,1,nil,tp)
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,nil)
+
+	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+
+		local b1=Duel.GetFlagEffect(tp,id+2)==0
+			and Duel.IsExistingMatchingCard(s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.monster_banish_filter,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,1,nil,e,tp)
+
+		local b2=Duel.GetFlagEffect(ep,id+3)==0
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_hand,tp,LOCATION_HAND,0,1,nil,tp)
+			and Duel.IsExistingMatchingCard(s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,nil)
+
+	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+								  {b2,aux.Stringid(id,1)})
+
+	op=op1-1
+	if op==0 then
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-		local cg=Duel.SelectMatchingCard(tp,s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
-		Duel.Remove(cg,POS_FACEUP,REASON_EFFECT)
+	local cg=Duel.SelectMatchingCard(tp,s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
+	Duel.Remove(cg,POS_FACEUP,REASON_EFFECT)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.monster_banish_filter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,1,nil,e,tp)
 	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	else
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+	local g=Duel.SelectMatchingCard(tp,s.dice_leveler_filter_hand,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.ConfirmCards(1-tp,g)
+	Duel.ShuffleHand(tp)
+	if #g>0 then
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g2=Duel.SelectMatchingCard(tp,s.dice_leveler_filter_deck,tp,LOCATION_DECK,0,2,2,nil)
+	if #g2>0 then
+		Duel.SendtoHand(g2,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g2)
+	end
+	local trace=Duel.CreateToken(tp,10000191)
+	Duel.SSet(tp,trace)
+	end
+		Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	end
 end
