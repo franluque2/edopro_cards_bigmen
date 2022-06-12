@@ -139,9 +139,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)},
 								  {b2,aux.Stringid(id,2)},
-								  {b2,aux.Stringid(id,3)})
+								  {b2,aux.Stringid(id,3)})-1
 
-	op=op-1
 
 	if op==0 then
 		s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
