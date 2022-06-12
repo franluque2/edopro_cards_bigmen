@@ -121,7 +121,7 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Remove(cg,POS_FACEUP,REASON_EFFECT)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.dscale_summon_filter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp)
-	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
