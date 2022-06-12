@@ -103,37 +103,37 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0 then return end
 	--. Once per turn, if you do not control "C/C Critical Eye", you can Special Summon 1 "C/C Critical Eye" from your GY by sending 1 "Film Magician" from either your Field, Hand or Deck to the GY.
-	local b1=Duel.GetFlagEffect(tp,id+2)==0
+	local b1=Duel.GetFlagEffect(ep,id+2)==0
 			and not Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.critical_eye_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp)
 			and Duel.IsExistingMatchingCard(s.film_magician_replaced_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
 	--Once per turn, if you control "C/C Critical Eye" you can apply one of these effects:
-		local b2=Duel.GetFlagEffect(tp,id+3)==0
+		local b2=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil,tp)
 			and Duel.IsExistingMatchingCard(s.spells_filter,tp,LOCATION_DECK,0,1,nil)
 	--Once per turn, you can target 1 monster your opponent controls with a Level and declare a Level from 1 to 7, until the end of this turn, that monster becomes that Level.
-	 local b3=Duel.GetFlagEffect(tp,id+4)==0
+	 local b3=Duel.GetFlagEffect(ep,id+4)==0
 			and Duel.IsExistingMatchingCard(s.level_filter,tp,0,LOCATION_MZONE,1,nil)
 	--Once per turn, you can target 1 monster your opponent controls and declare an Attribute, until the end of this turn, that monster becomes that Attribute.
-		local b4=Duel.GetFlagEffect(tp,id+5)==0
+		local b4=Duel.GetFlagEffect(ep,id+5)==0
 			and Duel.IsExistingMatchingCard(s.attribute_filter,tp,0,LOCATION_MZONE,1,nil,tp)
 	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
  --. Once per turn, if you do not control "C/C Critical Eye", you can Special Summon 1 "C/C Critical Eye" from your GY by sending 1 "Film Magician" from either your Field, Hand or Deck to the GY.
-	local b1=Duel.GetFlagEffect(tp,id+2)==0
+	local b1=Duel.GetFlagEffect(ep,id+2)==0
 			and not Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.critical_eye_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp)
 			and Duel.IsExistingMatchingCard(s.film_magician_replaced_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
 	--Once per turn, if you control "C/C Critical Eye" you can apply one of these effects:
-		local b2=Duel.GetFlagEffect(tp,id+3)==0
+		local b2=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil,tp)
 			and Duel.IsExistingMatchingCard(s.spells_filter,tp,LOCATION_DECK,0,1,nil)
 	--Once per turn, you can target 1 monster your opponent controls with a Level and declare a Level from 1 to 7, until the end of this turn, that monster becomes that Level.
-	 local b3=Duel.GetFlagEffect(tp,id+4)==0
+	 local b3=Duel.GetFlagEffect(ep,id+4)==0
 			and Duel.IsExistingMatchingCard(s.level_filter,tp,0,LOCATION_MZONE,1,nil)
 	--Once per turn, you can target 1 monster your opponent controls and declare an Attribute, until the end of this turn, that monster becomes that Attribute.
-		local b4=Duel.GetFlagEffect(tp,id+5)==0
+		local b4=Duel.GetFlagEffect(ep,id+5)==0
 			and Duel.IsExistingMatchingCard(s.attribute_filter,tp,0,LOCATION_MZONE,1,nil,tp)
 
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
