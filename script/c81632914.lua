@@ -39,7 +39,6 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
-	s.replace_film_magician(e,tp,eg,ep,ev,re,r,rp)
 	s.summon_critical_eye(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
@@ -55,27 +54,6 @@ end
 
 function s.film_magician_replaced_filter(c)
 return c:IsCode(81632114)
-end
-
-function s.replace_film_magician(e,tp,eg,ep,ev,re,r,rp)
-local ng=Duel.GetMatchingGroup(s.film_magician_filter,tp,LOCATION_HAND,0,nil)
-if #ng>0 then
-		for card in aux.Next(ng)do
-			Duel.SendtoDeck(card,tp,-2,REASON_EFFECT)
-			local newtab=Duel.CreateToken(tp,81632114)
-			Duel.SendtoHand(newtab,tp,REASON_EFFECT)
-			
-	end
-end
-local hg=Duel.GetMatchingGroup(s.film_magician_filter,tp,LOCATION_DECK,0,nil)
-if #hg>0 then
-		for card in aux.Next(hg)do
-			Duel.SendtoDeck(card,tp,-2,REASON_EFFECT)
-			local newtab=Duel.CreateToken(tp,81632114)
-			Duel.SendtoDeck(newtab,tp,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			
-	end
-end
 end
 
 function s.critical_eye_filter(c)
@@ -106,7 +84,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and not Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.critical_eye_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp)
-			and Duel.IsExistingMatchingCard(s.film_magician_replaced_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.film_magician_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
 	--Once per turn, if you control "C/C Critical Eye" you can apply one of these effects:
 		local b2=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil,tp)
@@ -124,7 +102,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and not Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.critical_eye_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp)
-			and Duel.IsExistingMatchingCard(s.film_magician_replaced_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.film_magician_filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_MZONE,0,1,nil)
 	--Once per turn, if you control "C/C Critical Eye" you can apply one of these effects:
 	local b2=Duel.GetFlagEffect(tp,id+3)==0
 		 and Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil,tp)
@@ -155,7 +133,7 @@ end
  --. Once per turn, if you do not control "C/C Critical Eye", you can Special Summon 1 "C/C Critical Eye" from your GY by sending 1 "Film Magician" from either your Field, Hand or Deck to the GY.
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local tc=Duel.SelectMatchingCard(tp,s.film_magician_replaced_filter,tp,LOCATION_ONFIELD+LOCATION_HAND+LOCATION_DECK,0,1,1,nil):GetFirst()
+	local tc=Duel.SelectMatchingCard(tp,s.film_magician_filter,tp,LOCATION_ONFIELD+LOCATION_HAND+LOCATION_DECK,0,1,1,nil):GetFirst()
 	local c=Duel.SelectMatchingCard(tp,s.critical_eye_filter,tp,LOCATION_GRAVE,0,1,1,nil):GetFirst()
 	if tc and Duel.SendtoGrave(tc,REASON_EFFECT)>0 and tc:IsLocation(LOCATION_GRAVE)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
