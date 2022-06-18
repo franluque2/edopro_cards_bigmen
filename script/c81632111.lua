@@ -1,6 +1,7 @@
 --Number 7: Lucky Straight
 local s,id=GetID()
 function s.initial_effect(c)
+	c:SetUniqueOnField(1,0,id)
 	--xyz summon
 	Xyz.AddProcedure(c,nil,7,3)
 	c:EnableReviveLimit()
