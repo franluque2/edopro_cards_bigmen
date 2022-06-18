@@ -27,7 +27,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		local e2=Effect.CreateEffect(e:GetHandler())
 		e2:SetType(EFFECT_TYPE_FIELD)
 		e2:SetCode(EFFECT_DISABLE_FIELD)
-		e2:SetValue(0x1111)
+		e2:SetOperation(s.disabledzones)
 		Duel.RegisterEffect(e2,tp)
 
 		--Draw till you have 5 cards in hand
@@ -50,7 +50,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 
 		--skip MP2
 
-		e5=Effect.CreateEffect(e:GetHandler())
+		local e5=Effect.CreateEffect(e:GetHandler())
 		e5:SetType(EFFECT_TYPE_FIELD)
 		e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e5:SetCode(EFFECT_SKIP_M2)
@@ -77,6 +77,7 @@ function s.getcarddraw(e,tp,eg,ep,ev,re,r,rp)
 		return 1
 end
 end
+
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
@@ -92,4 +93,10 @@ function s.znval(e)
 end
 
 
-
+function s.disabledzones(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandlerPlayer()==tp then
+			return 0x00001111	  
+	else	  
+			return 0x11110000	  
+	end
+end
