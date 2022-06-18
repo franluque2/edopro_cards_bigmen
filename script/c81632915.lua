@@ -59,12 +59,12 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 
 		--skip SP
 
-		local e7=Effect.CreateEffect(e:GetHandler())
-		e7:SetType(EFFECT_TYPE_FIELD)
-		e7:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e7:SetCode(EFFECT_SKIP_SP)
-		e7:SetTargetRange(1,0)
-		Duel.RegisterEffect(e7,tp)
+		--local e7=Effect.CreateEffect(e:GetHandler())
+		--e7:SetType(EFFECT_TYPE_FIELD)
+		--e7:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		--e7:SetCode(EFFECT_SKIP_SP)
+		--e7:SetTargetRange(1,0)
+		--Duel.RegisterEffect(e7,tp)
 
 		--disable EMZs
 		local e6=Effect.CreateEffect(e:GetHandler())
@@ -104,8 +104,8 @@ end
 
 function s.disabledzones(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandlerPlayer()==tp then
-			return 0x00001111	 
+			return 0x00001111	
 	else	  
-			return 0x11110000	 
+			return 0x11110000	
 	end
 end
