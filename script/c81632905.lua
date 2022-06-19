@@ -98,7 +98,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--opd check
 	if Duel.GetFlagEffect(tp,id+1)>0 then return end
 	--condition
-	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil) and not Duel.IsExistingMatchingCard(s.table_filter2,tp,LOCATION_ONFIELD,0,1,nil)
+	return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,1,nil) and not Duel.IsExistingMatchingCard(s.table_filter_field,tp,LOCATION_ONFIELD,0,1,nil)
 end
 
 function s.tdfilter(c)
