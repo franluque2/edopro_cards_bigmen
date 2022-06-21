@@ -22,6 +22,19 @@ function s.initial_effect(c)
 		ge1:SetOperation(s.mvchk)
 		Duel.RegisterEffect(ge1,0)
 	end)
+
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_EQUIP)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_COUNT)
+	e3:SetCountLimit(1)
+	e3:SetValue(s.valcon)
+	c:RegisterEffect(e3)
+
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_EQUIP)
+	e4:SetCode(EFFECT_UPDATE_ATTACK)
+	e4:SetValue(s.value)
+	c:RegisterEffect(e4)
 end
 s.listed_series={0x579}
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -42,5 +55,20 @@ function s.mvchk(e,tp,eg,ep,ev,re,r,rp)
 			tc:SetFlagEffectLabel(id,tc:GetSequence())
 			tc:RegisterFlagEffect(id+1000,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 		end
+	end
+end
+
+function s.valcon(e,re,r,rp)
+	if ((r&REASON_BATTLE)~=0 or (r&REASON_EFFECT)) then
+		return true
+	else return false end
+end
+
+function s.value(e,c)
+	local ec=e:GetHandler():GetEquipTarget()
+	if ec:IsType(TYPE_LINK) then
+			return 200*ec:GetLink()
+	else
+		return 0
 	end
 end
