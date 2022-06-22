@@ -132,7 +132,7 @@ function s.thfilter(c)
 	return (c:IsCode(63394872) or c:IsSetCard(0x579)or c:IsCode(511600114)) and c:IsSSetable()
 end
 function s.cfilter(c,tp)
-	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsSetCard(0x579) and c:IsType(TYPE_LINK)
+	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsSetCard(0x579) and c:IsSummonType(SUMMON_TYPE_LINK)
 end
 
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
@@ -145,7 +145,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 		Duel.Hint(HINT_CARD,tp,id)
 		--opt register
-		Duel.RegisterFlagEffect(ep,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+		Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 		local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
 		if #g>0 then
