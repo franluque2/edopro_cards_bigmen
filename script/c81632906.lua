@@ -57,6 +57,10 @@ function s.efilter(e,re)
 	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
 end
 
+function s.idfilter(c,code)
+	return c:GetOriginalCode()==code
+end
+
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler(e)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -72,8 +76,10 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 	if p==0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local tc=Duel.SelectMatchingCard(tp,s.flipconfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-	if tc then
+	local g=Duel.SelectMatchingCard(tp,s.flipconfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+	local cards=Duel.GetMatchingGroup(s.idfilter,tp,LOCATION_MZONE,0,0,g:GetOriginalCode())
+	if g then
+		for tc in aux.Next(cards) do
 		--Unaffected by opponent's card effects
 		local e3=Effect.CreateEffect(c)
 		e3:SetDescription(3110)
@@ -85,12 +91,13 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
 		e3:SetOwnerPlayer(tp)
 		tc:RegisterEffect(e3)
+		end
 	end
 		--opd register
 		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 	else
 		local tc=Duel.SelectMatchingCard(tp,s.planetfilter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp):GetFirst()
-		sg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,tc:GetOriginalCode())
+		sg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_EXTRA,0,1,1,nil,tc:GetOriginalCode())
 		if #sg>0 then
 			if Duel.SendtoGrave(sg,REASON_EFFECT)~=0 then
 		Duel.SpecialSummon(tc,0,tp,tp,true,false,POS_FACEUP)
