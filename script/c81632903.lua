@@ -68,7 +68,7 @@ end
 
 local tableHydra_l1={511009711,511009713,511009714,511600223,511027009}
 local tableHydra_l2={511009716}
-local tableHydra_l3={511106013,511027010} --removed 511009717 (Trident Lord) due to balance concerns
+local tableHydra_l3={511106013,511027010, 511009717}
 local tableHydra_l4={511106014}
 
 function s.getcard1()
