@@ -35,7 +35,7 @@ e:SetLabel(1)
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
---At the start of the duel, Special Summon 1 "C/C Critical Eye" from outside the duel. 
+--At the start of the duel, Special Summon 1 "C/C Critical Eye" from outside the duel.
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
@@ -57,7 +57,7 @@ return c:IsCode(81632114)
 end
 
 function s.critical_eye_filter(c)
-return c:IsCode(511003050) 
+return c:IsCode(511003050)
 end
 
 function s.critical_eye_control_filter(c)
@@ -77,7 +77,7 @@ function s.attribute_filter(c)
 return c:IsFaceup()
 end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
-	
+
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0 then return end
 	--. Once per turn, if you do not control "C/C Critical Eye", you can Special Summon 1 "C/C Critical Eye" from your GY by sending 1 "Film Magician" from either your Field, Hand or Deck to the GY.
@@ -98,6 +98,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
  --. Once per turn, if you do not control "C/C Critical Eye", you can Special Summon 1 "C/C Critical Eye" from your GY by sending 1 "Film Magician" from either your Field, Hand or Deck to the GY.
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and not Duel.IsExistingMatchingCard(s.critical_eye_control_filter,tp,LOCATION_MZONE,0,1,nil)

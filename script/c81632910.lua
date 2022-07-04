@@ -6,7 +6,7 @@ function s.initial_effect(c)
 end
 local unicorns={77506119,13995824,49389523}
 function s.flipconfilter(c)
-	return c:IsFaceup() and s.has_value(unicorns,c:GetOriginalCode()) 
+	return c:IsFaceup() and s.has_value(unicorns,c:GetOriginalCode())
 end
 
 function s.summfilter(c)
@@ -43,7 +43,7 @@ function s.unicornfilter(c)
 end
 
 function s.bicornfilter(c)
-	return c:IsCode(13995824) 
+	return c:IsCode(13995824)
 end
 
 function s.tricornfilter(c)
@@ -58,7 +58,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(tp,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.unicornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp)
 	and Duel.IsExistingMatchingCard(s.bicornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.tricornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_SZONE)>2 and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
-	
+
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 
@@ -69,7 +69,7 @@ end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler(e)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	local b1=Duel.GetFlagEffect(tp,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.unicornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp)
 	and Duel.IsExistingMatchingCard(s.bicornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.tricornfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_SZONE)>2 and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
@@ -83,7 +83,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	if p==0 then
 		--opt register
 		Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-		
+
 		h1=Duel.IsExistingMatchingCard(s.summfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
 		h2=Duel.IsExistingMatchingCard(s.trap_filter,tp,LOCATION_DECK,0,1,nil,tp)
 		local m=aux.SelectEffect(tp, {h1,aux.Stringid(id,2)},
@@ -109,8 +109,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 				Duel.SSet(tp,tc)
 			end
 		end
-	   
-		
+
+
 	else
 		--opd register
 		Duel.RegisterFlagEffect(tp,id+2,0,0,0)
@@ -131,7 +131,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Equip(tp,horn3,tc3)
 		end
 
-		
-		
+
+
 
 end

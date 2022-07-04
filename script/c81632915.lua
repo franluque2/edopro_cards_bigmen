@@ -75,6 +75,15 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e6:SetTargetRange(1,0)
 		e6:SetValue(s.znval)
 		Duel.RegisterEffect(e6,tp)
+
+		--give infinite hand size
+		local e7=Effect.CreateEffect(e:GetHandler())
+		e7:SetType(EFFECT_TYPE_FIELD)
+		e7:SetCode(EFFECT_HAND_LIMIT)
+		e7:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e7:SetTargetRange(1,0)
+		e7:SetValue(100)
+		Duel.RegisterEffect(e7,tp)
 	end
 	e:SetLabel(1)
 end
@@ -104,8 +113,8 @@ end
 
 function s.disabledzones(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandlerPlayer()==tp then
-			return 0x00001111	
-	else	  
-			return 0x11110000	
+			return 0x00001111
+	else
+			return 0x11110000
 	end
 end

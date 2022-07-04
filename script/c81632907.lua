@@ -89,19 +89,19 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.king_proto_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.king_filter_summon,tp,LOCATION_HDG,0,1,nil,e,tp)
-	
+
 	--Boolean check for effect2:
 	local fusionparams = {aux.FilterBoolFunction(Card.IsCode,511001057),Fusion.OnFieldMat(Card.IsAbleToRemove),s.fextra,Fusion.BanishMaterial}
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
-			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_MZONE,0,1,nil) 
+			and Duel.IsExistingMatchingCard(s.king_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.robotic_knight,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil)
 			and Fusion.SummonEffTG(table.unpack(fusionparams))
-	
+
 	--Boolean check for effect3:
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.GetLocationCount(tp,LOCATION_MZONE)

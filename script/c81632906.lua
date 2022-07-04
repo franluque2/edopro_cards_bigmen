@@ -6,7 +6,7 @@ function s.initial_effect(c)
 end
 local planets={24413299,74711057,88071625,15033525,34004470,51402908,03912064,05645210,16255173,32588805}
 function s.flipconfilter(c)
-	return c:IsFaceup() and s.has_value(planets,c:GetOriginalCode()) 
+	return c:IsFaceup() and s.has_value(planets,c:GetOriginalCode())
 end
 
 function s.thfilter(c,code)
@@ -14,7 +14,7 @@ function s.thfilter(c,code)
 end
 
 function s.planetfilter(c)
-return s.has_value(planets,c:GetOriginalCode()) and Duel.IsExistingMatchingCard(s.thfilter,c:GetOwner(),LOCATION_DECK+LOCATION_EXTRA,0,1,c,c:GetOriginalCode()) 
+return s.has_value(planets,c:GetOriginalCode()) and Duel.IsExistingMatchingCard(s.thfilter,c:GetOwner(),LOCATION_DECK+LOCATION_EXTRA,0,1,c,c:GetOriginalCode())
 end
 
 function s.has_value(tab, val)
@@ -49,7 +49,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	local b1=Duel.GetFlagEffect(tp,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.planetfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
-	
+
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 
@@ -64,7 +64,7 @@ end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler(e)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	local b1=Duel.GetFlagEffect(ep,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
 	local b2=Duel.GetFlagEffect(ep,id+2)==0 and Duel.IsExistingMatchingCard(s.planetfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
 	if (b2 and b1) then

@@ -127,7 +127,7 @@ end
 --c:RegisterFlagEffect(id,,0,1,fid)
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 	local b2=Duel.GetFlagEffect(ep,id+2)==0 and Duel.IsExistingMatchingCard(s.hydra_r_filter,tp,LOCATION_GRAVE,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.hydra_d_filter,tp,LOCATION_DECK,0,1,nil,tp)
 	if (b2 and b1) then

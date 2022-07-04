@@ -1,4 +1,4 @@
---Mark of the Spider
+--Mark of the Monkey
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -44,21 +44,30 @@ function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.spiderfilter(c,e,tp)
-	return (c:IsCode(80637190) or c:IsCode(04941482) or c:IsCode(511000794) or c:IsCode(17243896) or c:IsCode(45688586) or c:IsCode(54248491)
-	 or c:IsCode(79636594) or c:IsCode(81759748)) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+function s.beastfilter(c,e,tp)
+	return c:IsRace(RACE_BEAST) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 
 function s.monsterfilter(c)
 	return c:IsFaceup() and c:HasLevel()
 end
 
-function s.mother_spider_filter(c)
-	return c:IsCode(17021204) and not c:IsPublic()
+function s.zeman_ape_king_filter(c)
+	return c:IsCode(22858242) and c:IsFaceup()
+end
+
+
+function s.zeman_ape_king_affected_filter(c)
+	return c:IsCode(22858242) and c:IsFaceup() and (c:GetFlagEffect(id)>0)
 end
 
 function s.high_level_filter(c)
 	return c:HasLevel() and c:IsLevelAbove(5) and c:IsFaceup()
+end
+
+function s.primineral_baboon_filter(c)
+	return c:IsAbleToHand() and (c:IsCode(46668237) or c:IsCode(65303664) or c:IsCode(55705473) or c:IsCode(49729312)
+	 		or c:IsCode(37021315))
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
@@ -67,47 +76,56 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	 	Duel.GetFlagEffect(tp, id+4)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.spiderfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
 			and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
 			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
-			and Duel.GetLocationCount(tp,LOCATION_MZONE)
-			and Duel.IsExistingMatchingCard(s.mother_spider_filter,tp,LOCATION_HAND,0,1,nil)
-			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+			and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.primineral_baboon_filter,tp,LOCATION_DECK,0,1,nil)
 
 	local b4=Duel.GetFlagEffect(ep, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
-	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4)
+	local b5=Duel.GetFlagEffect(ep, id+5)==0
+		and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
+		and not Duel.IsExistingMatchingCard(s.zeman_ape_king_affected_filter,tp,LOCATION_MZONE,0,1,nil)
+
+
+	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4 or b5)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.spiderfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
 			and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
 			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
-			and Duel.GetLocationCount(tp,LOCATION_MZONE)
-			and Duel.IsExistingMatchingCard(s.mother_spider_filter,tp,LOCATION_HAND,0,1,nil)
-			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+			and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.primineral_baboon_filter,tp,LOCATION_DECK,0,1,nil)
 
 	local b4=Duel.GetFlagEffect(ep, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
+	local b5=Duel.GetFlagEffect(ep, id+5)==0
+		and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
+		and not Duel.IsExistingMatchingCard(s.zeman_ape_king_affected_filter,tp,LOCATION_MZONE,0,1,nil)
+
+
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)},
 								  {b3,aux.Stringid(id,2)},
-								  {b4,aux.Stringid(id,3)})
+								  {b4,aux.Stringid(id,4)},
+									{b5,aux.Stringid(id,3)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
@@ -118,12 +136,14 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==3 then
 		s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
+	elseif op==4 then
+		s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---op=0, Special Summon 1 Level 4 or lower "Spider" from your Hand or GY
+--op=0, Special Summon 1 Level 4 or lower Beast from your Hand or GY
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.SelectMatchingCard(tp,s.spiderfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp)
+	local g=Duel.SelectMatchingCard(tp,s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
@@ -135,7 +155,7 @@ end
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.SelectMatchingCard(tp,s.monsterfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
 	if tc then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_LVRANK)
 		local lvl=Duel.AnnounceLevel(tp,1,4)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
@@ -155,14 +175,11 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
---op=2, reveal 1 "Mother Spider" in your hand, then set 1 "Earthquake" from outside the duel to your Spell/Trap Zone.
+--op=2,Add 1 "Primineral" monster or 1 "Baboon" monster from your Deck to your Hand.
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.SelectMatchingCard(tp, s.mother_spider_filter, tp, LOCATION_HAND, 0, 1, 1, nil):GetFirst()
-	if tc then
-		Duel.ConfirmCards(1-tp, tc)
-		local equake=Duel.CreateToken(tp, 82828051)
-		Duel.SSet(tp,equake)
-	end
+	local tc=Duel.SelectMatchingCard(tp, s.primineral_baboon_filter, tp, LOCATION_DECK, 0, 1, 1, nil):GetFirst()
+	Duel.SendtoHand(tc,nil,REASON_EFFECT)
+	Duel.ConfirmCards(1-tp,tc)
 	Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
@@ -171,4 +188,58 @@ function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 	local cearth=Duel.CreateToken(tp, 100000307)
 	Duel.SSet(tp,cearth)
 	Duel.RegisterFlagEffect(tp,id+4,0,0,0)
+end
+
+--Target 1 "Zeman the Ape King" you control, it gains an effect.
+function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+	local tarc=Duel.SelectMatchingCard(tp,s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+	tarc:RegisterFlagEffect(id,0,0,0)
+
+	local e3=Effect.CreateEffect(e:GetHandler())
+	e3:SetType(EFFECT_TYPE_QUICK_F)
+	e3:SetDescription(aux.Stringid(id, 5))
+	e3:SetCode(EVENT_CHAINING)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCountLimit(1)
+	e3:SetCondition(s.chcon1)
+	e3:SetOperation(s.chop1)
+	e3:SetReset(RESET_EVENT+RESETS_STANDARD)
+	tarc:RegisterEffect(e3)
+
+
+	Duel.RegisterFlagEffect(tp,id+5,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+end
+
+function s.chcon1(e,tp,eg,ep,ev,re,r,rp)
+	local rc=re:GetHandler()
+	return rp==1-tp and (re:IsActiveType(TYPE_MONSTER))
+end
+function s.chop1(e,tp,eg,ep,ev,re,r,rp)
+	local g=Group.CreateGroup()
+	Duel.ChangeTargetCard(ev,g)
+	Duel.ChangeChainOperation(ev,s.repop)
+end
+
+function s.desfilter(c)
+	return c:IsFacedown()
+end
+function s.monfilter_deck(c)
+	return c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
+end
+function s.repop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,0,id)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectMatchingCard(1-tp,s.desfilter,tp,0,LOCATION_ONFIELD,1,1,nil)
+	if #g>0 then
+		Duel.HintSelection(g)
+		Duel.Destroy(g,REASON_EFFECT)
+		Duel.BreakEffect()
+		if Duel.IsExistingMatchingCard(s.monfilter_deck,tp,LOCATION_DECK,0,1,nil) then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+			local g2=Duel.SelectMatchingCard(tp,s.monfilter_deck,tp,LOCATION_DECK,0,1,1,nil)
+			if #g2>0 then
+				Duel.SendtoGrave(g2, REASON_EFFECT)
+		end
+	end
+end
 end

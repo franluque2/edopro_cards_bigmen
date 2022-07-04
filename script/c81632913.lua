@@ -57,6 +57,7 @@ function s.dscale_summon_filter(c,e,tp)
 	return c:IsSetCard(0x579) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
@@ -101,8 +102,8 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
 	local dscales_in_deck=#Duel.GetMatchingGroup(s.dsacle_search_filter,tp,LOCATION_DECK,0,nil)
 	local ct=Duel.DiscardHand(tp,s.water_discard_filter,1,dscales_in_deck,REASON_EFFECT+REASON_DISCARD)
-	
-	if ct >0 then 
+
+	if ct >0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.GetMatchingGroup(s.dsacle_search_filter,tp,LOCATION_DECK,0,nil)
 				local sg=aux.SelectUnselectGroup(g,e,tp,ct,ct,nil,1,tp,HINTMSG_ATOHAND)

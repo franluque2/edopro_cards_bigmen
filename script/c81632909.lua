@@ -68,7 +68,7 @@ end
 
 function s.replace_number_seven(e,tp,eg,ep,ev,re,r,rp)
 local hg=Duel.GetMatchingGroup(s.number_seven_filter_extra,tp,LOCATION_EXTRA,0,nil)
-if #hg>0 then		   
+if #hg>0 then
 			for card in aux.Next(hg)do
 			Duel.SendtoDeck(card,tp,-2,REASON_EFFECT)
 			local newnoseven=Duel.CreateToken(tp,81632111)
@@ -87,7 +87,7 @@ end
 
 --. Once per turn, you can banish 1 Spell from your GY to target 1 Level 7 monster that's either banished or in your GY, then Special Summon it in Attack Position.
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
-	
+
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 then return end
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
@@ -101,7 +101,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
-
+	Duel.Hint(HINT_CARD,tp,id)
 		local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.spell_banish_filter,tp,LOCATION_GRAVE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.monster_banish_filter,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,1,nil,e,tp)

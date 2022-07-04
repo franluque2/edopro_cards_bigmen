@@ -63,17 +63,17 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
 			and Duel.IsExistingMatchingCard(s.normal_filter,tp,LOCATION_MZONE,0,1,nil)
 			and (Duel.IsExistingMatchingCard(s.zushin_add_filter,tp,LOCATION_DECK,0,1,nil) or
 			Duel.IsExistingMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil))
-	
+
 	--Boolean check for effect2:
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.zushin_filter,tp,LOCATION_MZONE,0,1,nil) 
-	
+			and Duel.IsExistingMatchingCard(s.zushin_filter,tp,LOCATION_MZONE,0,1,nil)
+
 	--Select Effect
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)})

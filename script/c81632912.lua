@@ -23,7 +23,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	Duel.RegisterEffect(e3,tp)
-	--During the End Phase, switch all "Mutant Mindmaster" you control to Defense Position. 
+	--During the End Phase, switch all "Mutant Mindmaster" you control to Defense Position.
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetTargetRange(LOCATION_MZONE,0)
@@ -48,14 +48,15 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFlagEffect(tp,id+1)>0 then return end
 	--condition
 	local b1=Duel.GetFlagEffect(tp,id+1)==0 and Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil,tp)
-	
+
 	return aux.CanActivateSkill(tp) and b1
 end
 
 
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	local c=e:GetHandler(e)
-	
+
 	local tc=Duel.SelectMatchingCard(tp,s.flipconfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
 	if tc then
 	   --Cannot be destroyed by card effects
@@ -76,7 +77,7 @@ end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(id,tp)~=0
 end
---At the end of the Battle Phase, you can tribute any amount of monsters you control that are owned by your opponent, draw that many cards. 
+--At the end of the Battle Phase, you can tribute any amount of monsters you control that are owned by your opponent, draw that many cards.
 
 
 function s.trifilter(c)
@@ -91,6 +92,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	local sg=Duel.SelectReleaseGroupCost(tp,s.trifilter,0,5,false,nil,nil,ft,tp)
 	if Duel.Release(sg,REASON_EFFECT)>0 then
@@ -104,6 +106,7 @@ function s.swapcon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.swapop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	local g=Duel.GetMatchingGroup(s.flipconfilter,tp,LOCATION_MZONE,0,nil)
 	Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)

@@ -99,17 +99,17 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.silent_pain_filter,tp,LOCATION_GRAVE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.torment_or_space_filter,tp,LOCATION_DECK,0,1,nil)
-	
+
 	--Boolean check for effect2:
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
 			and Duel.IsExistingMatchingCard(s.anchor_knight_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.violent_salvage_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
-	
+
 	--Boolean check for effect3:
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.fool_clown_filter,tp,LOCATION_MZONE,0,1,nil)
@@ -140,7 +140,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-	
+
 end
 
 --op=1, Once per turn, if you control "Anchor Knight" you can set 1 "Violent Salvage" from your Deck or GY to your Spell/Trap Zone.
@@ -160,8 +160,8 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_GRAVE,0,3,banish_max,nil)
 	local cg=Duel.Remove(g,POS_FACEUP,REASON_COST)
 	if cg>0 then
-		for i = 1,math.floor(cg/3),1 
-		do 
+		for i = 1,math.floor(cg/3),1
+		do
 			local exploder=Duel.CreateToken(tp,511002098)
 			Duel.SpecialSummon(exploder,0,tp,tp,false,false,POS_FACEUP)
 		end

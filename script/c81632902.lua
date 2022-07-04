@@ -54,6 +54,7 @@ return tableHydra_l1[ math.random( #tableHydra_l1 ) ]
 end
 
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	local g=Duel.CreateToken(tp,s.getcard())
 	Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 end

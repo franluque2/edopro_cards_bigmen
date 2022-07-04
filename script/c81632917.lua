@@ -104,6 +104,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	--Once per turn, if you control "Chaos Distill" you can add 1 "Tin Spell Circle", "Steel Lamp", "Bronze Scale", "Lead Compass",
 	-- "Silver Key" or "Mercury Hourglass" from your Deck to your Hand.
 	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
