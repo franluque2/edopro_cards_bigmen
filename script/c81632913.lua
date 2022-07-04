@@ -57,7 +57,6 @@ function s.dscale_summon_filter(c,e,tp)
 	return c:IsSetCard(0x579) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_CARD,tp,id)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
