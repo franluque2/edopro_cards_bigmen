@@ -22,6 +22,14 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCondition(s.flipcon)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
+
+		local e3=Effect.CreateEffect(e:GetHandler())
+		e3:SetType(EFFECT_TYPE_FIELD)
+		e3:SetCode(EFFECT_CHANGE_RACE)
+		e3:SetTargetRange(LOCATION_MZONE+LOCATION_GRAVE,0)
+		e3:SetTarget(aux.TargetBoolFunction(s.primineral_baboon_filter_type))
+		e3:SetValue(RACE_BEAST)
+		Duel.RegisterEffect(e3,tp)
 	end
 	e:SetLabel(1)
 end
@@ -63,6 +71,11 @@ end
 
 function s.high_level_filter(c)
 	return c:HasLevel() and c:IsLevelAbove(5) and c:IsFaceup()
+end
+
+function s.primineral_baboon_filter_type(c)
+	return c:IsFaceup() and (c:IsCode(46668237) or c:IsCode(65303664) or c:IsCode(55705473) or c:IsCode(49729312)
+	 		or c:IsCode(37021315))
 end
 
 function s.primineral_baboon_filter(c)
