@@ -73,7 +73,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
-	 	Duel.GetFlagEffect(tp, id+4)>0 then return end
+	 	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
