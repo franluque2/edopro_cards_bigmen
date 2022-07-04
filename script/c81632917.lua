@@ -77,27 +77,58 @@ end
 function s.summon_spell_filter(c)
 	return (c:IsCode(100000657) or c:IsCode(100000658) or c:IsCode(100000659) or c:IsCode(100000660) or c:IsCode(100000661) or c:IsCode(100000662)) and c:IsAbleToHand()
 end
-
+function s.cfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x501) and c:IsType(TYPE_MONSTER) and c:IsReleasable()
+end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+6)>0 then return end
+	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local cg= g:GetClassCount(Card.GetCode)==5
+
 	--Once per turn, if you control "Chaos Distill" you can add 1 "Tin Spell Circle", "Steel Lamp", "Bronze Scale", "Lead Compass",
 	-- "Silver Key" or "Mercury Hourglass" from your Deck to your Hand.
 
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.chaos_distill_filter,tp,LOCATION_SZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.summon_spell_filter,tp,LOCATION_DECK,0,1,nil)
-	return aux.CanActivateSkill(tp) and b1
+
+			-- Once per Duel, If you control 5 "Alchemy Beast" monsters with different names,
+			-- you can tribute all "Alchemy Beast" monsters you control,
+			-- Special Summon 1 "Helios - The Primordial Sun" from outside the duel.
+			-- The Special Summoned monster cannot be destroyed by battle or card effects until the end of your next turn."
+
+	local b2=Duel.GetFlagEffect(tp, id+6)==0
+		and cg
+	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	--Once per turn, if you control "Chaos Distill" you can add 1 "Tin Spell Circle", "Steel Lamp", "Bronze Scale", "Lead Compass",
 	-- "Silver Key" or "Mercury Hourglass" from your Deck to your Hand.
+	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local cg= g:GetClassCount(Card.GetCode)==5
 
-  local b1=Duel.GetFlagEffect(tp,id+2)==0
-		 and Duel.IsExistingMatchingCard(s.chaos_distill_filter,tp,LOCATION_SZONE,0,1,nil)
-		 and Duel.IsExistingMatchingCard(s.summon_spell_filter,tp,LOCATION_DECK,0,1,nil)
-	if b1==true then
+	--Once per turn, if you control "Chaos Distill" you can add 1 "Tin Spell Circle", "Steel Lamp", "Bronze Scale", "Lead Compass",
+	-- "Silver Key" or "Mercury Hourglass" from your Deck to your Hand.
+
+	local b1=Duel.GetFlagEffect(tp,id+2)==0
+			and Duel.IsExistingMatchingCard(s.chaos_distill_filter,tp,LOCATION_SZONE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.summon_spell_filter,tp,LOCATION_DECK,0,1,nil)
+
+			-- Once per Duel, If you control 5 "Alchemy Beast" monsters with different names,
+			-- you can tribute all "Alchemy Beast" monsters you control,
+			-- Special Summon 1 "Helios - The Primordial Sun" from outside the duel.
+			-- The Special Summoned monster cannot be destroyed by battle or card effects until the end of your next turn."
+
+	local b2=Duel.GetFlagEffect(tp, id+6)==0
+		and cg
+
+		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+									  {b2,aux.Stringid(id,5)})
+		op=op-1
+
+	if op==0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,s.summon_spell_filter,tp,LOCATION_DECK,0,1,1,tpid)
 		if #g>0 then
@@ -106,6 +137,13 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		end
 			--opt register
 			Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	elseif op==1 then
+		local sg=Duel.SelectReleaseGroupCost(tp,s.cfilter,5,5,false,nil,nil,ft,tp)
+	if Duel.Release(sg,REASON_COST)>0 then
+		local helios=Duel.CreateToken(tp, 54493213)
+		Duel.SpecialSummon(helios,0,tp,tp,false,false,POS_FACEUP)
+	end
+	Duel.RegisterFlagEffect(tp, id+6, 0, 0, 0)
 	end
 end
 
@@ -126,6 +164,8 @@ end
 
 function s.adcon(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.GetTurnPlayer()==tp and not (Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0) then return end
+	local g=Duel.GetMatchingGroup(s.fufilter,tp,LOCATION_REMOVED,0,nil)
+
 	local b1=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.helios_small_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
@@ -134,16 +174,22 @@ function s.adcon(e,tp,eg,ep,ev,re,r,rp)
 			and Duel.IsExistingMatchingCard(s.helios_mid_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 	local b3=Duel.GetFlagEffect(tp,id+5)==0
-			and Duel.GetFieldGroupCount(tp,LOCATION_REMOVED,0)>=10
+			and #g>=10
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
 	return Duel.GetTurnPlayer()==tp and (b1 or b2 or b3)
+end
+
+function s.fufilter(c)
+	return c:IsFaceup()
 end
 
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
 	--ask if you want to activate the skill or not
 	if not Duel.SelectYesNo(tp,aux.Stringid(id,4)) then return end
 
+	local g=Duel.GetMatchingGroup(s.fufilter,tp,LOCATION_REMOVED,0,nil)
+
 	local b1=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.helios_small_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
@@ -152,7 +198,7 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 			and Duel.IsExistingMatchingCard(s.helios_mid_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 	local b3=Duel.GetFlagEffect(tp,id+5)==0
-			and Duel.GetFieldGroupCount(tp,LOCATION_REMOVED,0)>=10
+			and #g>=10
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,1)},

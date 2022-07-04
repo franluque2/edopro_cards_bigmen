@@ -120,7 +120,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
 	local b2=Duel.GetFlagEffect(tp,id+2)==0 and Duel.IsExistingMatchingCard(s.hydra_r_filter,tp,LOCATION_GRAVE,0,1,nil,tp) and Duel.IsExistingMatchingCard(s.hydra_d_filter,tp,LOCATION_DECK,0,1,nil,tp)
-	
+
 	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 
@@ -166,7 +166,7 @@ end
 
 
 function s.cfilter(c,tp)
-	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsCode(81632008)
+	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsCode(81632008) and c:IsSummonType(SUMMON_TYPE_LINK)
 end
 
 function s.tokenfilter(c)
@@ -201,7 +201,7 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 			 local hydra4=Duel.CreateToken(tp,81632005)
 			 local hydra5=Duel.CreateToken(tp,81632006)
 			 local hydra6=Duel.CreateToken(tp,81632007)
-		
+
 		g=Group.CreateGroup()
 		g:AddCard(hydra1)
 		g:AddCard(hydra2)
