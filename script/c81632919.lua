@@ -53,7 +53,7 @@ function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.beastfilter(c,e,tp)
-	return c:IsRace(RACE_BEAST) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return c:IsRace(RACE_BEAST) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,true,false,POS_FACEUP)
 end
 
 function s.monsterfilter(c)
@@ -154,11 +154,11 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---op=0, Special Summon 1 Level 4 or lower Beast from your Hand or GY
+--op=0, Special Summon 1 Level 4 or lower Beast from your Hand or GY ignoring its summoning conditions
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp)
 	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummon(g,0,tp,tp,true,false,POS_FACEUP)
 	end
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
