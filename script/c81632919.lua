@@ -206,7 +206,7 @@ end
 --Target 1 "Zeman the Ape King" you control, it gains an effect.
 function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 	local tarc=Duel.SelectMatchingCard(tp,s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-	tarc:RegisterFlagEffect(id,0,0,0)
+	tarc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,0)
 
 	local e3=Effect.CreateEffect(e:GetHandler())
 	e3:SetType(EFFECT_TYPE_QUICK_F)
