@@ -137,7 +137,7 @@ end
 
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	--opd check
-	if Duel.GetFlagEffect(tp,id)==0 or Duel.GetFlagEffect(tp,id+3)>0 then return end
+	if Duel.GetFlagEffect(tp,id+3)>0 then return end
 	return eg:IsExists(s.cfilter,1,nil,tp) and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
