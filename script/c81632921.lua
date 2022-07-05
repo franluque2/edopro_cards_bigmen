@@ -58,9 +58,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.summon_zaloog(e,tp,eg,ep,ev,re,r,rp)
 	local zaloog=Duel.CreateToken(tp, 76922029)
-	local mustering=Duel.CreateToken(tp, 68191243)
 	Duel.SpecialSummon(zaloog,0,tp,tp,false,false,POS_FACEUP)
-	Duel.SSet(tp, mustering, tp, true)
 end
 
 
@@ -79,16 +77,19 @@ end
 function s.dscorpion_or_zaloog_filter(c)
 	return (c:IsSetCard(0x1a) or c:IsCode(76922029)) and c:IsType(TYPE_MONSTER) and c:IsFaceup()
 end
+
+function s.dscorpionmustering_filter(c)
+	return c:IsCode(68191243)
+end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+6)>0 then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+6)>0 and Duel.GetFlagEffect(tp, it+7) then return end
 	local g=Duel.GetMatchingGroup(s.dscorpion_filter,tp,LOCATION_MZONE,0,nil)
 	local cg= g:GetClassCount(Card.GetCode)==4
 --
 -- Once per turn, you can target a "Dark Scorpion" or "Don Zaloog" you control,
 -- this turn that target can attack your opponent directly this turn.
-
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.dscorpion_or_zaloog_filter,tp,LOCATION_MZONE,0,1,nil)
 
@@ -99,8 +100,15 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.IsExistingMatchingCard(s.zaloogfilter,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
+		--Once per turn, if you control "Don Zaloog",
+		--you can set 1 "Mustering of the Dark Scorpions" from your Deck or GY to your Spell/Trap Zone.
 
-	return aux.CanActivateSkill(tp) and (b1 or b2)
+		local b3=Duel.GetFlagEffect(tp, id+7)==0
+			and Duel.IsExistingMatchingCard(s.zaloogfilter,tp,LOCATION_MZONE,0,1,nil)
+			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+			and Duel.IsExistingMatchingCard(s.dscorpionmustering_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+
+	return aux.CanActivateSkill(tp) and (b1 or b2 or b3)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
@@ -115,15 +123,25 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			and Duel.IsExistingMatchingCard(s.dscorpion_or_zaloog_filter,tp,LOCATION_MZONE,0,1,nil)
 
 -- Once per turn, if you control Don Zaloog and 4 "Dark Scorpion" monsters with different names,
--- you can set 1 "Dark Scorpion Combination" from outside the duel to your Spell/Trap Zone. It can be activated this turn.
+-- you can set 1 "Dark Scorpion Combination" and "Dark Scorpion Retreat"
+ -- from outside the duel to your Spell/Trap Zone. It can be activated this turn.
 	local b2=Duel.GetFlagEffect(tp, id+6)==0
 		and cg
 		and Duel.IsExistingMatchingCard(s.zaloogfilter,tp,LOCATION_MZONE,0,1,nil)
-		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+		and Duel.GetLocationCount(tp,LOCATION_SZONE)>1
+
+		--Once per turn, if you control "Don Zaloog",
+		--you can set 1 "Mustering of the Dark Scorpions" from your Deck or GY to your Spell/Trap Zone.
+
+		local b3=Duel.GetFlagEffect(tp, id+7)==0
+			and Duel.IsExistingMatchingCard(s.zaloogfilter,tp,LOCATION_MZONE,0,1,nil)
+			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+			and Duel.IsExistingMatchingCard(s.dscorpionmustering_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
 
 
 		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
-									  {b2,aux.Stringid(id,1)})
+									  {b2,aux.Stringid(id,1)},
+											{b3,aux.Stringid(id, 2)})
 		op=op-1
 
 	if op==0 then
@@ -140,13 +158,21 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==1 then
 			local combination=Duel.CreateToken(tp, 20858318)
 			Duel.SSet(tp, combination, tp, true)
+			local retreat=Duel.CreateToken(tp, 111203902)
+			Duel.SSet(tp, retreat, tp, true)
 			local e2=Effect.CreateEffect(e:GetHandler())
 			e2:SetType(EFFECT_TYPE_SINGLE)
 			e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
 			e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 			combination:RegisterEffect(e2)
+			local e3=e2:Clone()
+			retreat:RegisterEffect(e3)
 			Duel.RegisterFlagEffect(tp, id+6, RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 0, 0)
+	elseif op==2 then
+		local tc=Duel.SelectMatchingCard(tp, s.dscorpionmustering_filter, tp, LOCATION_DECK+LOCATION_GRAVE, 0, 1, 1, nil):GetFirst()
+		Duel.SSet(tp, tc, tp, true)
+		Duel.RegisterFlagEffect(tp, id+7, RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 0, 0)
 	end
 end
 
