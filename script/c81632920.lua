@@ -80,14 +80,14 @@ end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
+	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
 	 	Duel.GetFlagEffect(tp, id+4)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3, b4
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
 
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
-			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
+	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
+	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.wiracocha_rasca_filter,tp,LOCATION_MZONE,0,1,nil)
@@ -99,7 +99,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
 
-	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4)
+	return aux.CanActivateSkill(tp) and (b1 or b3 or b4)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -108,8 +108,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
 
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
-			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
+	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
+	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.wiracocha_rasca_filter,tp,LOCATION_MZONE,0,1,nil)
@@ -122,7 +122,6 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
-								  {b2,aux.Stringid(id,1)},
 								  {b3,aux.Stringid(id,2)},
 								  {b4,aux.Stringid(id,4)})
 	op=op-1
@@ -130,10 +129,9 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	if op==0 then
 		s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==1 then
-		s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	elseif op==2 then
+		-- s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 		s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-	elseif op==3 then
+	elseif op==2 then
 		s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
@@ -160,42 +158,42 @@ end
 
 --op=1, Once per turn, You can target 1 monster you control, and declare a level from 1-11,
 -- until the end of this turn, that monster becomes that level, then you can make it become a dark tuner monster.
-function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.SelectMatchingCard(tp,s.monsterfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-	if tc then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_LVRANK)
-		local lvl=Duel.AnnounceLevel(tp,1,11)
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_CHANGE_LEVEL)
-		e1:SetValue(lvl)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e1)
-		if Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
-			local e3=e1:Clone()
-			e3:SetCode(EFFECT_ADD_TYPE)
-			e3:SetValue(TYPE_TUNER)
-			tc:RegisterEffect(e3)
-			local e4=e1:Clone()
-			e4:SetCode(EFFECT_ADD_SETCODE)
-			e4:SetValue(0x600)
-			tc:RegisterEffect(e4)
-			local e5=Effect.CreateEffect(e:GetHandler())
-			e5:SetType(EFFECT_TYPE_SINGLE)
-			e5:SetCode(EFFECT_CANNOT_BE_SYNCHRO_MATERIAL)
-			e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-			e5:SetValue(s.synlimit)
-			e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			tc:RegisterEffect(e5)
-		end
-	end
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-end
+-- function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
+-- 	local tc=Duel.SelectMatchingCard(tp,s.monsterfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+-- 	if tc then
+-- 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_LVRANK)
+-- 		local lvl=Duel.AnnounceLevel(tp,1,11)
+-- 		local e1=Effect.CreateEffect(e:GetHandler())
+-- 		e1:SetType(EFFECT_TYPE_SINGLE)
+-- 		e1:SetCode(EFFECT_CHANGE_LEVEL)
+-- 		e1:SetValue(lvl)
+-- 		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
+-- 		tc:RegisterEffect(e1)
+-- 		if Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
+-- 			local e3=e1:Clone()
+-- 			e3:SetCode(EFFECT_ADD_TYPE)
+-- 			e3:SetValue(TYPE_TUNER)
+-- 			tc:RegisterEffect(e3)
+-- 			local e4=e1:Clone()
+-- 			e4:SetCode(EFFECT_ADD_SETCODE)
+-- 			e4:SetValue(0x600)
+-- 			tc:RegisterEffect(e4)
+-- 			local e5=Effect.CreateEffect(e:GetHandler())
+-- 			e5:SetType(EFFECT_TYPE_SINGLE)
+-- 			e5:SetCode(EFFECT_CANNOT_BE_SYNCHRO_MATERIAL)
+-- 			e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+-- 			e5:SetValue(s.synlimit)
+-- 			e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+-- 			tc:RegisterEffect(e5)
+-- 		end
+-- 	end
+-- 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+-- end
 
-function s.synlimit(e,c)
-	if not c then return false end
-	return not c:IsSetCard(0x601)
-end
+-- function s.synlimit(e,c)
+-- 	if not c then return false end
+-- 	return not c:IsSetCard(0x601)
+-- end
 
 function ripairs(t)
     -- Try not to use break when using this function;
@@ -284,7 +282,7 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 
 			local tc=g:GetFirst()
 			while tc do
-				Duel.SpecialSummonStep(tc,0,1-tp,1-tp,false,false,POS_FACEUP)
+				Duel.SpecialSummonStep(tc,0,1-tp,1-tp,true,true,POS_FACEUP)
 				tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 				tc=g:GetNext()
 				count=count+1

@@ -1,4 +1,4 @@
---Swing into Action!
+--Will of the Original Dimension
 local s,id=GetID()
 
 function c81632901.initial_effect(c)
@@ -47,7 +47,7 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
-	if Duel.IsDuelType(0x2000) then 
+	if Duel.IsDuelType(0x2000) then
 	--link zones
 		local e6=Effect.CreateEffect(e:GetHandler())
 		e6:SetType(EFFECT_TYPE_FIELD)
