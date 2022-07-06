@@ -323,7 +323,7 @@ function s.desfilter(c)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local g=Duel.GetMatchingGroup(s.desfilter,tp,LOCATION_ONFIELD,nil)
+	local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_ONFIELD,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
@@ -338,7 +338,7 @@ end
 
 function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local g=Duel.GetMatchingGroup(s.desfilter2,tp,LOCATION_ONFIELD,nil)
+	local g=Duel.GetMatchingGroup(s.desfilter2,tp,0,LOCATION_ONFIELD,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function s.desop2(e,tp,eg,ep,ev,re,r,rp)
