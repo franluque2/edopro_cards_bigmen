@@ -84,7 +84,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+6)>0 and Duel.GetFlagEffect(tp, it+7) then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+6)>0 and Duel.GetFlagEffect(tp, id+7) then return end
 	local g=Duel.GetMatchingGroup(s.dscorpion_filter,tp,LOCATION_MZONE,0,nil)
 	local cg= g:GetClassCount(Card.GetCode)==4
 --
