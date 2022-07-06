@@ -298,7 +298,7 @@ function s.give_gate_guardian_effects(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.actcon2(e)
+function s.actcon2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.gate_piece_filter,tp,LOCATION_GRAVE,0,nil,e,tp)
 	local cg=g:GetClassCount(Card.GetCode)==3
 	return Duel.GetAttacker()==e:GetHandler() and cg and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
