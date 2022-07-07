@@ -192,7 +192,6 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			local g=aux.SelectUnselectGroup(tg,e,tp,1,3,aux.dncheck,1,tp,HINTMSG_TODECK)
 			Duel.SendtoDeck(g, tp, SEQ_DECKTOP, REASON_EFFECT)
 			Duel.SortDecktop(tp,tp,#g)
-			Duel.ConfirmCards(1-tp, g)
 			Duel.RegisterFlagEffect(tp, id+3, RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 0, 0)
 	end
 end
