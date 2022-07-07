@@ -36,11 +36,59 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetTarget(aux.TargetBoolFunction(s.maidenfilter,tp))
 		e3:SetValue(1)
 		Duel.RegisterEffect(e3,tp)
-		--At the start of the duel, Special Summon 1 "Maiden in Love" from outside the duel.
+		--During the End Phase, if you took Battle Damage involving a "Maiden in Love" you control,
+		-- gain Life Points equal to the amount of damage you took
+
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetCategory(CATEGORY_RECOVER)
+		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e2:SetCode(EVENT_PHASE+PHASE_END)
+		e2:SetCountLimit(1)
+		e2:SetOperation(s.recop)
+		Duel.RegisterEffect(e2,tp)
+
+		aux.GlobalCheck(s,function()
+			s[0]=0
+			s[1]=0
+			local ge1=Effect.CreateEffect(e:GetHandler())
+			ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+			ge1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
+			ge1:SetCode(EVENT_DAMAGE)
+			ge1:SetCondition(s.checkcon)
+			ge1:SetOperation(s.checkop)
+			Duel.RegisterEffect(ge1,0)
+			local ge2=Effect.CreateEffect(e:GetHandler())
+			ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+			ge2:SetCode(EVENT_ADJUST)
+			ge2:SetCountLimit(1)
+			ge2:SetOperation(s.clear)
+			Duel.RegisterEffect(ge2,0)
+		end)
 
 end
 e:SetLabel(1)
 	end
+
+	function s.checkcon(e,tp,eg,ep,ev,re,r,rp)
+		return (Duel.GetAttacker():IsControler(tp) and Duel.GetAttacker():IsCode(100000139))
+			or (Duel.GetAttackTarget() and Duel.GetAttackTarget():IsControler(tp) and Duel.GetAttackTarget():IsCode(100000139))
+	end
+
+	function s.checkop(e,tp,eg,ep,ev,re,r,rp)
+		s[ep]=s[ep]+ev
+	end
+	function s.clear(e,tp,eg,ep,ev,re,r,rp)
+		s[0]=0
+		s[1]=0
+	end
+
+	function s.recop(e,tp,eg,ep,ev,re,r,rp)
+		if(s[tp]>0) then
+		Duel.Hint(HINT_CARD,tp,id)
+		Duel.Recover(tp,s[tp],REASON_EFFECT)
+	end
+	end
+
 
 function s.maidenfilter(c,tp)
 	return c:IsCode(100000139) and c:IsFaceup() and Duel.IsExistingMatchingCard(s.defmaidenfilter, tp, LOCATION_SZONE, 0, 1, nil)
