@@ -224,7 +224,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	elseif op==2 then
 		local mrevoltuion=Duel.CreateToken(tp, 511009189)
-		Duel.SSet(tp, mrevolution)
+		Duel.SSet(tp, mrevoltuion)
 		-- Duel.ConfirmCards(tp, mrevoltuion)
 		Duel.RegisterFlagEffect(tp,id+4,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	end
