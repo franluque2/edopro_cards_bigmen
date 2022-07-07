@@ -43,6 +43,7 @@ end
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,not_silent_pain_filter,tp,LOCATION_GRAVE,0,1,1,nil)
 	if #g then
+		Duel.Hint(HINT_CARD,tp,id)
 		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	end
 end
