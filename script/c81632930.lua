@@ -57,7 +57,7 @@ function s.giantorc_filter(c)
 end
 
 function s.goblinfufilter(c,tp)
-	return c:IsSetCard(0xac) and c:IsFaceup()
+	return c:IsSetCard(0xac) and c:IsFaceup() and c:IsLevelAbove(4)
 	 and not c:IsType(TYPE_TOKEN)
 end
 
@@ -180,6 +180,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 		Duel.SpecialSummon(gobtoken1,0,tp,tp,false,false,POS_FACEUP)
 
+		gobtoken1:CopyEffect(gob:GetCode(),RESET_EVENT+RESETS_STANDARD,1)
+
 		gobtoken1:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,2)
 
 		local e1=Effect.CreateEffect(e:GetHandler())
@@ -236,6 +238,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 
 	 		Duel.SpecialSummon(gobtoken2,0,tp,tp,false,false,POS_FACEUP)
+
+			gobtoken2:CopyEffect(gob:GetCode(),RESET_EVENT+RESETS_STANDARD,1)
 
 			gobtoken2:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,2)
 
