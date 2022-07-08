@@ -92,7 +92,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+3)>0 and Duel.GetFlagEffect(tp, id+4) then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+3)>0 and Duel.GetFlagEffect(tp, id+4)>0 then return end
 
 	--Once per turn, you can send 1 "Genex Controller" from your Hand or Deck to the GY, then add 1 "Genex" monster from your Deck to your Hand.
 
