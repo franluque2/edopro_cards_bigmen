@@ -78,9 +78,9 @@ function s.chk(c,sg,g,tpe,...)
 	return res
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g1=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_MZONE,0,nil)
-	local g2=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_ONFIELD,0,nil,TYPE_SPELL+TYPE_CONTINUOUS)
-	local g3=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_ONFIELD,0,nil,TYPE_TRAP+TYPE_CONTINUOUS)
+	local g1=Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+	local g2=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil,TYPE_SPELL+TYPE_CONTINUOUS)
+	local g3=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil,TYPE_TRAP+TYPE_CONTINUOUS)
 	local g=g1:Clone()
 	g:Merge(g2)
 	g:Merge(g3)

@@ -23,44 +23,44 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
 
-		local e3=Effect.CreateEffect(e:GetHandler())
-		e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
-		e3:SetCountLimit(1)
-		e3:SetCondition(s.spcon)
-		e3:SetOperation(s.spop)
-		Duel.RegisterEffect(e3,tp)
+		-- local e3=Effect.CreateEffect(e:GetHandler())
+		-- e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		-- e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
+		-- e3:SetCountLimit(1)
+		-- e3:SetCondition(s.spcon)
+		-- e3:SetOperation(s.spop)
+		-- Duel.RegisterEffect(e3,tp)
 	end
 	e:SetLabel(1)
 end
 
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFlagEffect(id,tp)~=0 and Duel.IsTurnPlayer(1-tp)
-end
-
---Once per turn, at the start of your Opponent's Battle Phase, you can banish 1 monster you control. Return that monster to your field during the End Phase.
-
-
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
-		Duel.Hint(HINT_CARD,tp,id)
-		 local tc=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, LOCATION_MZONE, 0, 1, 1,false,nil):GetFirst()
-			if tc and Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-			e1:SetCode(EVENT_PHASE+PHASE_END)
-			e1:SetReset(RESET_PHASE+PHASE_END)
-			e1:SetLabelObject(tc)
-			e1:SetCountLimit(1)
-			e1:SetOperation(s.retop)
-			Duel.RegisterEffect(e1,tp)
-		end
-	end
-end
-
-function s.retop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ReturnToField(e:GetLabelObject())
-end
+-- function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+-- 	return Duel.GetFlagEffect(id,tp)~=0 and Duel.IsTurnPlayer(1-tp)
+-- end
+--
+-- --Once per turn, at the start of your Opponent's Battle Phase, you can banish 1 monster you control. Return that monster to your field during the End Phase.
+--
+--
+-- function s.spop(e,tp,eg,ep,ev,re,r,rp)
+-- 	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
+-- 		Duel.Hint(HINT_CARD,tp,id)
+-- 		 local tc=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, LOCATION_MZONE, 0, 1, 1,false,nil):GetFirst()
+-- 			if tc and Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
+-- 			local e1=Effect.CreateEffect(e:GetHandler())
+-- 			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+-- 			e1:SetCode(EVENT_PHASE+PHASE_END)
+-- 			e1:SetReset(RESET_PHASE+PHASE_END)
+-- 			e1:SetLabelObject(tc)
+-- 			e1:SetCountLimit(1)
+-- 			e1:SetOperation(s.retop)
+-- 			Duel.RegisterEffect(e1,tp)
+-- 		end
+-- 	end
+-- end
+--
+-- function s.retop(e,tp,eg,ep,ev,re,r,rp)
+-- 	Duel.ReturnToField(e:GetLabelObject())
+-- end
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
