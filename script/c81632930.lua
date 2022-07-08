@@ -177,6 +177,11 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		e8:SetValue(TYPE_EFFECT)
 		gobtoken1:RegisterEffect(e8)
 
+		local e9=e5:Clone()
+		e9:SetCode(EFFECT_CHANGE_CODE)
+		e9:SetValue(gob:GetOriginalCode())
+		gobtoken1:RegisterEffect(e9)
+
 
 		Duel.SpecialSummon(gobtoken1,0,tp,tp,false,false,POS_FACEUP)
 
@@ -235,6 +240,12 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	 		e16:SetCode(EFFECT_ADD_TYPE)
 	 		e16:SetValue(TYPE_EFFECT)
 	 		gobtoken2:RegisterEffect(e16)
+
+			local e17=e5:Clone()
+			e17:SetCode(EFFECT_CHANGE_CODE)
+			e17:SetValue(gob:GetOriginalCode())
+			gobtoken2:RegisterEffect(e17)
+
 
 
 	 		Duel.SpecialSummon(gobtoken2,0,tp,tp,false,false,POS_FACEUP)
