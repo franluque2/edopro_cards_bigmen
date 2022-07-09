@@ -11,19 +11,31 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--Pos Change
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_SET_POSITION)
-	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetTarget(s.target)
-	e2:SetValue(POS_FACEUP_DEFENSE+NO_FLIP_EFFECT)
+	e2:SetCategory(CATEGORY_POSITION)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetCountLimit(1)
+	e2:SetRange(LOCATION_FZONE)
+	e2:SetCondition(s.condition)
+	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 
 end
 s.listed_names={450000110}
-function s.target(e,c)
-	return c:IsFacedown()
+
+function s.monsterfilter(c)
+	return c:IsCanChangePosition() and not c:IsPosition(POS_FACEUP_DEFENSE)
+end
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.monsterfilter, tp, 0, LOCATION_MZONE, 1, nil)
+end
+
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local g=Duel.GetFieldGroup(tp,0,LOCATION_MZONE)
+	if #g>0 then
+		Duel.ChangePosition(g,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,true)
+	end
 end
 
 function s.thfilter(c)
