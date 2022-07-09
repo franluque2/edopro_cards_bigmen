@@ -54,6 +54,10 @@ function s.high_level_filter(c)
 	return c:HasLevel() and c:IsLevelAbove(5) and c:IsFaceup()
 end
 
+function s.archfiendfilter(c)
+	return c:IsCode(99177923)
+end
+
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
@@ -63,7 +67,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
-			and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>0
+			and Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)>3
 
 	local b4=Duel.GetFlagEffect(ep, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
@@ -143,6 +147,18 @@ end
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	local hand=Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_HAND, 0, nil)
 	Duel.SendtoDeck(hand, tp, -2, REASON_EFFECT)
+
+	if Duel.IsExistingMatchingCard(s.archfiendfilter, tp, LOCATION_DECK, 0, 1, nil) then
+		if Duel.SelectYesNo(tp, aux.Stringid(id, 4)) then
+			local archfiend=Duel.SelectMatchingCard(tp,s.archfiendfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
+			if archfiend then
+				Duel.ShuffleDeck(tp)
+				Duel.MoveSequence(archfiend,0)
+				Duel.ConfirmDecktop(tp,1)
+				Duel.Draw(tp, 1, REASON_EFFECT)
+			end
+		end
+	end
 	Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 end
 
