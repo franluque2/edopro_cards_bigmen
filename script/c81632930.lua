@@ -139,7 +139,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	elseif op==1 then
 		local gob=Duel.SelectMatchingCard(tp,s.goblinfufilter,tp,LOCATION_MZONE,0,1,1,nil,tp):GetFirst()
-		local gobtoken1=Duel.CreateToken(tp,63442605)
+		local gobtoken1=Duel.CreateToken(tp,81632128)
 
 
 
@@ -183,7 +183,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		gobtoken1:RegisterEffect(e9)
 
 
-		Duel.SpecialSummon(gobtoken1,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummon(gobtoken1,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 
 		gobtoken1:CopyEffect(gob:GetCode(),RESET_EVENT+RESETS_STANDARD,1)
 
@@ -201,9 +201,19 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetLabelObject(gobtoken1)
 		Duel.RegisterEffect(e1,tp)
 
+		local e18=Effect.CreateEffect(e:GetHandler())
+		e18:SetType(EFFECT_TYPE_FIELD)
+		e18:SetDescription(aux.Stringid(4016,10))
+		e18:SetCode(EFFECT_CHANGE_DAMAGE)
+		e18:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+		e18:SetTargetRange(0,1)
+		e18:SetValue(s.val)
+		e18:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e18,tp)
+
 		if Duel.IsExistingMatchingCard(s.goblinfufilter,tp,LOCATION_MZONE,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 		 and Duel.SelectYesNo(tp, aux.Stringid(id, 6)) then
-			 local gobtoken2=Duel.CreateToken(tp,63442605)
+			 local gobtoken2=Duel.CreateToken(tp,81632128)
 
 
 
@@ -248,7 +258,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 
 
-	 		Duel.SpecialSummon(gobtoken2,0,tp,tp,false,false,POS_FACEUP)
+	 		Duel.SpecialSummon(gobtoken2,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 
 			gobtoken2:CopyEffect(gob:GetCode(),RESET_EVENT+RESETS_STANDARD,1)
 
@@ -324,4 +334,10 @@ function s.eqcon(e)
 end
 function s.unval(e,te)
 	return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
+end
+
+function s.val(e,re,dam,r,rp,rc)
+	if (r&REASON_BATTLE)~=0 then
+		return math.floor(dam/2)
+	else return dam end
 end
