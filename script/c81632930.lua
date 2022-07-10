@@ -201,15 +201,6 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetLabelObject(gobtoken1)
 		Duel.RegisterEffect(e1,tp)
 
-		local e18=Effect.CreateEffect(e:GetHandler())
-		e18:SetType(EFFECT_TYPE_FIELD)
-		e18:SetDescription(aux.Stringid(4016,10))
-		e18:SetCode(EFFECT_CHANGE_DAMAGE)
-		e18:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-		e18:SetTargetRange(0,1)
-		e18:SetValue(s.val)
-		e18:SetReset(RESET_PHASE+PHASE_END)
-		Duel.RegisterEffect(e18,tp)
 
 		if Duel.IsExistingMatchingCard(s.goblinfufilter,tp,LOCATION_MZONE,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 		 and Duel.SelectYesNo(tp, aux.Stringid(id, 6)) then
@@ -308,6 +299,16 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 					e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 					tc:RegisterEffect(e1)
 				end
+				local e18=Effect.CreateEffect(e:GetHandler())
+				e18:SetType(EFFECT_TYPE_FIELD)
+				e18:SetDescription(aux.Stringid(4016,10))
+				e18:SetCode(EFFECT_CHANGE_DAMAGE)
+				e18:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+				e18:SetTargetRange(0,1)
+				e18:SetValue(s.val)
+				e18:SetReset(RESET_PHASE+PHASE_END)
+				Duel.RegisterEffect(e18,tp)
+
 			end
 		end
 
