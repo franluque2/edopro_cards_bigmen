@@ -8,17 +8,18 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
 end
 s.listed_names={810000058, 450000110}
 function s.tgfilter(c)
-	return c:IsCode(810000058) and (c:IsAbleToHand() or c:IsSSetable())
+	return c:IsCode(810000058) and (c:IsAbleToHand() or c:IsSSetable()) and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP))
 end
 
 function s.tgfilter2(c)
-	return aux.IsCodeListed(c, 450000110) and (c:IsAbleToHand() or c:IsSSetable()) and not c:IsCode(81000061)
+	return aux.IsCodeListed(c, 450000110) and (c:IsAbleToHand() or c:IsSSetable()) and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP)) and not c:IsCode(81000061)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:GetControler()==tp and s.tgfilter(chkc) end
