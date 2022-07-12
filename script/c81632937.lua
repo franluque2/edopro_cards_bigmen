@@ -58,6 +58,7 @@ end
 
 
 
+
 function s.piecefilter(c)
 return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562)) and c:IsAbleToDeck()
 end
@@ -114,7 +115,7 @@ local b4=Duel.GetFlagEffect(ep, id+4)==0
 	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
 
 	local b5=Duel.GetFlagEffect(ep, id+5)==0
-		and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
+		and Duel.IsExistingMatchingCard(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
 
 local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
 								{b3,aux.Stringid(id,1)},
@@ -157,21 +158,21 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,sg)
 		Duel.ShuffleDeck(tp)
 
-		local cardnumber=math.random( #g )
-		local tc=g:GetFirst()
+		local cardnumber=math.random( #sg )
+		local tc=sg:GetFirst()
 		while tc do
 			if cardnumber==0 then
 				Duel.SSet(tp,tc,tp,false)
 			end
 			cardnumber=cardnumber-1
-			tc=g:GetNext()
+			tc=sg:GetNext()
 		end
 		local core=Duel.SelectMatchingCard(tp, s.core_filter_field, tp, LOCATION_ONFIELD, 0, 1, 1,false,nil)
 		if core then
 			Duel.Destroy(core, REASON_EFFECT)
 		end
 	end
-Duel.RegisterFlagEffect(tp,id+3,0,0,0)
+Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
 --op=3 Special Summon 1 "Wise Core" from your GY, but banish it when it leaves the field.
@@ -189,7 +190,7 @@ function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(LOCATION_REMOVED)
 		sc:RegisterEffect(e1,true)
 	end
-Duel.RegisterFlagEffect(tp,id+4,0,0,0)
+Duel.RegisterFlagEffect(tp,id+4,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
 --op=4 Target a monster your opponent controls that was special summoned from the extra deck it is treated as a synchro while face-up on the field
@@ -204,5 +205,3 @@ function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(TYPE_SYNCHRO)
 		g:RegisterEffect(e1)
 	end
-Duel.RegisterFlagEffect(tp,id+5,0,0,0)
-end
