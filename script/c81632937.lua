@@ -140,6 +140,7 @@ end
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 local tc=Duel.SelectMatchingCard(tp,s.piecefilter,tp,LOCATION_HAND,0,1,99,nil)
 	if tc then
+		Duel.ConfirmCards(1-tp, tc)
 		local tcn=Duel.SendtoDeck(tc, tp, SEQ_DECKBOTTOM, REASON_EFFECT)
 		if tcn>0 then
 			Duel.Draw(tp, tcn, REASON_EFFECT)
