@@ -1,32 +1,32 @@
 --Meklord Carrier - "Domingo"
 local s,id=GetID()
 function s.initial_effect(c)
---Activate Skill
-aux.AddSkillProcedure(c,2,false,nil,nil)
-local e1=Effect.CreateEffect(c)
-e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-e1:SetCode(EVENT_STARTUP)
-e1:SetCountLimit(1)
-e1:SetRange(0x5f)
-e1:SetLabel(0)
-e1:SetOperation(s.op)
-c:RegisterEffect(e1)
-aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
+	--Activate Skill
+	aux.AddSkillProcedure(c,2,false,nil,nil)
+	local e1=Effect.CreateEffect(c)
+	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_STARTUP)
+	e1:SetCountLimit(1)
+	e1:SetRange(0x5f)
+	e1:SetLabel(0)
+	e1:SetOperation(s.op)
+	c:RegisterEffect(e1)
+	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
-if e:GetLabel()==0 then
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_PREDRAW)
-	e1:SetCondition(s.flipcon)
-	e1:SetOperation(s.flipop)
-	Duel.RegisterEffect(e1,tp)
-end
-e:SetLabel(1)
+	if e:GetLabel()==0 then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e1:SetCode(EVENT_PREDRAW)
+		e1:SetCondition(s.flipcon)
+		e1:SetOperation(s.flipop)
+		Duel.RegisterEffect(e1,tp)
+	end
+	e:SetLabel(1)
 end
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
+	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -48,17 +48,17 @@ function s.core_filter_summon(c,e,tp)
 end
 
 function s.summon_core(e,tp,eg,ep,ev,re,r,rp)
-local core=Duel.SelectMatchingCard(tp,s.core_filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil)
-if #core>0 then
-	Duel.SpecialSummon(core,0,tp,tp,false,false,POS_FACEUP)
-end
+	local core=Duel.SelectMatchingCard(tp,s.core_filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil)
+	if #core>0 then
+		Duel.SpecialSummon(core,0,tp,tp,false,false,POS_FACEUP)
+	end
 end
 
 
 
 function s.piecefilter(c)
-return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or
- c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
+	return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or
+	c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
 end
 
 function s.trapfilter(c)
@@ -70,80 +70,80 @@ function s.extramfilter(c)
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
---OPT check
-if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
+	--OPT check
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
 	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
---Boolean checks for the activation condition: b1, b2, b3
---Reveal any number of "Attack", "Carrier", "Guard", "Top", or "∞" monsters in your Hand,
--- place them on the bottom of the deck, then draw that many cards.
-local b2=Duel.GetFlagEffect(ep,id+2)==0
-		and Duel.IsExistingMatchingCard(s.piecefilter,tp,LOCATION_HAND,0,1,nil)
-		and Duel.IsPlayerCanDraw(tp,1)
+	--Boolean checks for the activation condition: b1, b2, b3
+	--Reveal any number of "Attack", "Carrier", "Guard", "Top", or "∞" monsters in your Hand,
+	-- place them on the bottom of the deck, then draw that many cards.
+	local b2=Duel.GetFlagEffect(ep,id+2)==0
+	and Duel.IsExistingMatchingCard(s.piecefilter,tp,LOCATION_HAND,0,1,nil)
+	and Duel.IsPlayerCanDraw(tp,1)
 
-local b3=Duel.GetFlagEffect(ep,id+3)==0
-		and Duel.IsExistingMatchingCard(s.core_filter_field,tp,LOCATION_ONFIELD,0,1,nil)
-		and Duel.IsExistingMatchingCard(s.trapfilter,tp,LOCATION_DECK,0,3,nil)
-		and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
+	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	and Duel.IsExistingMatchingCard(s.core_filter_field,tp,LOCATION_ONFIELD,0,1,nil)
+	and Duel.IsExistingMatchingCard(s.trapfilter,tp,LOCATION_DECK,0,3,nil)
+	and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
 
-local b4=Duel.GetFlagEffect(ep, id+4)==0
-	and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
-	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
-
-local b5=Duel.GetFlagEffect(ep, id+5)==0
-	and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
-
-return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5)
-end
-function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
-Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-Duel.Hint(HINT_CARD,tp,id)
---Boolean check for effect 1:
-
-local b2=Duel.GetFlagEffect(ep,id+2)==0
-		and Duel.IsExistingMatchingCard(s.piecefilter,tp,LOCATION_HAND,0,1,nil)
-		and Duel.IsPlayerCanDraw(tp,1)
-
-local b3=Duel.GetFlagEffect(ep,id+3)==0
-		and Duel.IsExistingMatchingCard(s.core_filter_field,tp,LOCATION_ONFIELD,0,1,nil)
-		and Duel.IsExistingMatchingCard(s.trapfilter,tp,LOCATION_DECK,0,3,nil)
-		and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
-
-local b4=Duel.GetFlagEffect(ep, id+4)==0
+	local b4=Duel.GetFlagEffect(ep, id+4)==0
 	and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
 	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
 
 	local b5=Duel.GetFlagEffect(ep, id+5)==0
-		and Duel.IsExistingMatchingCard(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
+	and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
 
-local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
-								{b3,aux.Stringid(id,1)},
-								{b4,aux.Stringid(id,2)},
-								{b5,aux.Stringid(id,3)})
-
-if op==1 then
-	s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-elseif op==2 then
-	s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-elseif op==3 then
-	s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
-elseif op==4 then
-	s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+	return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5)
 end
+function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
+	Duel.Hint(HINT_CARD,tp,id)
+	--Boolean check for effect 1:
+
+	local b2=Duel.GetFlagEffect(ep,id+2)==0
+	and Duel.IsExistingMatchingCard(s.piecefilter,tp,LOCATION_HAND,0,1,nil)
+	and Duel.IsPlayerCanDraw(tp,1)
+
+	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	and Duel.IsExistingMatchingCard(s.core_filter_field,tp,LOCATION_ONFIELD,0,1,nil)
+	and Duel.IsExistingMatchingCard(s.trapfilter,tp,LOCATION_DECK,0,3,nil)
+	and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
+
+	local b4=Duel.GetFlagEffect(ep, id+4)==0
+	and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
+	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
+
+	local b5=Duel.GetFlagEffect(ep, id+5)==0
+	and Duel.IsExistingMatchingCard(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
+
+	local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
+	{b3,aux.Stringid(id,1)},
+	{b4,aux.Stringid(id,2)},
+	{b5,aux.Stringid(id,3)})
+
+	if op==1 then
+		s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
+	elseif op==2 then
+		s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
+	elseif op==3 then
+		s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
+	elseif op==4 then
+		s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+	end
 end
 
 
 --op=1, Reveal any number of "Attack", "Carrier", "Guard", "Top", or "∞" monsters in your Hand,
 -- place them on the bottom of the deck, then draw that many cards.
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-local tc=Duel.SelectMatchingCard(tp,s.piecefilter,tp,LOCATION_HAND,0,1,99,nil)
+	local tc=Duel.SelectMatchingCard(tp,s.piecefilter,tp,LOCATION_HAND,0,1,99,nil)
 	if tc then
 		Duel.ConfirmCards(1-tp, tc)
 		local tcn=Duel.SendtoDeck(tc, tp, SEQ_DECKBOTTOM, REASON_EFFECT)
 		if tcn>0 then
 			Duel.Draw(tp, tcn, REASON_EFFECT)
 		end
-		end
-Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	end
+	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
 
@@ -163,54 +163,55 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,cg)
 		Duel.ShuffleDeck(tp)
 
-	if #cg>=3 then
+		if #cg>=3 then
 
-		local cardnumber=math.random( #cg )
-		local tc=cg:GetFirst()
-		while tc do
-			if cardnumber==0 then
-				Duel.SSet(tp,tc,tp,false)
+			local cardnumber=math.random( #cg )
+			local tc=cg:GetFirst()
+			while tc do
+				if cardnumber==0 then
+					Duel.SSet(tp,tc,tp,false)
+				end
+				cardnumber=cardnumber-1
+				tc=cg:GetNext()
 			end
-			cardnumber=cardnumber-1
-			tc=cg:GetNext()
+			local core=Duel.SelectMatchingCard(tp, s.core_filter_field, tp, LOCATION_ONFIELD, 0, 1, 1,false,nil)
+			if core then
+				Duel.Destroy(core, REASON_EFFECT)
+			end
 		end
-		local core=Duel.SelectMatchingCard(tp, s.core_filter_field, tp, LOCATION_ONFIELD, 0, 1, 1,false,nil)
-		if core then
-			Duel.Destroy(core, REASON_EFFECT)
 		end
+		Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	end
-Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-end
 
---op=3 Special Summon 1 "Wise Core" from your GY, but banish it when it leaves the field.
-function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.core_filter_summon),tp,LOCATION_GRAVE,0,nil,e,tp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sc=g:Select(tp,1,1,nil):GetFirst()
-	if Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetDescription(3300)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
-		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
-		e1:SetValue(LOCATION_REMOVED)
-		sc:RegisterEffect(e1,true)
+	--op=3 Special Summon 1 "Wise Core" from your GY, but banish it when it leaves the field.
+	function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
+		local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.core_filter_summon),tp,LOCATION_GRAVE,0,nil,e,tp)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local sc=g:Select(tp,1,1,nil):GetFirst()
+		if Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP)~=0 then
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetDescription(3300)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
+			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
+			e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
+			e1:SetValue(LOCATION_REMOVED)
+			sc:RegisterEffect(e1,true)
+		end
+		Duel.RegisterFlagEffect(tp,id+4,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	end
-Duel.RegisterFlagEffect(tp,id+4,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-end
 
---op=4 Target a monster your opponent controls that was special summoned from the extra deck it is treated as a synchro while face-up on the field
-function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.SelectMatchingCard(tp, s.extramfilter, tp, 0, LOCATION_MZONE, 1, 1,false,nil):GetFirst()
-	if g then
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetCode(EFFECT_ADD_TYPE)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		e1:SetValue(TYPE_SYNCHRO)
-		g:RegisterEffect(e1)
+	--op=4 Target a monster your opponent controls that was special summoned from the extra deck it is treated as a synchro while face-up on the field
+	function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+		local g=Duel.SelectMatchingCard(tp, s.extramfilter, tp, 0, LOCATION_MZONE, 1, 1,false,nil):GetFirst()
+		if g then
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetCode(EFFECT_ADD_TYPE)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+			e1:SetValue(TYPE_SYNCHRO)
+			g:RegisterEffect(e1)
+		end
+		Duel.RegisterFlagEffect(tp,id+5,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	end
-Duel.RegisterFlagEffect(tp,id+5,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-end

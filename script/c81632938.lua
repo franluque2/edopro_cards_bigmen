@@ -180,6 +180,7 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Destroy(core, REASON_EFFECT)
 		end
 	end
+	end
 Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
