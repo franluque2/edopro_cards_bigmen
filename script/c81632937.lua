@@ -1,4 +1,5 @@
 --Meklord Carrier - "Carreras"
+
 local s,id=GetID()
 function s.initial_effect(c)
 --Activate Skill
@@ -35,6 +36,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(ep,id,0,0,0)
 end
 
+
 function s.core_filter(c)
 	return c:IsCode(100000067)
 end
@@ -64,10 +66,14 @@ function s.trapfilter(c)
 	return c:IsType(TYPE_TRAP) and c:IsSSetable()
 end
 
+function s.extramfilter(c)
+	return c:IsType(TYPE_MONSTER) and c:IsPreviousLocation(LOCATION_EXTRA) and not c:IsType(TYPE_SYNCHRO)
+end
+
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 --OPT check
 if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
-	Duel.GetFlagEffect(tp, id+4)>0 then return end
+	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
 --Boolean checks for the activation condition: b1, b2, b3
 --Reveal any number of "Attack", "Carrier", "Guard", "Top", or "∞" monsters in your Hand,
 -- place them on the bottom of the deck, then draw that many cards.
@@ -84,7 +90,10 @@ local b4=Duel.GetFlagEffect(ep, id+4)==0
 	and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
 	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
 
-return aux.CanActivateSkill(tp) and (b2 or b3 or b4)
+local b5=Duel.GetFlagEffect(ep, id+5)==0
+	and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
+
+return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -104,9 +113,13 @@ local b4=Duel.GetFlagEffect(ep, id+4)==0
 	and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
 	and Duel.IsExistingMatchingCard(s.core_filter_summon, tp, LOCATION_GRAVE, 0, 1, nil,e,tp)
 
+	local b5=Duel.GetFlagEffect(ep, id+5)==0
+		and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
+
 local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
 								{b3,aux.Stringid(id,1)},
-								{b4,aux.Stringid(id,2)})
+								{b4,aux.Stringid(id,2)},
+								{b5,aux.Stringid(id,3)})
 
 if op==1 then
 	s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
@@ -114,6 +127,8 @@ elseif op==2 then
 	s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 elseif op==3 then
 	s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
+elseif op==4 then
+	s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 end
 end
 
@@ -133,7 +148,7 @@ end
 
 
 --op=2, reveal 3 Trap Cards in your deck with different names,
---randomly select 1 of them, set it to your Spell/Trap Zone, then destroy 1 "Grand Core" you control.
+--randomly select 1 of them, set it to your Spell/Trap Zone, then destroy 1 "Wise Core" you control.
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.trapfilter,tp,LOCATION_DECK,0,nil)
 	if #g>=3 then
@@ -159,7 +174,7 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 end
 
---op=3 Special Summon 1 "Grand Core" from your GY, but banish it when it leaves the field.
+--op=3 Special Summon 1 "Wise Core" from your GY, but banish it when it leaves the field.
 function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.core_filter_summon),tp,LOCATION_GRAVE,0,nil,e,tp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -175,4 +190,19 @@ function s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 		sc:RegisterEffect(e1,true)
 	end
 Duel.RegisterFlagEffect(tp,id+4,0,0,0)
+end
+
+--op=4 Target a monster your opponent controls that was special summoned from the extra deck it is treated as a synchro while face-up on the field
+function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.SelectMatchingCard(tp, s.extramfilter, tp, 0, LOCATION_MZONE, 1, 1,false,nil):GetFirst()
+	if g then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetCode(EFFECT_ADD_TYPE)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+		e1:SetValue(TYPE_SYNCHRO)
+		g:RegisterEffect(e1)
+	end
+Duel.RegisterFlagEffect(tp,id+5,0,0,0)
 end
