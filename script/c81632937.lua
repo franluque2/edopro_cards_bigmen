@@ -205,3 +205,4 @@ function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(TYPE_SYNCHRO)
 		g:RegisterEffect(e1)
 	end
+end
