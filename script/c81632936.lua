@@ -57,7 +57,8 @@ end
 
 
 function s.piecefilter(c)
-return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck()
+return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or
+ c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
 end
 
 function s.trapfilter(c)
@@ -148,21 +149,29 @@ end
 --op=2, reveal 3 Trap Cards in your deck with different names,
 --randomly select 1 of them, set it to your Spell/Trap Zone, then destroy 1 "Wise Core" you control.
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
+
 	local g=Duel.GetMatchingGroup(s.trapfilter,tp,LOCATION_DECK,0,nil)
-	if #g>=3 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-		local sg=g:Select(tp,3,3,nil)
-		Duel.ConfirmCards(1-tp,sg)
+	if g:GetClassCount(Card.GetCode)>=3 then
+		local cg=Group.CreateGroup()
+		for i=1,3 do
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
+			local sg=g:Select(tp,1,1,nil)
+			g:Remove(Card.IsCode,nil,sg:GetFirst():GetCode())
+			cg:Merge(sg)
+		end
+		Duel.ConfirmCards(1-tp,cg)
 		Duel.ShuffleDeck(tp)
 
-		local cardnumber=math.random( #sg )
-		local tc=sg:GetFirst()
+	if #cg>=3 then
+
+		local cardnumber=math.random( #cg )
+		local tc=cg:GetFirst()
 		while tc do
 			if cardnumber==0 then
 				Duel.SSet(tp,tc,tp,false)
 			end
 			cardnumber=cardnumber-1
-			tc=sg:GetNext()
+			tc=cg:GetNext()
 		end
 		local core=Duel.SelectMatchingCard(tp, s.core_filter_field, tp, LOCATION_ONFIELD, 0, 1, 1,false,nil)
 		if core then
