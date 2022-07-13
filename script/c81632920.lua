@@ -231,6 +231,10 @@ local cards_in_limbo={}
 -- You cannot conduct your Battle Phase the turn you activate this effect.
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.SelectMatchingCard(tp, aux.TRUE, tp, 0, LOCATION_MZONE, 1, 1, nil):GetFirst()
+	if tc:IsType(TYPE_XYZ) then
+		local mg=tc:GetOverlayGroup()
+		Duel.SendtoGrave(mg,REASON_EFFECT)
+	end
 	table.insert(cards_in_limbo,tc)
 	Duel.SendtoDeck(tc,1-tp,-2,REASON_EFFECT)
 	local e1=Effect.CreateEffect(e:GetHandler())
