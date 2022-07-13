@@ -268,7 +268,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			local cards=Duel.GetMatchingGroup(s.mokeymokeyfilter,tp,LOCATION_MZONE,0,0,nil)
 			for tc in aux.Next(cards) do
 			--Unaffected by opponent's card effects
-			local e3=Effect.CreateEffect(c)
+			local e3=Effect.CreateEffect(e:GetHandler())
 			e3:SetDescription(3110)
 			e3:SetType(EFFECT_TYPE_SINGLE)
 			e3:SetCode(EFFECT_IMMUNE_EFFECT)
