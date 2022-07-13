@@ -165,10 +165,10 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 
 		if #cg>=3 then
 
-			local cardnumber=math.random( #cg )
+			local cardnumber=math.random( 3 )
 			local tc=cg:GetFirst()
 			while tc do
-				if cardnumber==0 then
+				if cardnumber==1 then
 					Duel.SSet(tp,tc,tp,false)
 				end
 				cardnumber=cardnumber-1

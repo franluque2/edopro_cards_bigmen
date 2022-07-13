@@ -205,7 +205,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 			local cardnumber=math.random( #g )
 			local tc=g:GetFirst()
 			while tc do
-				if cardnumber==0 then
+				if cardnumber==1 then
 					Duel.SendtoHand(tc, tp, REASON_EFFECT)
 				end
 				cardnumber=cardnumber-1
