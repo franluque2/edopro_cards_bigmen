@@ -235,7 +235,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==2 then
 		--Monsters your opponent controls loses 500 ATK/DEF for each "Mokey Mokey" monster you control.
 		local g2=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
-		local num=#g2
+		local num=#g
 		local tc=g2:GetFirst()
 		for tc in aux.Next(g2) do
 			local e1=Effect.CreateEffect(e:GetHandler())
