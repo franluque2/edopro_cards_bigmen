@@ -175,6 +175,7 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 			cardnumber=cardnumber-1
 			tc=cg:GetNext()
 		end
+		Duel.ShuffleDeck(tp)
 		local core=Duel.SelectMatchingCard(tp, s.core_filter_field, tp, LOCATION_ONFIELD, 0, 1, 1,false,nil)
 		if core then
 			Duel.Destroy(core, REASON_EFFECT)
