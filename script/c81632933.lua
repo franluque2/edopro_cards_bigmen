@@ -178,7 +178,6 @@ end
 
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
-	--Special Summon 1 monster that lists "Stadium of Dreams" in it's text from either your Hand or GY as either a level 4 or 5 monster.
 
 	local g=Duel.GetMatchingGroup(s.mokeymokeyfilter,tp,LOCATION_MZONE,0,nil)
 
@@ -194,12 +193,12 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 	--Monsters your opponent controls loses 500 ATK/DEF for each "Mokey Mokey" monster you control.
 	local c3=Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil)
-					and #g>3
+					and #g>2
 	--Target any number of "Mokey Mokey" monsters that are banished or in your GY, add those targets to your hand,
 	--then set 1 "The Revenge of the Normal" from outside the duel to your Spell/Trap Zone. It can be activated this turn.
 	local c4=Duel.IsExistingMatchingCard(s.mmaddfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil)
 					and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
-					and #g>4
+					and #g>3
 --"Mokey Mokey" monsters you control are unaffected by your opponent's card effects until the end of your opponent's turn.
 	local c5=#g>4
 --Set 1 "The Law of the Normal" from outside the duel to your Spell/Trap Zone.
