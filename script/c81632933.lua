@@ -220,8 +220,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 	if op==0 then
 	--Destroy 1 Fairy monster you control, add 1 "Polymerization" from your Deck to your Hand.
-		local g=Duel.SelectMatchingCard(tp,s.destroyfairyfilter,tp,LOCATION_MZONE,0,1,1,false,nil):GetFirst()
-		if Duel.Destroy(g, REASON_EFFECT) then
+		local g5=Duel.SelectMatchingCard(tp,s.destroyfairyfilter,tp,LOCATION_MZONE,0,1,1,false,nil):GetFirst()
+		if Duel.Destroy(g5, REASON_EFFECT) then
 			local pol=Duel.SelectMatchingCard(tp,s.polyfilter,tp,LOCATION_DECK,0,1,1,false,nil):GetFirst()
 				if pol then
 					Duel.SendtoHand(pol, tp, REASON_EFFECT)
@@ -230,17 +230,18 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		end
 	elseif op==1 then
 		--Set 1 "Mokey Mokey Smackdown" from your Deck or GY to your Spell/Trap Zone.
-		local g=Duel.SelectMatchingCard(tp,s.mmsmackdownfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,1,false,nil):GetFirst()
-		Duel.SSet(tp, g)
+		local g4=Duel.SelectMatchingCard(tp,s.mmsmackdownfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,1,false,nil):GetFirst()
+		Duel.SSet(tp, g4)
 	elseif op==2 then
 		--Monsters your opponent controls loses 500 ATK/DEF for each "Mokey Mokey" monster you control.
-		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
-		local tc=g:GetFirst()
-		for tc in aux.Next(g) do
+		local g2=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
+		local num=#g2
+		local tc=g2:GetFirst()
+		for tc in aux.Next(g2) do
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_UPDATE_ATTACK)
-			e1:SetValue(-500*g)
+			e1:SetValue(-500*num)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			tc:RegisterEffect(e1)
 
@@ -252,8 +253,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==3 then
 		--Target any number of "Mokey Mokey" monsters that are banished or in your GY, add those targets to your hand,
 		--then set 1 "The Revenge of the Normal" from outside the duel to your Spell/Trap Zone. It can be activated this turn.
-		local g=Duel.SelectMatchingCard(tp,s.mmaddfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,99,false,nil)
-		if Duel.SendtoHand(g, tp, REASON_EFFECT) then
+		local g3=Duel.SelectMatchingCard(tp,s.mmaddfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,99,false,nil)
+		if Duel.SendtoHand(g3, tp, REASON_EFFECT) then
 			local rev=Duel.CreateToken(tp, 17509503)
 			Duel.SSet(tp, rev)
 			local e2=Effect.CreateEffect(e:GetHandler())
