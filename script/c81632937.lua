@@ -61,7 +61,7 @@ end
 
 function s.piecefilter(c)
 return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or
- c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
+ c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974) or c:IsCode(511008026)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
 end
 
 function s.trapfilter(c)
@@ -105,6 +105,7 @@ local b5=Duel.GetFlagEffect(ep, id+5)==0
 		and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000067)
 		and (Duel.GetLP(tp)<=1000)
 		and (Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
+
 
 return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5 or b6)
 end
