@@ -53,8 +53,10 @@ function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+
 function s.walkerfilter(c,e,tp)
-	return (c:IsCode(71821687) or c:IsCode(17315396)) and c:IsAbleToHand()
+	return ((c:IsCode(71821687) and not (Duel.GetFlagEffect(tp, id+6)>0)) or
+	 (c:IsCode(17315396) and not (Duel.GetFlagEffect(tp, id+7)>0))) and c:IsAbleToHand()
 end
 
 function s.monsterfilter(c)
@@ -85,6 +87,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--Boolean checks for the activation condition: b1, b2, b3, b4
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
+			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0))
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -107,6 +110,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
+			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0))
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -143,6 +147,11 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,1,nil)
 	if #g>0 then
 		Duel.SendtoHand(g, tp, REASON_EFFECT)
+		if g:GetFirst():GetID()==71821687 then
+			Duel.RegisterFlagEffect(tp,id+6,0,0,0)
+		elseif g:GetFirst():GetID()==17315396 then
+			Duel.RegisterFlagEffect(tp,id+7,0,0,0)
+		end
 		local g2=Duel.GetMatchingGroup(s.supay_ascator_filter, tp, LOCATION_GRAVE, 0, nil)
 		if #g2>0 then
 			if Duel.SelectYesNo(tp,aux.Stringid(id,5)) then
