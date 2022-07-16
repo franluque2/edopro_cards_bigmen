@@ -74,7 +74,8 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 --OPT check
 if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
-	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
+	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0
+	and Duel.GetFlagEffect(tp, id+6)>0 then return end
 --Boolean checks for the activation condition: b1, b2, b3
 --Reveal any number of "Attack", "Carrier", "Guard", "Top", or "∞" monsters in your Hand,
 -- place them on the bottom of the deck, then draw that many cards.
@@ -94,7 +95,17 @@ local b4=Duel.GetFlagEffect(ep, id+4)==0
 local b5=Duel.GetFlagEffect(ep, id+5)==0
 	and Duel.IsExistingTarget(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
 
-return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5)
+local b6=Duel.GetFlagEffect(ep, id+6)==0
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 31930787)
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000057)
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000058)
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000059)
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000060)
+	and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000067)
+	and (Duel.GetLP(tp)<=1000)
+	and (Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
+
+return aux.CanActivateSkill(tp) and (b2 or b3 or b4 or b5 or b6)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -117,10 +128,21 @@ local b4=Duel.GetFlagEffect(ep, id+4)==0
 	local b5=Duel.GetFlagEffect(ep, id+5)==0
 		and Duel.IsExistingMatchingCard(s.extramfilter, tp, 0, LOCATION_MZONE, 1, nil)
 
-local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
-								{b3,aux.Stringid(id,1)},
-								{b4,aux.Stringid(id,2)},
-								{b5,aux.Stringid(id,3)})
+		local b6=Duel.GetFlagEffect(ep, id+6)==0
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 31930787)
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000057)
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000058)
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000059)
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000060)
+			and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_GRAVE, 0, 1, nil, 100000067)
+			and (Duel.GetLP(tp)<=1000)
+			and (Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
+
+			local op=aux.SelectEffect(tp, {b2,aux.Stringid(id,0)},
+			{b3,aux.Stringid(id,1)},
+			{b4,aux.Stringid(id,2)},
+			{b5,aux.Stringid(id,3)},
+			{b6,aux.Stringid(id,4)})
 
 if op==1 then
 	s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
@@ -130,6 +152,8 @@ elseif op==3 then
 	s.operation_for_res3(e,tp,eg,ep,ev,re,r,rp)
 elseif op==4 then
 	s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
+elseif op==5 then
+	s.operation_for_res5(e,tp,eg,ep,ev,re,r,rp)
 end
 end
 
@@ -215,4 +239,26 @@ function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetValue(TYPE_SYNCHRO)
 		g:RegisterEffect(e1)
 	end
+end
+
+function s.operation_for_res5(e,tp,eg,ep,ev,re,r,rp)
+	local core1=Duel.CreateToken(tp, 100000055)
+	local core2=Duel.CreateToken(tp, 100000067)
+	local mkanikle=Duel.CreateToken(tp, 511002517)
+	local mcreation=Duel.CreateToken(tp, 100000068)
+
+	Duel.SendtoGrave(core1, REASON_EFFECT)
+	Duel.SendtoGrave(core2, REASON_EFFECT)
+
+	Duel.SendtoDeck(mkanikle, tp, SEQ_DECKBOTTOM, REASON_EFFECT)
+	Duel.SSet(tp, mcreation)
+
+	e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
+	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+	mcreation:RegisterEffect(e2)
+
+	Duel.RegisterFlagEffect(tp,id+6,0,0,0)
 end

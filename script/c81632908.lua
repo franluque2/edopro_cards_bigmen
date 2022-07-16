@@ -92,7 +92,7 @@ end
 
 --op=0, If you normal or ssd a level 1 normal, add zushin or set a floodgate
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_CARD,tp,HINT_SELECTMSG)
+	Duel.Hint(HINT_CARD,tp,id)
 	local b1=Duel.IsExistingMatchingCard(s.zushin_add_filter,tp,LOCATION_DECK,0,1,nil)
 	local b2=Duel.IsExistingMatchingCard(s.st_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
 	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,2)},
@@ -132,6 +132,7 @@ end
 --op=1, If you control Zushin the Sleeping Giant, flip all opponents to attack position
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.posfilter,tp,0,LOCATION_MZONE,nil)
+	Duel.Hint(HINT_CARD,tp,id)
 	Duel.ChangePosition(g,POS_FACEUP_ATTACK)
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end

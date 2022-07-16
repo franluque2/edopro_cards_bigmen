@@ -38,7 +38,7 @@ function s.initial_effect(c)
 	e4:SetTarget(s.thtg2)
 	e4:SetOperation(s.thop2)
 	c:RegisterEffect(e4)
-	
+
 end
 
 function s.thfilter(c)
@@ -82,6 +82,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_EXTRA_ATTACK)
+		e1:SetProperty(EFFECT_FLAG_CLIENT_HINT)
+		e1:SetDescription(aux.Stringid(id, 0))
 		e1:SetValue(1)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		g:GetFirst():RegisterEffect(e1)
@@ -113,5 +115,3 @@ function s.thop2(e,tp,eg,ep,ev,re,r,rp)
 
 		end
 end
-
-
