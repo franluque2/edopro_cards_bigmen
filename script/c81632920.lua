@@ -54,9 +54,9 @@ function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 end
 
 
-function s.walkerfilter(c,e,tp)
-	return ((c:IsCode(71821687) and not (Duel.GetFlagEffect(tp, id+6)>0)) or
-	 (c:IsCode(17315396) and not (Duel.GetFlagEffect(tp, id+7)>0))) and c:IsAbleToHand()
+function s.walkerfilter(c,tp)
+	return ((c:IsCode(71821687) and not (Duel.GetFlagEffect(tp, id+6)>0) or
+	 (c:IsCode(17315396) and not (Duel.GetFlagEffect(tp, id+7)>0)))) and c:IsAbleToHand()
 end
 
 function s.monsterfilter(c)
@@ -86,8 +86,8 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	 	Duel.GetFlagEffect(tp, id+4)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3, b4
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
-			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0))
+			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,tp)
+			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0)
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -109,8 +109,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
 
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,e,tp)
-			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0))
+			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,tp)
+			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0)
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -144,14 +144,14 @@ end
  -- then you can shuffle all "Supay" and "Fire Ant Ascator" from your GY into the deck, and if you do,
 	--  add 1 "Eathbound Linewalker" to your hand from outside the duel.
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.SelectMatchingCard(tp,s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,1,nil,tp)
 	if #g>0 then
-		Duel.SendtoHand(g, tp, REASON_EFFECT)
-		if g:GetFirst():GetID()==71821687 then
-			Duel.RegisterFlagEffect(tp,id+6,0,0,0)
-		elseif g:GetFirst():GetID()==17315396 then
+			if g:GetFirst():GetCode() ==71821687 then
+				Duel.RegisterFlagEffect(tp,id+6,0,0,0)
+		elseif g:GetFirst():GetCode()==17315396 then
 			Duel.RegisterFlagEffect(tp,id+7,0,0,0)
 		end
+		Duel.SendtoHand(g, tp, REASON_EFFECT)
 		local g2=Duel.GetMatchingGroup(s.supay_ascator_filter, tp, LOCATION_GRAVE, 0, nil)
 		if #g2>0 then
 			if Duel.SelectYesNo(tp,aux.Stringid(id,5)) then
