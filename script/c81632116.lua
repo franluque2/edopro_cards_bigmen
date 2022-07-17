@@ -10,6 +10,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetHintTiming(TIMING_DAMAGE_STEP)
+	e1:SetCountLimit(1)
 	e1:SetCondition(s.atkcon)
 	e1:SetCost(s.atkcost)
 	e1:SetTarget(s.atktg)
@@ -22,6 +23,20 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetOperation(s.disop)
 	c:RegisterEffect(e2)
+
+	--If xyz summoned, change 1 attribute
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e3:SetCountLimit(1)
+	e3:SetCondition(s.chgcon)
+	e3:SetCost(s.chgcost)
+	e3:SetTarget(s.chgtg)
+	e3:SetOperation(s.chgop)
+	c:RegisterEffect(e3)
+
+	c:SetUniqueOnField(1,0,id)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
@@ -71,4 +86,55 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetReset(RESET_EVENT+0x57a0000)
 		tc:RegisterEffect(e2)
 	end
+end
+
+function s.attfilter(c)
+	return c:IsFaceup() and not c:IsAttribute(ATTRIBUTE_EARTH)
+end
+
+--If fusion summoned
+function s.chgcon(e,tp,eg,ep,ev,re,r,rp)
+return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ)
+end
+--discard 1 card
+function s.chgcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
+	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
+end
+--Activation legality
+function s.chgtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+if chkc then return chkc:IsLocation(LOCATION_MZONE) end
+if chk==0 then return Duel.IsExistingTarget(s.attfilter,tp,0,LOCATION_MZONE,1,nil) end
+Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+local g=Duel.SelectTarget(tp,s.attfilter,tp,0,LOCATION_MZONE,1,1,nil)
+Duel.SetOperationInfo(0,0,g,1,0,0)
+end
+--change attribute, then become immune
+function s.chgop(e,tp,eg,ep,ev,re,r,rp)
+local tc=Duel.GetFirstTarget()
+if tc:IsRelateToEffect(e) then
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_CHANGE_ATTRIBUTE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetValue(ATTRIBUTE_EARTH)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	tc:RegisterEffect(e1)
+
+	local e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetDescription(3000)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
+	e2:SetValue(1)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	e:GetHandler():RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e3:SetDescription(3001)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetValue(1)
+	e:GetHandler():RegisterEffect(e3)
+end
 end
