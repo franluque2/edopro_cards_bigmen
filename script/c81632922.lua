@@ -285,7 +285,7 @@ function s.give_gate_guardian_effects(e,tp,eg,ep,ev,re,r,rp)
 			--- 6: "At the end of the damage step, if this card attacked, you can send this card to the GY,
 			--then Special Summon 1 "Sanga of the Thunder", "Suijin" and "Kazejin" from your GY."
 			local e1=Effect.CreateEffect(c)
-			e1:SetDescription(aux.Stringid(id,0))
+			e1:SetDescription(aux.Stringid(id,10))
 			e1:SetCategory(CATEGORY_DESTROY)
 			e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 			e1:SetCode(EVENT_DAMAGE_STEP_END)
