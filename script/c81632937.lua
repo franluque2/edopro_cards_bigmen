@@ -61,7 +61,7 @@ end
 
 function s.piecefilter(c)
 return (c:IsSetCard(0x50d) or c:IsSetCard(0x507) or c:IsSetCard(0x525) or c:IsSetCard(0x557) or c:IsSetCard(0x562) or c:IsCode(63468625) or
- c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974) or c:IsCode(511008026)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
+ c:IsCode(4545683) or c:IsCode(31930787) or c:IsCode(68140974)) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
 end
 
 function s.trapfilter(c)

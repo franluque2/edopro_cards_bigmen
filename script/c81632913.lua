@@ -114,7 +114,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 
---op=1,  Once per turn, you can banish 1 WATER monster from your GY, Special Summon 1 "D-Scale" monster from either your Hand or GY.
+--op=1,  Once per duel, you can banish 1 WATER monster from your GY, Special Summon 1 "D-Scale" monster from either your Hand or GY.
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local cg=Duel.SelectMatchingCard(tp,s.water_banish_filter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
@@ -122,9 +122,7 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.dscale_summon_filter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp)
 	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 end
 
 
