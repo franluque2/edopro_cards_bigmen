@@ -40,7 +40,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	s.activate_field(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RegisterFlagEffect(ep,id,0,0,0)
+	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
 function s.field_filter(c)
 	return c:IsType(TYPE_FIELD)
@@ -88,22 +88,22 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
 	 	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
 			and Duel.IsExistingMatchingCard(s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
 			and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
+	local b2=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	local b3=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.primineral_baboon_filter,tp,LOCATION_DECK,0,1,nil)
 
-	local b4=Duel.GetFlagEffect(ep, id+4)==0
+	local b4=Duel.GetFlagEffect(tp, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
-	local b5=Duel.GetFlagEffect(ep, id+5)==0
+	local b5=Duel.GetFlagEffect(tp, id+5)==0
 		and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
 		and not Duel.IsExistingMatchingCard(s.zeman_ape_king_affected_filter,tp,LOCATION_MZONE,0,1,nil)
 
@@ -114,22 +114,22 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
 			and Duel.IsExistingMatchingCard(s.beastfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp)
 			and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
 
-	local b2=Duel.GetFlagEffect(ep,id+2)==0
+	local b2=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	local b3=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.primineral_baboon_filter,tp,LOCATION_DECK,0,1,nil)
 
-	local b4=Duel.GetFlagEffect(ep, id+4)==0
+	local b4=Duel.GetFlagEffect(tp, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
-	local b5=Duel.GetFlagEffect(ep, id+5)==0
+	local b5=Duel.GetFlagEffect(tp, id+5)==0
 		and Duel.IsExistingMatchingCard(s.zeman_ape_king_filter,tp,LOCATION_MZONE,0,1,nil)
 		and not Duel.IsExistingMatchingCard(s.zeman_ape_king_affected_filter,tp,LOCATION_MZONE,0,1,nil)
 
