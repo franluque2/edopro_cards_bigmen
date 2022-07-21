@@ -40,7 +40,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	s.activate_field(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RegisterFlagEffect(ep,id,0,0,0)
+	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
 function s.field_filter(c)
 	return c:IsType(TYPE_FIELD)
@@ -85,19 +85,19 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
 	 	Duel.GetFlagEffect(tp, id+4)>0 then return end
 	--Boolean checks for the activation condition: b1, b2, b3, b4
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,tp)
 			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0)
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	local b3=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.wiracocha_rasca_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,1,nil)
 			and Duel.GetActivityCount(tp,ACTIVITY_BATTLE_PHASE)==0
 
-	local b4=Duel.GetFlagEffect(ep, id+4)==0
+	local b4=Duel.GetFlagEffect(tp, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
@@ -108,19 +108,19 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 
-	local b1=Duel.GetFlagEffect(ep,id+1)==0
+	local b1=Duel.GetFlagEffect(tp,id+1)==0
 			and Duel.IsExistingMatchingCard(s.walkerfilter,tp,LOCATION_GRAVE+LOCATION_DECK,0,1,nil,tp)
 			and (Duel.GetFlagEffect(tp, id+6)==0 or Duel.GetFlagEffect(tp, id+7)==0)
 
 	-- local b2=Duel.GetFlagEffect(ep,id+2)==0
 	-- 		and Duel.IsExistingMatchingCard(s.monsterfilter,tp,LOCATION_MZONE,0,1,nil)
 
-	local b3=Duel.GetFlagEffect(ep,id+3)==0
+	local b3=Duel.GetFlagEffect(tp,id+3)==0
 			and Duel.IsExistingMatchingCard(s.wiracocha_rasca_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,1,nil)
 			and Duel.GetActivityCount(tp,ACTIVITY_BATTLE_PHASE)==0
 
-	local b4=Duel.GetFlagEffect(ep, id+4)==0
+	local b4=Duel.GetFlagEffect(tp, id+4)==0
 		and Duel.IsExistingMatchingCard(s.high_level_filter, tp, LOCATION_MZONE, 0, 1, nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
