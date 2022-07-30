@@ -163,7 +163,7 @@ function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 		local equake=Duel.CreateToken(tp, 82828051)
 		Duel.SSet(tp,equake)
 	end
-	Duel.RegisterFlagEffect(tp,id+3,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 end
 
 --op=3 set 1 "Contaminated Earth" from outside the duel to your Spell/Trap Zone.

@@ -221,7 +221,7 @@ function s.operation_for_res4(e,tp,eg,ep,ev,re,r,rp)
 	tarc:RegisterEffect(e3)
 
 
-	Duel.RegisterFlagEffect(tp,id+5,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+5,0,0,0)
 end
 
 function s.chcon1(e,tp,eg,ep,ev,re,r,rp)

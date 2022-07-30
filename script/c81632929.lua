@@ -98,13 +98,17 @@ function s.sumfilter(c,e,tp)
 	return c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 
+function s.fumonsterfilter(c)
+	return c:IsType(TYPE_MONSTER) and c:IsFaceup()
+end
+
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp,id+3)>0 and
 	 	Duel.GetFlagEffect(tp, id+4)>0 and Duel.GetFlagEffect(tp, id+5)>0 then return end
 	--Boolean checks for the activation condition: b1, b2
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and ((Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(aux.IsType,tp,LOCATION_MZONE,0,1,nil,TYPE_MONSTER)
+			and ((Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(s.fumonsterfilter,tp,LOCATION_MZONE,0,1,nil)
 						and Duel.IsExistingMatchingCard(s.addcontspellfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
 			or (Duel.GetFlagEffect(ep,id+4)==0 and Duel.IsExistingMatchingCard(s.fucontspellfilter,tp,LOCATION_SZONE,0,1,nil)
 						and Duel.IsExistingMatchingCard(s.addconttrapfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
@@ -125,7 +129,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
-			and ((Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(aux.IsType,tp,LOCATION_MZONE,0,1,nil,TYPE_MONSTER)
+			and ((Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(s.fumonsterfilter,tp,LOCATION_MZONE,0,1,nil)
 						and Duel.IsExistingMatchingCard(s.addcontspellfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
 			or (Duel.GetFlagEffect(ep,id+4)==0 and Duel.IsExistingMatchingCard(s.fucontspellfilter,tp,LOCATION_SZONE,0,1,nil)
 						and Duel.IsExistingMatchingCard(s.addconttrapfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_SZONE)>0)
@@ -152,7 +156,7 @@ end
 
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 
-	local b1=Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(aux.IsType,tp,LOCATION_MZONE,0,1,nil,TYPE_MONSTER)
+	local b1=Duel.GetFlagEffect(ep,id+3)==0 and Duel.IsExistingMatchingCard(s.fumonsterfilter,tp,LOCATION_MZONE,0,1,nil)
 						and Duel.IsExistingMatchingCard(s.addcontspellfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
 
 	local b2=Duel.GetFlagEffect(ep,id+4)==0 and Duel.IsExistingMatchingCard(s.fucontspellfilter,tp,LOCATION_SZONE,0,1,nil)

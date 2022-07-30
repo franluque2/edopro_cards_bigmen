@@ -63,14 +63,12 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=a:GetBattleTarget()
 	if tc and tc:IsControler(1-tp) then a,tc=tc,a end
 	local dam=Duel.GetBattleDamage(tp)
-	if not tc or dam<=0 then return 1 end
-	if Duel.Recover(tp, dam, REASON_EFFECT) then
-		if Duel.GetTurnPlayer()==(1-tp) then
-		Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE_STEP,1)
-	else
-		Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE_STEP,1)
-	end
-	end
+	Duel.Recover(tp, dam, REASON_EFFECT)
+	if Duel.GetTurnPlayer()==(1-tp) then
+	Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE_STEP,1)
+else
+	Duel.SkipPhase(tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE_STEP,1)
+end
 end
 
 

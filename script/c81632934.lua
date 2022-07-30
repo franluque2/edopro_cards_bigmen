@@ -107,6 +107,26 @@ function s.setdealruler(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+function s.etarget(c)
+	return c:GetOverlayCount()~=0
+end
+
+function s.limbofield(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(s.etarget, tp, LOCATION_ONFIELD, 0, nil)
+	if #g>0 then
+		local tc=g:GetFirst()
+		local overlays=tc:GetOverlayGroup()
+		tc=g:GetNext()
+		while tc do
+			overlays:Merge(tc:GetOverlayGroup())
+			tc=g:GetNext()
+		end
+		Duel.SendtoGrave(overlays, REASON_EFFECT)
+	end
+	local g2=Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_ONFIELD, 0, nil)
+	Duel.SendtoDeck(g2, tp, -2, REASON_EFFECT)
+end
+
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c1=(Duel.GetFlagEffect(tp, id+2)==0) and (Duel.GetLocationCount(tp, LOCATION_MZONE)>0)
 						and Duel.GetLP(tp)<=12000
@@ -166,6 +186,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		s.specialsummon(e,tp,eg,ep,ev,re,r,rp,77585513)
 	Duel.RegisterFlagEffect(tp,id+6,0,0,0)
 	elseif c6 then
+		s.limbofield(e,tp,eg,ep,ev,re,r,rp)
 		s.specialsummon(e,tp,eg,ep,ev,re,r,rp,511013020)
 		s.setdealruler(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id+7,0,0,0)
