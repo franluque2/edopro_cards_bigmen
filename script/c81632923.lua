@@ -151,7 +151,7 @@ function s.fusionfilter(c)
 end
 
 function s.exfilter(c,e,tp)
-	return c.material and c:IsType(TYPE_FUSION) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
+	return c.material and c:IsType(TYPE_FUSION) and Duel.IsExistingMatchingCard(s.addfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
 end
 
 function s.addfilter(c,e,tp,fc)
