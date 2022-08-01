@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_PLAYER_TARGET)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetTarget(s.rectg)
+	e3:SetCountLimit(1)
 	e3:SetOperation(s.recop)
 	c:RegisterEffect(e3)
 
@@ -42,7 +43,7 @@ end
 s.listed_names={511000380}
 
 function s.filter(c)
-	return ((c:IsSetCard(0x51e) and c:IsType(TYPE_MONSTER)) or aux.IsCodeListed(c, 511000380)) and c:IsAbleToHand()
+	return ((c:IsSetCard(0x51e) and c:IsType(TYPE_MONSTER)) or aux.IsCodeListed(c, 511000380)) and c:IsAbleToHand() and not c:IsCode(511000380)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

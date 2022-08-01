@@ -14,7 +14,7 @@ function s.thfilter(c,code)
 end
 
 function s.planetfilter(c)
-return s.has_value(planets,c:GetOriginalCode()) and Duel.IsExistingMatchingCard(s.thfilter,c:GetOwner(),LOCATION_DECK+LOCATION_EXTRA,0,1,c,c:GetOriginalCode())
+return s.has_value(planets,c:GetOriginalCode()) and Duel.IsExistingMatchingCard(s.thfilter,c:GetOwner(),LOCATION_DECK+LOCATION_HAND+LOCATION_EXTRA,0,1,c,c:GetOriginalCode())
 end
 
 function s.has_value(tab, val)
