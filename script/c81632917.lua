@@ -47,12 +47,24 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetTarget(aux.TargetBoolFunction(s.heliosfilter))
 		e3:SetValue(1)
 		Duel.RegisterEffect(e3,tp)
+
+		local e3=Effect.CreateEffect(c)
+		e3:SetType(EFFECT_TYPE_FIELD)
+		e3:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
+		e3:SetTargetRange(LOCATION_MZONE,0)
+		e3:SetTarget(s.rdtg)
+		e3:SetValue(aux.ChangeBattleDamage(1,HALF_DAMAGE))
+		Duel.RegisterEffect(e3,tp)
 end
 e:SetLabel(1)
 	end
 
 function s.heliosfilter(c)
 	return (c:IsCode(54493213) or c:IsCode(80887952) or c:IsCode(17286057)) and c:IsFaceup()
+end
+
+function s.rdtg(e,c)
+	return c:IsCode(27408609)
 end
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
