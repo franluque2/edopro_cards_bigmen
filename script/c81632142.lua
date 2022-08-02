@@ -50,7 +50,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function s.cfilter(c)
-	return c:IsAbleToGraveAsCost() and c:IsLevelBelow(4) and c:IsRace(RACE_INSECT)
+	return c:IsAbleToGraveAsCost() and c:IsLevelBelow(4) and c:IsRace(RACE_INSECT) and not c:IsCode(511002341)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
