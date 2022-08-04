@@ -124,7 +124,7 @@ function s.copydeck(e,tp,eg,ep,ev,re,r,rp)
 			while tc do
 
 				newcard=Duel.CreateToken(tp, tc:GetCode())
-				Duel.SendtoDeck(newcard, tp, SEQ_DECKTOP, REASON_EFFECT)
+				Duel.SendtoDeck(newcard, tp, SEQ_DECKBOTTOM, REASON_EFFECT)
 
 				tc=oppcards:GetNext()
 			end
