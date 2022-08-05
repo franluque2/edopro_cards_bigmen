@@ -149,27 +149,25 @@ function s.morpharchetypes(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp, Card.IsType, tp, LOCATION_DECK+LOCATION_EXTRA, 0, 1, 1,false,nil,TYPE_MONSTER)
 	Duel.ConfirmCards(1-tp, g)
 
-	archetypes=g:GetFirst():Setcode()
+	archetypes={g:GetFirst():Setcode()}
+
 
 	local g2=Duel.GetMatchingGroup(Card.IsSetCard, tp, LOCATION_ALL, LOCATION_ALL, nil, 0x1)
 
 	if #g2>0 then
 		local tc=g2:GetFirst()
 		while tc do
-			local e2=Effect.CreateEffect(e:GetHandler())
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_ADD_SETCODE)
-			e2:SetValue(archetypes)
-			tc:RegisterEffect(e2)
+			for key,value in ipairs(archetypes) do
+				local e2=Effect.CreateEffect(e:GetHandler())
+				e2:SetType(EFFECT_TYPE_SINGLE)
+				e2:SetCode(EFFECT_ADD_SETCODE)
+				e2:SetValue(value)
+				tc:RegisterEffect(e2)
+			end
 
 			tc=g2:GetNext()
 		end
 	end
-
-	local e2=Effect.CreateEffect(e:GetHandler())
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_ADD_SETCODE)
-	e2:SetValue(archetypes)
 
 
 	local aojtunerstoadd={08233522,45586855}
@@ -177,11 +175,13 @@ function s.morpharchetypes(e,tp,eg,ep,ev,re,r,rp)
 	for key,value in ipairs(aojtunerstoadd) do
 
 					newcard=Duel.CreateToken(tp, value)
-					local e2=Effect.CreateEffect(e:GetHandler())
-					e2:SetType(EFFECT_TYPE_SINGLE)
-					e2:SetCode(EFFECT_ADD_SETCODE)
-					e2:SetValue(archetypes)
-					newcard:RegisterEffect(e2)
+					for key,value in ipairs(archetypes) do
+						local e2=Effect.CreateEffect(e:GetHandler())
+						e2:SetType(EFFECT_TYPE_SINGLE)
+						e2:SetCode(EFFECT_ADD_SETCODE)
+						e2:SetValue(value)
+						newcard:RegisterEffect(e2)
+					end
 
 					table.insert(aoj_tuners,newcard)
 
@@ -269,11 +269,14 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 				end
 			end
 			local newcard=Duel.CreateToken(tp, sg:GetFirst():GetCode())
-			local e2=Effect.CreateEffect(e:GetHandler())
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_ADD_SETCODE)
-			e2:SetValue(archetypes)
-			newcard:RegisterEffect(e2)
+
+			for key,value in ipairs(archetypes) do
+				local e2=Effect.CreateEffect(e:GetHandler())
+				e2:SetType(EFFECT_TYPE_SINGLE)
+				e2:SetCode(EFFECT_ADD_SETCODE)
+				e2:SetValue(value)
+				newcard:RegisterEffect(e2)
+			end
 			table.insert(aoj_tuners,newcard)
 
 			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
