@@ -270,16 +270,16 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 					remove()
 				end
 			end
-			local newcard=Duel.CreateToken(tp, sg:GetFirst():GetCode())
-
-			for key,value in ipairs(archetypes) do
-				local e2=Effect.CreateEffect(e:GetHandler())
-				e2:SetType(EFFECT_TYPE_SINGLE)
-				e2:SetCode(EFFECT_ADD_SETCODE)
-				e2:SetValue(value)
-				newcard:RegisterEffect(e2)
-			end
-			table.insert(aoj_tuners,newcard)
+			-- local newcard=Duel.CreateToken(tp, sg:GetFirst():GetCode())
+			--
+			-- for key,value in ipairs(archetypes) do
+			-- 	local e2=Effect.CreateEffect(e:GetHandler())
+			-- 	e2:SetType(EFFECT_TYPE_SINGLE)
+			-- 	e2:SetCode(EFFECT_ADD_SETCODE)
+			-- 	e2:SetValue(value)
+			-- 	newcard:RegisterEffect(e2)
+			-- end
+			-- table.insert(aoj_tuners,newcard)
 
 			Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEUP)
 
