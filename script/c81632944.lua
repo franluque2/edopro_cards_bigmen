@@ -170,7 +170,9 @@ function s.morpharchetypes(e,tp,eg,ep,ev,re,r,rp)
 	end
 
 
-	local aojtunerstoadd={08233522,45586855}
+	local aojtunerstoadd={08233522,45586855,89386122,71438011,08822710,45033006,
+												45450218,52265835,85876417,76650663,25771826,55982698,
+												03648368,22371016,36629203,82377606,511001968}
 
 	for key,value in ipairs(aojtunerstoadd) do
 
@@ -279,14 +281,33 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			end
 			table.insert(aoj_tuners,newcard)
 
-			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
-			local lvl=Duel.AnnounceLevel(tp,1,4)
+			Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEUP)
+
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_CHANGE_LEVEL)
-			e1:SetValue(lvl)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+			e1:SetCode(EFFECT_ADD_TYPE)
+			e1:SetValue(TYPE_TUNER)
+			e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 			sg:GetFirst():RegisterEffect(e1)
+
+			for key,value in ipairs(archetypes) do
+				local e2=Effect.CreateEffect(e:GetHandler())
+				e2:SetType(EFFECT_TYPE_FIELD)
+				e2:SetCode(EFFECT_ADD_SETCODE)
+				e2:SetTargetRange(LOCATION_MZONE,0)
+				e2:SetValue(value)
+				e2:SetReset(RESET_PHASE+PHASE_END)
+				Duel.RegisterEffect(e2,tp)
+			end
+
+			local e3=Effect.CreateEffect(e:GetHandler())
+			e3:SetType(EFFECT_TYPE_FIELD)
+			e3:SetCode(EFFECT_ADD_SETCODE)
+			e3:SetTargetRange(LOCATION_MZONE,0)
+			e3:SetValue(0x1)
+			e3:SetReset(RESET_PHASE+PHASE_END)
+			Duel.RegisterEffect(e3,tp)
+
 
 			local e4=Effect.CreateEffect(e:GetHandler())
 			e4:SetType(EFFECT_TYPE_FIELD)
