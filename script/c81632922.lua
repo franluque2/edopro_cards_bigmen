@@ -309,7 +309,7 @@ function s.actoperation(e,tp,eg,ep,ev,re,r,rp)
 local g=Duel.GetMatchingGroup(s.gate_piece_filter,tp,LOCATION_GRAVE,0,nil,e,tp)
 local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if e:GetHandler():GetSequence()<5 then ft=ft+1 end
-local tg=aux.SelectUnselectGroup(g,e,tp,3,3,s.spcheck,1,tp,HINTMSG_SPSUMMON)
+local tg=aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,1,tp,HINTMSG_SPSUMMON)
 
 if #tg>0 then
 	if Duel.SendtoGrave(e:GetHandler(),REASON_EFFECT)>0 then
