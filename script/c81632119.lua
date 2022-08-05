@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_TO_GRAVE_REDIRECT)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTarget(s.rmtarget)
-	e2:SetTargetRange(0xff,0xff)
+	e2:SetTargetRange(0xff,0)
 	e2:SetValue(LOCATION_REMOVED)
 	c:RegisterEffect(e2)
 
