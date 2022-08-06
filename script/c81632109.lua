@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
-	
+
 
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
@@ -36,7 +36,7 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_CHANGE_CODE)
 	e4:SetRange(LOCATION_SZONE+LOCATION_HAND)
 	e4:SetValue(100000323)
-	c:RegisterEffect(e4)  
+	c:RegisterEffect(e4)
 end
 
 function s.dizzyfilter(c)
@@ -48,8 +48,8 @@ end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(tp) and chkc~=e:GetHandler() end
-	if chk==0 then 
-		return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,e:GetHandler()) 
+	if chk==0 then
+		return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,e:GetHandler())
 	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_ONFIELD,0,1,12,e:GetHandler())
