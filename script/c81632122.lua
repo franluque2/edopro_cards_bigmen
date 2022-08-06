@@ -103,8 +103,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetAttacker()
 
 
-	if g then
-		if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+	if g and (Duel.GetLocationCount(tp,LOCATION_SZONE)>0 or Duel.GetLocationCount(1-tp,LOCATION_SZONE)>0) then
+		if (Duel.GetLocationCount(1-tp,LOCATION_SZONE)>0) and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
 			Duel.MoveToField(g,tp,1-tp,LOCATION_SZONE,POS_FACEUP,true)
 			g:AddCounter(0x1107,1)
 		else
