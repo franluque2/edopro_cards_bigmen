@@ -40,7 +40,7 @@ end
 
 function s.tgfilter2(c,tp)
 	return c:IsFaceup() and (c:IsCode(511002301) or c:IsCode(511002302))
-		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,c:GetCode())
+		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,511002301)
 end
 
 function s.filterprotop(c)

@@ -1,7 +1,6 @@
 --Tricolor Illusion (CT)
 local s,id=GetID()
 function s.initial_effect(c)
-	c:SetUniqueOnField(1,0,id)
 	c:SetUniqueOnField(1,0,511000954)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -32,17 +31,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.revop)
 	c:RegisterEffect(e4)
 
-	--Destroy itself
-	local e6=Effect.CreateEffect(c)
-	e6:SetCategory(CATEGORY_DESTROY)
-	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
-	e6:SetCode(EVENT_PHASE+PHASE_END)
-	e6:SetRange(LOCATION_FZONE)
-	e6:SetCountLimit(1)
-	e6:SetCondition(s.descon)
-	e6:SetTarget(s.destg)
-	e6:SetOperation(s.desop)
-	c:RegisterEffect(e6)
+
 end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDiscardDeckAsCost(tp,1) end
@@ -102,7 +91,7 @@ end
 
 
 function s.revcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=1
+	return Duel.GetFieldGroupCount(1-tp,LOCATION_DECK,0)>=1
 end
 function s.revcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFlagEffect(tp,id)==0 end
@@ -182,19 +171,5 @@ function s.revop(e,tp,eg,ep,ev,re,r,rp)
 
 
 		end
-	end
-end
-
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(s.flipconfilter,tp,LOCATION_MZONE,0,1,nil)
-end
-function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
-end
-function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) then
-		Duel.Destroy(c,REASON_EFFECT)
 	end
 end
