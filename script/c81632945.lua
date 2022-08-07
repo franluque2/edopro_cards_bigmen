@@ -95,7 +95,7 @@ end
 
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 
-	local c6=(Duel.GetFlagEffect(tp, id+7)==0) and Duel.GetLP(tp)==0 and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_FZONE,0,1,nil)
+	local c6=(Duel.GetFlagEffect(tp, id+7)==0) and Duel.GetLP(tp)==0 and Duel.IsExistingMatchingCard(Card.IsType,tp,LOCATION_ONFIELD,0,1,nil,TYPE_FIELD)
 
 	return ep==tp and c6
 end
@@ -105,7 +105,6 @@ function s.notfield(c)
 end
 
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-
 
 	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
 		Duel.Hint(HINT_CARD,tp,id)
