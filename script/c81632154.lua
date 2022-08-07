@@ -85,7 +85,6 @@ function s.initial_effect(c)
 
 	--gain atk,negate effects
 	local e14=Effect.CreateEffect(c)
-	e14:SetDescription(aux.Stringid(id,0))
 	e14:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e14:SetCode(EVENT_BATTLE_DESTROYING)
 	e14:SetCondition(s.atkcon)
