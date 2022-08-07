@@ -172,7 +172,7 @@ end
 
 
 function s.adcon(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.GetTurnPlayer()==tp or not (Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0) then return end
+	if (not Duel.GetTurnPlayer()==tp) or (Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0) then return end
 
 	local b1=Duel.GetFlagEffect(tp,id+3)==0
 			and not Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_FZONE,0,1,nil)
