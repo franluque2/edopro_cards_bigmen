@@ -178,12 +178,10 @@ function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
 	Duel.SetOperationInfo(0,CATEGORY_DISABLE,eg,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,#eg,0,0)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateEffect(ev)
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
-	Duel.Destroy(sg,REASON_EFFECT)
+	Duel.NegateEffect(eg)
+	Duel.Destroy(eg,REASON_EFFECT)
 end
