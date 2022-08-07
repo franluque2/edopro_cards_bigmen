@@ -181,6 +181,6 @@ function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,#eg,0,0)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateEffect(eg)
+	Duel.NegateActivation(ev)
 	Duel.Destroy(eg,REASON_EFFECT)
 end
