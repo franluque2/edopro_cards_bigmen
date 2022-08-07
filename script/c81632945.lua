@@ -19,13 +19,13 @@ end
 
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
-		local e8=Effect.CreateEffect(e:GetHandler())
-		e8:SetType(EFFECT_TYPE_FIELD)
-		e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e8:SetCode(EFFECT_CANNOT_LOSE_LP)
-		e8:SetTargetRange(1,0)
-		e8:SetValue(s.cantlose)
-		Duel.RegisterEffect(e8,tp)
+		-- local e8=Effect.CreateEffect(e:GetHandler())
+		-- e8:SetType(EFFECT_TYPE_FIELD)
+		-- e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		-- e8:SetCode(EFFECT_CANNOT_LOSE_LP)
+		-- e8:SetTargetRange(1,0)
+		-- e8:SetValue(s.cantlose)
+		-- Duel.RegisterEffect(e8,tp)
 
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -85,9 +85,9 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 e:SetLabel(1)
 end
 
-function s.cantlose(c,tp)
-	return not Duel.GetFlagEffect(tp, id+7)>0
-end
+-- function s.cantlose(c,tp)
+-- 	return not Duel.GetFlagEffect(tp, id+7)>0
+-- end
 
 function s.etarget(c)
 	return c:GetOverlayCount()~=0
@@ -328,7 +328,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 									  {b2,aux.Stringid(id,1)},
-										{b2,aux.Stringid(id,4)})
+										{b3,aux.Stringid(id,4)})
 		op=op-1
 
 	if op==0 then
