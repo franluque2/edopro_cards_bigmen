@@ -172,7 +172,7 @@ end
 
 
 function s.adcon(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.GetTurnPlayer()==tp and not (Duel.GetFlagEffect(tp,id+3)>0 or Duel.GetFlagEffect(tp,id+4)>0 or Duel.GetFlagEffect(tp,id+5)>0) then return end
+	if not Duel.GetTurnPlayer()==tp and not (Duel.GetFlagEffect(tp,id+3)>0 and Duel.GetFlagEffect(tp,id+4)>0 and Duel.GetFlagEffect(tp,id+5)>0) then return end
 
 	local b1=Duel.GetFlagEffect(tp,id+3)==0
 			and not Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_FZONE,0,1,nil)
@@ -201,7 +201,6 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 
 
 	if b1 then
-
 		s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	elseif b2 then
 		s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
@@ -275,7 +274,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+3)>0 and Duel.GetFlagEffect(tp, id+6)>0 then return end
+	if Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+1)>0 and Duel.GetFlagEffect(tp, id+6)>0 then return end
 
 	--Once per turn, you can reveal 1 "Orichalcos Shunoros" or any card that lists "Orichalcos Shunoros"
 	--in it's text, shuffle it into the deck, then add 1 "Orichalcos Kyutora" or "Orichalcos Gigas" from your Deck to your Hand.
