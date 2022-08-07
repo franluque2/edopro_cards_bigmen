@@ -102,9 +102,10 @@ function s.notfield(c)
 end
 
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_CARD,tp,id)
+
 
 	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
+		Duel.Hint(HINT_CARD,tp,id)
 		Duel.SetLP(tp, 4000)
 		local g=Duel.GetMatchingGroup(s.etarget, tp, LOCATION_ONFIELD, 0, nil)
 		if #g>0 then
