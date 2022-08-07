@@ -24,7 +24,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e8:SetCode(EFFECT_CANNOT_LOSE_LP)
 		e8:SetTargetRange(1,0)
-		e8:SetValue(1)
+		e8:SetValue(s.cantlose)
 		Duel.RegisterEffect(e8,tp)
 
 		local e1=Effect.CreateEffect(e:GetHandler())
@@ -34,7 +34,6 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		e1:SetCountLimit(1)
 		Duel.RegisterEffect(e1,tp)
-		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 
 
 		local e2=Effect.CreateEffect(e:GetHandler())
@@ -86,6 +85,10 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 e:SetLabel(1)
 end
 
+function s.cantlose(c,tp)
+	return Duel.GetFlagEffect(tp, id+7)>0
+end
+
 function s.etarget(c)
 	return c:GetOverlayCount()~=0
 end
@@ -125,13 +128,13 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(leviathan,0,tp,tp,true,false,POS_FACEUP)
 	end
 
-	local e8=Effect.CreateEffect(e:GetHandler())
-	e8:SetType(EFFECT_TYPE_FIELD)
-	e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e8:SetCode(EFFECT_CANNOT_LOSE_LP)
-	e8:SetTargetRange(1,0)
-	e8:SetValue(0)
-	Duel.RegisterEffect(e8,tp)
+	-- local e8=Effect.CreateEffect(e:GetHandler())
+	-- e8:SetType(EFFECT_TYPE_FIELD)
+	-- e8:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	-- e8:SetCode(EFFECT_CANNOT_LOSE_LP)
+	-- e8:SetTargetRange(1,0)
+	-- e8:SetValue(0)
+	-- Duel.RegisterEffect(e8,tp)
 
 	Duel.RegisterFlagEffect(tp,id+7,0,0,0)
 end
@@ -284,7 +287,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 			--Once per Duel, if you control "Orichalcos Shunoros" you can add either add 1 "Divine Serpent Geh" or 1 "Orichalcos Dexia" and "Orichalcos Aristeros" from your Deck to your Hand.
 
-	local b2=Duel.GetFlagEffect(tp, id+3)==0
+	local b2=Duel.GetFlagEffect(tp, id+1)==0
 		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
 		and (Duel.IsExistingMatchingCard(s.serpentfilter,tp,LOCATION_DECK,0,1,nil)
 		or (Duel.IsExistingMatchingCard(s.dexiafilter,tp,LOCATION_DECK,0,1,nil) and Duel.IsExistingMatchingCard(s.aristerosfilter,tp,LOCATION_DECK,0,1,nil))
@@ -311,7 +314,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 			--Once per Duel, if you control "Orichalcos Shunoros" you can add either add 1 "Divine Serpent Geh" or 1 "Orichalcos Dexia" and "Orichalcos Aristeros" from your Deck to your Hand.
 
-	local b2=Duel.GetFlagEffect(tp, id+3)==0
+	local b2=Duel.GetFlagEffect(tp, id+1)==0
 		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
 		and (Duel.IsExistingMatchingCard(s.serpentfilter,tp,LOCATION_DECK,0,1,nil)
 		or (Duel.IsExistingMatchingCard(s.dexiafilter,tp,LOCATION_DECK,0,1,nil) and Duel.IsExistingMatchingCard(s.aristerosfilter,tp,LOCATION_DECK,0,1,nil))
@@ -369,7 +372,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 						Duel.ConfirmCards(1-tp, g)
 					end
 			end
-		Duel.RegisterFlagEffect(tp,id+3,0,0,0)
+		Duel.RegisterFlagEffect(tp,id+1,0,0,0)
 	elseif op==2 then
 		--Once per Duel, you can reveal 1 "Mirror Knight Calling" in your Hand, you can add 1 "Orichalcos Mirror" from your Deck to your Hand, then shuffle the revealed monster into the Deck.
 		local g=Duel.SelectMatchingCard(tp, s.callingfilter, tp, LOCATION_HAND, 0, 1,1,false,nil)

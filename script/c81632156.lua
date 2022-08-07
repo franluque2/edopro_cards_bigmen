@@ -78,7 +78,7 @@ function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	return true
 end
 function s.filter(c,ct)
-	return c:GetCounter(0x1106)==ct and c:IsFaceup() and c:IsCode(id+1)
+	return c:GetCounter(0x1106)==ct and c:IsFaceup() and c:IsCode(170000175)
 end
 function s.cttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil,0) end
