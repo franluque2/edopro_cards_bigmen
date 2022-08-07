@@ -154,6 +154,7 @@ function s.adcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.adop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	local g=Duel.SelectMatchingCard(tp, s.atkfilter1, tp, LOCATION_MZONE, 0, 1,1,false,nil,tp)
 	if #g>0 then
 		local e1=Effect.CreateEffect(e:GetHandler())
