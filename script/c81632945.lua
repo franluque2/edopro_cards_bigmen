@@ -86,7 +86,7 @@ e:SetLabel(1)
 end
 
 function s.cantlose(c,tp)
-	return Duel.GetFlagEffect(tp, id+7)>0
+	return not Duel.GetFlagEffect(tp, id+7)>0
 end
 
 function s.etarget(c)
