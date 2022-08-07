@@ -69,6 +69,7 @@ function s.rdcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.rdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(tp,0)
+	Duel.Hint(HINT_CARD,tp,id)
 	local dam=e:GetLabelObject():GetLabel()
 	if ep==tp then
 		e:GetLabelObject():SetLabel(dam+ev)
