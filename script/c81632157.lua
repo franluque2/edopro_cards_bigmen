@@ -8,7 +8,6 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCode(EVENT_DESTROYED)
 	e1:SetCountLimit(1,id)
-	e1:SetCost(s.cost)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
@@ -40,25 +39,7 @@ function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_OATH+EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(1,0)
-	e1:SetCode(EFFECT_SKIP_DP)
-	if Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_DRAW then
-		e1:SetLabel(Duel.GetTurnCount())
-		e1:SetCondition(s.skipcon)
-		e1:SetReset(RESET_PHASE+PHASE_DRAW+RESET_SELF_TURN,2)
-	else
-		e1:SetReset(RESET_PHASE+PHASE_DRAW+RESET_SELF_TURN)
-	end
-	Duel.RegisterEffect(e1,tp)
-end
-function s.skipcon(e)
-	return Duel.GetTurnCount()~=e:GetLabel()
-end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end

@@ -27,12 +27,7 @@ function s.initial_effect(c)
 	e4:SetCondition(s.descon)
 	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetCode(EFFECT_INDESTRUCTABLE)
-	e5:SetCondition(s.atcon)
-	e5:SetValue(1)
-	c:RegisterEffect(e5)
+
 end
 s.listed_names={7634581}
 function s.atfilter(c)
