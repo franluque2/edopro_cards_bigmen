@@ -249,6 +249,6 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 		end
-		Duel.RegisterFlagEffect(tp, id+4, RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 0, 0)
+		Duel.RegisterFlagEffect(tp, id+4, 0, 0, 0)
 	end
 end
