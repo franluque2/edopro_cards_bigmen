@@ -29,6 +29,15 @@ function s.initial_effect(c)
 	e3:SetOperation(s.op)
 	e3:SetRange(LOCATION_MZONE)
 	c:RegisterEffect(e3)
+	--blow up your tokens
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_DESTROY)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e1:SetCode(EVENT_DESTROYED)
+	e1:SetTarget(s.destg)
+	e1:SetOperation(s.desop)
+	c:RegisterEffect(e1)
 end
 s.listed_names={id+1}
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
@@ -73,7 +82,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end)
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return not e:GetHandler():IsReason(REASON_REPLACE) and e:GetHandler():GetCounter(0x1106)>0 end
+	if chk==0 then return e:GetHandler():IsReason(REASON_BATTLE) and e:GetHandler():GetCounter(0x1106)>0 end
 	e:GetHandler():RemoveCounter(tp,0x1106,1,REASON_EFFECT)
 	return true
 end
@@ -113,4 +122,17 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE)
 		tc:RegisterEffect(e1)
 	end)
+end
+
+function s.filter(c)
+	return c:IsCode(170000175) and c:IsFaceup()
+end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local sg=Duel.GetMatchingGroup(s.filter,tp,LOCATION_ONFIELD,0,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local sg=Duel.GetMatchingGroup(s.filter,tp,LOCATION_ONFIELD,0,nil)
+Duel.Destroy(sg,REASON_EFFECT)
 end
