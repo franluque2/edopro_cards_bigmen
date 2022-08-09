@@ -46,9 +46,68 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e4:SetValue(1)
 		Duel.RegisterEffect(e4,tp)
 
+		--opp can't activate cards or effs in response to your pharaoh
+		local e5=Effect.CreateEffect(e:GetHandler())
+		e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e5:SetCode(EVENT_CHAINING)
+		e5:SetOperation(s.actop)
+		Duel.RegisterEffect(e5,tp)
+
+		--during the end phase, recycle your sarcophagi
+		local e6=Effect.CreateEffect(e:GetHandler())
+		e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e6:SetCountLimit(1)
+		e6:SetCode(EVENT_PHASE+PHASE_END)
+		e6:SetCondition(s.adcon)
+		e6:SetOperation(s.adop)
+		Duel.RegisterEffect(e6,tp)
+
 
 		end
 e:SetLabel(1)
+end
+
+function s.sarc1setfilter(c)
+	return c:IsCode(31076103) and c:IsSSetable()
+end
+
+function s.sarc2deckfilter(c)
+	return c:IsCode(04081094) and c:IsAbleToDeck()
+end
+function s.sarc3deckfilter(c)
+	return c:IsCode(78697395) and c:IsAbleToDeck()
+end
+
+function s.adcon(e,tp,eg,ep,ev,re,r,rp)
+return Duel.GetTurnPlayer()==tp and Duel.IsExistingMatchingCard(s.sarc1setfilter, tp, LOCATION_GRAVE, 0, 1, nil)
+		and Duel.IsExistingMatchingCard(s.sarc2deckfilter, tp, LOCATION_GRAVE, 0, 1, nil) and
+		Duel.IsExistingMatchingCard(s.sarc3deckfilter, tp, LOCATION_GRAVE, 0, 1, nil)
+end
+
+function s.adop(e,tp,eg,ep,ev,re,r,rp)
+if Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
+	Duel.Hint(HINT_CARD,tp,id)
+	local g=Duel.SelectMatchingCard(tp,s.sarc1setfilter,tp,LOCATION_GRAVE,0,1,1,false,nil)
+	local g2=Duel.SelectMatchingCard(tp,s.sarc2deckfilter,tp,LOCATION_GRAVE,0,1,1,false,nil)
+	local g3=Duel.SelectMatchingCard(tp,s.sarc3deckfilter,tp,LOCATION_GRAVE,0,1,1,false,nil)
+	g2:Merge(g3)
+	if #g2>0 then
+		Duel.SendtoDeck(g2, tp, SEQ_DECKBOTTOM, REASON_EFFECT)
+		Duel.SSet(tp, g)
+	end
+end
+end
+
+
+function s.actop(e,tp,eg,ep,ev,re,r,rp)
+	local rc=re:GetHandler()
+	if rc:IsCode(25343280) and re:IsActiveType(TYPE_MONSTER) and ep==tp then
+		Duel.SetChainLimit(s.chainlm)
+	end
+end
+
+function s.chainlm(e,rp,tp)
+	return tp==rp
 end
 
 function s.sarcfilter(c)
