@@ -37,6 +37,10 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetValue(1)
 		Duel.RegisterEffect(e3,tp)
 
+		local e7=Effect.Clone(e3)
+		e7:SetCode(EFFECT_INDESTRUCTABLE)
+		Duel.RegisterEffect(e7, tp)
+
 		--While you control a Level 2 or lower Normal Zombie monster, "Spirit of the Pharaoh" you control cannot be destroyed by battle or by card effects.
 		local e4=Effect.CreateEffect(e:GetHandler())
 		e4:SetType(EFFECT_TYPE_FIELD)
