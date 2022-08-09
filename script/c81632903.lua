@@ -93,7 +93,7 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.hydra_d_filter(c,label)
-	return (c:IsSetCard(0x577) and c:IsAbleToHand() and (not c:IsCode(label))) or c:IsCode(511009503)
+	return (c:IsSetCard(0x577) and c:IsAbleToHand() and (not c:IsCode(label))) -- or c:IsCode(511009503)
 end
 
 
@@ -202,6 +202,8 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 			 local hydra5=Duel.CreateToken(tp,81632006)
 			 local hydra6=Duel.CreateToken(tp,81632007)
 
+			 local perfectron=Duel.CreateToken(tp, 511027001)
+
 		g=Group.CreateGroup()
 		g:AddCard(hydra1)
 		g:AddCard(hydra2)
@@ -209,6 +211,7 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 		g:AddCard(hydra4)
 		g:AddCard(hydra5)
 		g:AddCard(hydra6)
+		g:AddCard(perfectron)
 		Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 
 local field=Duel.CreateToken(tp,81632904)
