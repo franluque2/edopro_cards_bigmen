@@ -86,9 +86,9 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.gate_piece_filter_onfield,tp,LOCATION_MZONE,0,nil)
 	local cg=g:GetClassCount(Card.GetCode)==3
 --
--- Once per turn, you can Special Summon 1 "Sanga of the Thunder", "Suijin" or "Kazejin" from your Hand.
+-- Once per turn, you can Special Summon 1 "Sanga of the Thunder", "Suijin" or "Kazejin" from your Hand or grave.
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.gate_piece_filter,tp,LOCATION_HAND,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.gate_piece_filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp)
 
 -- Once per turn, if you control "Sanga of the Thunder", "Suijin" and "Kazejin",
 -- you can add 1 "Gate Guardian" from your Deck or GY to your Hand.
@@ -112,7 +112,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 --
 -- Once per turn, you can Special Summon 1 "Sanga of the Thunder", "Suijin" or "Kazejin" from your Hand.
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.gate_piece_filter,tp,LOCATION_HAND,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.gate_piece_filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp)
 
 -- Once per turn, if you control "Sanga of the Thunder", "Suijin" and "Kazejin",
 -- you can add 1 "Gate Guardian" from your Deck or GY to your Hand.
@@ -132,7 +132,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		op=op-1
 
 	if op==0 then
-		local g=Duel.SelectMatchingCard(tp,s.gate_piece_filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+		local g=Duel.SelectMatchingCard(tp,s.gate_piece_filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil,e,tp)
 		if #g>0 then
 			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		end
