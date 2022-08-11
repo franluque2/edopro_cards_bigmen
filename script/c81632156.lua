@@ -124,15 +124,15 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	end)
 end
 
-function s.filter(c)
+function s.filter2(c)
 	return c:IsCode(170000175) and c:IsFaceup()
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local sg=Duel.GetMatchingGroup(s.filter,tp,LOCATION_ONFIELD,0,nil)
+	local sg=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_ONFIELD,0,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetMatchingGroup(s.filter,tp,LOCATION_ONFIELD,0,nil)
+	local sg=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_ONFIELD,0,nil)
 Duel.Destroy(sg,REASON_EFFECT)
 end

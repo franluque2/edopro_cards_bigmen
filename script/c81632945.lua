@@ -81,6 +81,15 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e7:SetCondition(s.tgcon)
 		e7:SetValue(s.effectfilter)
 		Duel.RegisterEffect(e7,tp)
+
+
+		local e8=Effect.CreateEffect(c)
+		e8:SetType(EFFECT_TYPE_FIELD)
+		e8:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
+		e8:SetTargetRange(LOCATION_MZONE,0)
+		e8:SetTarget(s.rdtg)
+		e8:SetValue(aux.ChangeBattleDamage(1,HALF_DAMAGE))
+		Duel.RegisterEffect(e8,tp)
 		end
 e:SetLabel(1)
 end
@@ -88,6 +97,9 @@ end
 -- function s.cantlose(c,tp)
 -- 	return not Duel.GetFlagEffect(tp, id+7)>0
 -- end
+function s.rdtg(e,c)
+	return c:IsCode(7634581)
+end
 
 function s.etarget(c)
 	return c:GetOverlayCount()~=0
