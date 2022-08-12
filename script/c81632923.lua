@@ -151,7 +151,7 @@ function s.fusionfilter(c)
 end
 
 function s.exfilter(c,e,tp)
-	return c.material and c:IsType(TYPE_FUSION) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
+	return c.material and c:IsType(TYPE_FUSION) and Duel.IsExistingMatchingCard(s.addfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
 end
 
 function s.addfilter(c,e,tp,fc)
@@ -249,6 +249,6 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 		end
-		Duel.RegisterFlagEffect(tp, id+4, RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END, 0, 0)
+		Duel.RegisterFlagEffect(tp, id+4, 0, 0, 0)
 	end
 end
