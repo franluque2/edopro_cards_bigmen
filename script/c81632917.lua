@@ -258,7 +258,7 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-	local process=Duel.CreateToken(tp, 100000663)
+	local process=Duel.CreateToken(tp, 81632147)
 	Duel.SSet(tp,process)
 	Duel.RegisterFlagEffect(tp, id+5, 0, 0, 0)
 end
