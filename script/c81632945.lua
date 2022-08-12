@@ -83,7 +83,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterEffect(e7,tp)
 
 
-		local e8=Effect.CreateEffect(c)
+		local e8=Effect.CreateEffect(e:GetHandler())
 		e8:SetType(EFFECT_TYPE_FIELD)
 		e8:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
 		e8:SetTargetRange(LOCATION_MZONE,0)
