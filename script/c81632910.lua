@@ -6,7 +6,7 @@ function s.initial_effect(c)
 end
 local unicorns={77506119,13995824,49389523}
 function s.flipconfilter(c)
-	return c:IsFaceup() and s.has_value(unicorns,c:GetOriginalCode())
+	return c:IsFaceup() and s.has_value(unicorns,c:GetCode())
 end
 
 function s.summfilter(c)

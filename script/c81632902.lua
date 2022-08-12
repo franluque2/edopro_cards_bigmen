@@ -41,6 +41,14 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCondition(s.adcon)
 	e1:SetOperation(s.adop)
 	Duel.RegisterEffect(e1,tp)
+
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
+	e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x577))
+	Duel.RegisterEffect(e2,tp)
 end
 
 function s.adcon(e,tp,eg,ep,ev,re,r,rp)
