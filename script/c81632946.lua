@@ -37,8 +37,53 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE)
 		Duel.RegisterEffect(e3,tp)
 
+		local e4=Effect.CreateEffect(e:GetHandler())
+		e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e4:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
+		e4:SetCountLimit(1)
+		e4:SetCondition(s.spcon)
+		e4:SetOperation(s.spop)
+		Duel.RegisterEffect(e4,tp)
+
 	end
 	e:SetLabel(1)
+end
+
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(id,tp)~=0 and Duel.IsTurnPlayer(1-tp) and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_SZONE,0,2,nil)
+end
+
+function s.getflag(g,tp)
+	local flag = 0
+	for c in aux.Next(g) do
+		flag = flag|((1<<c:GetSequence())<<(8+(16*c:GetControler())))
+	end
+	if tp~=0 then
+		flag=((flag<<16)&0xffff)|((flag>>16)&0xffff)
+	end
+	return ~flag
+end
+
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.SelectYesNo(tp, aux.Stringid(id, 3)) then
+		Duel.Hint(HINT_CARD,tp,id)
+
+		local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_SZONE,0,nil)
+		g=g:Filter(Card.IsFacedown,nil)
+		local tc=g:Select(tp, 1, 1,false,nil):GetFirst()
+		local filter=s.getflag(g,tp)
+			Duel.HintSelection(tc)
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
+			local zone=Duel.SelectFieldZone(tp,1,LOCATION_SZONE,0,filter)
+			filter=filter|zone
+			local seq=math.log(zone>>8,2)
+			local oc=Duel.GetFieldCard(tp,LOCATION_SZONE,seq)
+			if oc then
+				Duel.SwapSequence(tc,oc)
+			else
+				Duel.MoveSequence(tc,seq)
+			end
+	end
 end
 
 function s.efilter(e,re,rp)
