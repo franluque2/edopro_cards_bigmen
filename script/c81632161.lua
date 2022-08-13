@@ -36,11 +36,43 @@ function s.initial_effect(c)
 	e4:SetCondition(s.descon)
 	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
+
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e5:SetRange(LOCATION_SZONE)
+	e5:SetCode(EVENT_PHASE+PHASE_STANDBY)
+	e5:SetCondition(s.resetcon)
+	e5:SetTarget(s.target)
+	e5:SetOperation(s.activate)
+	c:RegisterEffect(e5)
+
+	--indestructible
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e6:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e6:SetRange(LOCATION_FZONE)
+	e6:SetCondition(s.ptcon)
+	e6:SetValue(1)
+	c:RegisterEffect(e6)
 end
 s.listed_names={511310101,511310102,511310103,511310104,511310105}
 function s.filter(c)
 	return c:IsCode(511310101,511310102,511310103,511310104,511310105) and c:IsSSetable(true)
 end
+
+function s.futrapfilter(c)
+	return c:IsType(TYPE_TRAP) and c:IsFaceup()
+end
+
+function s.ptcon(e)
+	return Duel.IsExistingMatchingCard(s.futrapfilter,e:GetHandlerPlayer(),LOCATION_SZONE,0,1,nil)
+end
+
+function s.resetcon(e)
+	return not Duel.IsExistingMatchingCard(aux.TRUE, e:GetHandlerPlayer(), LOCATION_SZONE, 0, 1, e:GetHandler())
+end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE,0,1,nil):GetClassCount(Card.GetCode)==5 end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_SZONE,0,e:GetHandler())
@@ -83,7 +115,7 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp) and re and re:GetHandler()~=e:GetHandler()
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_ONFIELD,0,nil,TYPE_SPELL+TYPE_TRAP)
+	local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_SZONE,0,e:GetHandler(),TYPE_SPELL+TYPE_TRAP)
 	if #g>0 then
 		Duel.Destroy(g,REASON_EFFECT)
 	end
