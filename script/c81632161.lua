@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e2:SetTargetRange(LOCATION_SZONE,0)
 	e2:SetCode(EFFECT_DARKNESS_HIDE)
-	e2:SetValue(function(e,c) return c:GetFlagEffect(id)~=0 end)
+	e2:SetValue(function(e,c) return c:GetFlagEffect(511310100)~=0 end)
 	c:RegisterEffect(e2)
 	--Rearrange
 	local e3=Effect.CreateEffect(c)
@@ -60,7 +60,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not s.rescon(sg) then return end
 	local setg=aux.SelectUnselectGroup(sg,e,tp,5,5,s.rescon,1,tp,HINTMSG_SET)
 	if #sg>0 then
-		setg:ForEach(function(c)c:RegisterFlagEffect(id,RESETS_STANDARD-RESET_TOFIELD-RESET_TURN_SET,0,1)end)
+		setg:ForEach(function(c)c:RegisterFlagEffect(511310100,RESETS_STANDARD-RESET_TOFIELD-RESET_TURN_SET,0,1)end)
 		Duel.SSet(tp,setg)
 		Duel.ShuffleSetCard(setg)
 	end
