@@ -157,7 +157,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 --Once per turn, if you control 2 or more monsters, you can add 1 "Dark Tuner Catastrouge" from your Deck or GY to your Hand.
 local b2=Duel.GetFlagEffect(tp, id+6)==0
 		and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,0,2,nil)
-		and Duel.IsExistingMatchingCard(s.catastrogueaddfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+		and Duel.IsExistingMatchingCard(s.catastrogueaddfilter,tp,LOCATION_DECK,0,1,nil)
 
 --Once per turn, you can reveal 1 "Ice Mirror" in your Hand, Special Summon 1 "Blizzard Lizard" from Hand, Deck or GY.
 		local b3=Duel.GetFlagEffect(tp, id+4)==0
@@ -190,7 +190,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	--Once per turn, if you control 2 or more monsters, you can add 1 "Dark Tuner Catastrouge" from your Deck or GY to your Hand.
 	local b2=Duel.GetFlagEffect(tp, id+6)==0
 			and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,0,2,nil)
-			and Duel.IsExistingMatchingCard(s.catastrogueaddfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil)
+			and Duel.IsExistingMatchingCard(s.catastrogueaddfilter,tp,LOCATION_DECK,0,1,nil)
 
 	--Once per turn, you can reveal 1 "Ice Mirror" in your Hand, Special Summon 1 "Blizzard Lizard" from Hand, Deck or GY.
 			local b3=Duel.GetFlagEffect(tp, id+4)==0
@@ -251,7 +251,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 	elseif op==1 then
 
-			local g=Duel.SelectMatchingCard(tp,s.catastrogueaddfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
+			local g=Duel.SelectMatchingCard(tp,s.catastrogueaddfilter,tp,LOCATION_DECK,0,1,1,nil)
 			if #g>0 then
 				Duel.SendtoHand(g, tp,REASON_EFFECT)
 				Duel.ConfirmCards(1-tp, g)
@@ -287,8 +287,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 					remove()
 				end
 			end
-		local newcard=Duel.CreateToken(tp, sg:GetFirst():GetCode())
-		table.insert(dtuners,newcard)
+		-- local newcard=Duel.CreateToken(tp, sg:GetFirst():GetCode())
+		-- table.insert(dtuners,newcard)
 
 		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 
