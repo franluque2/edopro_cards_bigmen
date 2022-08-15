@@ -120,6 +120,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		quasar:RemoveCounter(tp,0x1109,5,REASON_COST)
 
 		 local tc=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, LOCATION_MZONE, 0, 1, 1,false,nil):GetFirst()
+		 local tc2=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, 0 , LOCATION_MZONE, 1, 1,false,nil):GetFirst()
+		 
 			if tc and Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -131,7 +133,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RegisterEffect(e1,tp)
 		end
 
-		local tc2=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, 0 , LOCATION_MZONE, 1, 1,false,nil):GetFirst()
+
 		 if tc2 and Duel.Remove(tc2,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
 		 local e1=Effect.CreateEffect(e:GetHandler())
 		 e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
