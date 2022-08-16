@@ -24,13 +24,13 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
 
-		local e3=Effect.CreateEffect(e:GetHandler())
-		e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e3:SetCode(EVENT_PHASE+PHASE_BATTLE)
-		e3:SetCountLimit(1)
-		e3:SetCondition(s.spcon)
-		e3:SetOperation(s.spop)
-		Duel.RegisterEffect(e3,tp)
+		-- local e3=Effect.CreateEffect(e:GetHandler())
+		-- e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		-- e3:SetCode(EVENT_PHASE+PHASE_BATTLE)
+		-- e3:SetCountLimit(1)
+		-- e3:SetCondition(s.spcon)
+		-- e3:SetOperation(s.spop)
+		-- Duel.RegisterEffect(e3,tp)
 
 		local e8=Effect.CreateEffect(e:GetHandler())
 		e8:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DELAY)
@@ -77,28 +77,28 @@ function s.enginetokenchange(e,tp,eg,ev,ep,re,r,rp)
 	end
 end
 
-function s.summonablemon(c)
-	return c:IsLevelAbove(5) and c:IsSummonable(true, nil)
-end
-
-
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFlagEffect(id,tp)~=0 and Duel.IsExistingMatchingCard(s.summonablemon, tp, LOCATION_HAND, 0, 1, nil)
-end
-
---Once per turn, at the start of your Opponent's Battle Phase, you can banish 1 monster you control. Return that monster to your field during the End Phase.
-
-
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
-		Duel.Hint(HINT_CARD,tp,id)
-		local tc=Duel.SelectMatchingCard(tp, s.summonablemon, tp, LOCATION_HAND, 0, 1,1,false,nil):GetFirst()
-		if tc then
-			Duel.Summon(tp, tc, true, nil)
-		end
-
-	end
-end
+-- function s.summonablemon(c)
+-- 	return c:IsLevelAbove(5) and c:IsSummonable(true, nil)
+-- end
+--
+--
+-- function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+-- 	return Duel.GetFlagEffect(id,tp)~=0 and Duel.IsExistingMatchingCard(s.summonablemon, tp, LOCATION_HAND, 0, 1, nil)
+-- end
+--
+-- --Once per turn, at the start of your Opponent's Battle Phase, you can banish 1 monster you control. Return that monster to your field during the End Phase.
+--
+--
+-- function s.spop(e,tp,eg,ep,ev,re,r,rp)
+-- 	if Duel.SelectYesNo(tp, aux.Stringid(id, 5)) then
+-- 		Duel.Hint(HINT_CARD,tp,id)
+-- 		local tc=Duel.SelectMatchingCard(tp, s.summonablemon, tp, LOCATION_HAND, 0, 1,1,false,nil):GetFirst()
+-- 		if tc then
+-- 			Duel.Summon(tp, tc, true, nil)
+-- 		end
+--
+-- 	end
+-- end
 
 
 
