@@ -13,6 +13,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetCountLimit(1)
 	e2:SetCode(EVENT_PHASE+PHASE_END)
+	e2:SetTarget(s.target)
 	e2:SetOperation(s.rmop)
 	c:RegisterEffect(e2)
 	--add counter on summoned
@@ -28,6 +29,10 @@ function s.initial_effect(c)
 	local e5=e3:Clone()
 	e5:SetCode(EVENT_FLIP)
 	c:RegisterEffect(e5)
+	local e9=e3:Clone()
+	e9:SetCode(EVENT_MOVE)
+	e9:SetCondition(s.movcon)
+	c:RegisterEffect(e9)
 
 	--replace counters
 	-- local e6=Effect.CreateEffect(c)
@@ -59,6 +64,20 @@ function s.initial_effect(c)
 	e8:SetOperation(s.spop)
 	c:RegisterEffect(e8)
 
+end
+
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+		Duel.SetChainLimit(aux.FALSE)
+end
+
+
+function s.efilter(c)
+    return c:IsType(TYPE_MONSTER) and c:IsLocation(LOCATION_MZONE) and c:IsReason(REASON_RETURN)
+end
+
+function s.movcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.efilter,1,nil)
 end
 
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
