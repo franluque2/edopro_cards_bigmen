@@ -30,13 +30,13 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 
 	--replace counters
-	local e6=Effect.CreateEffect(c)
-	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
-	e6:SetRange(LOCATION_FZONE)
-	e6:SetCountLimit(1)
-	e6:SetCode(EVENT_PHASE+PHASE_STANDBY)
-	e6:SetOperation(s.activate)
-	c:RegisterEffect(e6)
+	-- local e6=Effect.CreateEffect(c)
+	-- e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	-- e6:SetRange(LOCATION_FZONE)
+	-- e6:SetCountLimit(1)
+	-- e6:SetCode(EVENT_PHASE+PHASE_STANDBY)
+	-- e6:SetOperation(s.activate)
+	-- c:RegisterEffect(e6)
 
 	--protect quasar
 
@@ -123,11 +123,13 @@ function s.rmcfilter(c)
 	return c:GetCounter(0x1109)~=0
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.rmcfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local tc=g:GetFirst()
 	local c=e:GetHandler()
 	while tc do
-		tc:RemoveCounter(tp,0x1109,1,REASON_EFFECT)
+		if tc:GetCounter(0x1109)>0 then
+			tc:RemoveCounter(tp,0x1109,1,REASON_EFFECT)
+		end
 		if tc:GetCounter(0x1109)==0 then
 			Duel.NegateRelatedChain(tc,RESET_TURN_SET)
 			local e1=Effect.CreateEffect(c)
