@@ -28,7 +28,8 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		local e8=Effect.CreateEffect(e:GetHandler())
 		e8:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DELAY)
 		e8:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e8:SetCode(EVENT_BATTLED)
+		e8:SetCode(EVENT_PHASE_START+PHASE_BATTLE_START)
+		e8:SetCondition(s.setcon)
 		e8:SetOperation(s.pyramidpop)
 		Duel.RegisterEffect(e8,tp)
 
@@ -54,6 +55,12 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	e:SetLabel(1)
 end
 
+function s.setcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(tp,id+4)==0
+			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,15013468)
+			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,51402177)
+			and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
+end
 
 
 function s.immcon(e)
@@ -70,27 +77,22 @@ function s.pyramidfilter(c)
 end
 
 function s.pyramidpop(e,tp,eg,ev,ep,re,r,rp)
-	local tc=Duel.GetAttacker()
-	if (tc:IsCode(15013468) or tc:IsCode(51402177)) and Duel.IsExistingMatchingCard(s.pyramidfilter, tp, LOCATION_SZONE, 0, 1, nil) and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+	if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
 		Duel.Hint(HINT_CARD, tp, id)
-		local tg=Duel.SelectMatchingCard(tp, s.pyramidfilter,tp,LOCATION_SZONE,0,1,1,false,nil):GetFirst()
 
-		-- local e2=Effect.CreateEffect(e:GetHandler())
-		-- e2:SetType(EFFECT_TYPE_SINGLE)
-		-- e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-		-- e2:SetRange(LOCATION_SZONE)
-		-- e2:SetCode(EFFECT_SELF_DESTROY)
-		-- e2:SetCondition(s.descon)
-		-- e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		-- tg:RegisterEffect(e2)
+		local oops=Duel.CreateToken(tp, 55573346)
+		Duel.SSet(tp, oops)
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
+		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+		oops:RegisterEffect(e2)
 
-		Duel.Destroy(tg, REASON_EFFECT)
+		Duel.RegisterFlagEffect(tp,id+4,0,0,0)
 	end
 end
 
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return (Duel.GetCurrentPhase()&(PHASE_DAMAGE|PHASE_DAMAGE_CAL)==0  or Duel.IsDamageCalculated())
-end
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
