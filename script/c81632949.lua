@@ -173,7 +173,7 @@ end
 function s.thfilter(c,tp)
 	return (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or aux.IsCodeListed(c, 64382840)) and c:IsLevelAbove(1)
 		and c:IsAbleToHand()
-		and Duel.IsCanRemoveCounter(tp,1,0,0x1109,c:GetLevel(),REASON_COST)
+		and Duel.IsCanRemoveCounter(tp,1,1,0x1109,c:GetLevel(),REASON_COST)
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
