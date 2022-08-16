@@ -38,7 +38,70 @@ function s.initial_effect(c)
 	e6:SetOperation(s.activate)
 	c:RegisterEffect(e6)
 
+	--protect quasar
+
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e7:SetCode(EFFECT_DESTROY_REPLACE)
+	e7:SetRange(LOCATION_FZONE)
+	e7:SetTarget(s.reptg)
+	e7:SetValue(s.repval)
+	c:RegisterEffect(e7)
+
+	--remove 7 counters from field, ss quasar
+	local e8=Effect.CreateEffect(c)
+	e8:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e8:SetType(EFFECT_TYPE_IGNITION)
+	e8:SetRange(LOCATION_FZONE)
+	e8:SetCountLimit(1,id)
+	e8:SetCost(s.spcost)
+	e8:SetTarget(s.sptg)
+	e8:SetOperation(s.spop)
+	c:RegisterEffect(e8)
+
 end
+
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsCanRemoveCounter(tp,1,1,0x1109,7,REASON_COST) end
+	Duel.RemoveCounter(tp,1,1,0x1109,7,REASON_COST)
+end
+function s.spfilter(c,e,tp)
+	return c:IsCode(50263751) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp)
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then
+
+		return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp)
+	end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_GRAVE)
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil,e,tp)
+	if #g>0 then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
+	end
+end
+
+function s.repfilter(c,tp)
+	return c:IsLocation(LOCATION_MZONE) and c:GetCounter(0x1109)>2 and c:IsCode(50263751)
+		and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT+REASON_BATTLE)
+end
+function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) end
+	Duel.Hint(HINT_CARD,1-tp,id)
+	local g=eg:Filter(s.repfilter,nil,tp)
+	for tc in aux.Next(g) do
+		tc:RemoveCounter(tp,0x1109,3,REASON_EFFECT)
+	end
+	g:KeepAlive()
+	e:SetLabelObject(g)
+	return true
+end
+function s.repval(e,c)
+	return e:GetLabelObject():IsContains(c)
+end
+
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local tc=g:GetFirst()
