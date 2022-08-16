@@ -114,14 +114,14 @@ end
 
 
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+	if Duel.SelectYesNo(tp, aux.Stringid(id, 2)) then
 		Duel.Hint(HINT_CARD,tp,id)
 		local quasar=Duel.SelectMatchingCard(tp, s.greedquasarfilter, tp, LOCATION_ONFIELD, 0, 1,1,false,nil):GetFirst()
 		quasar:RemoveCounter(tp,0x1109,5,REASON_COST)
 
 		 local tc=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, LOCATION_MZONE, 0, 1, 1,false,nil):GetFirst()
 		 local tc2=Duel.SelectMatchingCard(tp, Card.IsAbleToRemove, tp, 0 , LOCATION_MZONE, 1, 1,false,nil):GetFirst()
-		 
+
 			if tc and Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -218,9 +218,9 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	lvt[pc]=nil
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_LVRANK)
 	local lv=Duel.AnnounceNumber(tp,table.unpack(lvt))
-	Duel.RemoveCounter(tp,1,0,0x1109,lv,REASON_COST)
+	Duel.RemoveCounter(tp,1,1,0x1109,lv,REASON_COST)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,lv)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,lv)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
