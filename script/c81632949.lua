@@ -203,6 +203,11 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+function s.filter(c,lv)
+	return  (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or aux.IsCodeListed(c, 64382840)) and c:IsLevel(lv)
+		and c:IsAbleToHand()
+end
+
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil,tp)
 	local lvt={}
@@ -220,7 +225,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local lv=Duel.AnnounceNumber(tp,table.unpack(lvt))
 	Duel.RemoveCounter(tp,1,1,0x1109,lv,REASON_COST)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,lv)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil,lv)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
