@@ -73,7 +73,9 @@ end
 
 
 function s.efilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsLocation(LOCATION_MZONE) and c:IsReason(REASON_RETURN)
+    return c:IsType(TYPE_MONSTER) and c:IsLocation(LOCATION_MZONE) and
+		 not (c:IsReason(REASON_SPSUMMON) or c:IsReason(REASON_SUMMON) or c:IsReason(REASON_FLIP) or c:IsPreviousLocation(LOCATION_DECK)
+	 or c:IsPreviousLocation(LOCATION_HAND) or c:IsPreviousLocation(LOCATION_EXTRA) or c:IsPreviousLocation(LOCATION_GRAVE))
 end
 
 function s.movcon(e,tp,eg,ep,ev,re,r,rp)
