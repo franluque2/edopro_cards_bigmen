@@ -184,6 +184,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
+	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 
 	local b1=Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,78394032)
 				and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,511002408)
@@ -228,7 +229,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 		end
 
 	end
-	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+
 end
 
 
