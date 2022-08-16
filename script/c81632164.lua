@@ -36,10 +36,11 @@ function s.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCountLimit(1)
+	e3:SetCondition(s.eqcon)
 	e3:SetTarget(s.eqtg)
 	e3:SetOperation(s.eqop)
 	c:RegisterEffect(e3)
-	aux.AddEREquipLimit(c,nil,aux.TRUE,s.equipop,e3)
+	aux.AddEREquipLimit(c,s.eqcon,aux.TRUE,s.equipop,e3)
 
 
 	local e4=Effect.CreateEffect(c)
@@ -65,6 +66,16 @@ function s.initial_effect(c)
 	e5:SetOperation(s.tkop)
 	c:RegisterEffect(e5)
 
+end
+
+function s.eqfilter(c)
+	return c:GetFlagEffect(id)~=0
+end
+
+
+function s.eqcon(e,tp,eg,ep,ev,re,r,rp)
+	local g=e:GetHandler():GetEquipGroup():Filter(s.eqfilter,nil)
+	return #g==0
 end
 
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
