@@ -155,7 +155,7 @@ end
 function s.thfilter(c)
 	return ((c:IsMotor() and c:IsType(TYPE_MONSTER) or (aux.IsArchetypeCodeListed(c, 0x537)) and
 	(c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP))) or
- c:IsCode(511002409) or c:IsCode(511002411)) and c:IsAbleToHand()
+ c:IsCode(511002409) or c:IsCode(511002411)) and c:IsAbleToHand() and not c:IsCode(511002408)
 end
 
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)

@@ -28,6 +28,16 @@ function s.initial_effect(c)
 	local e5=e3:Clone()
 	e5:SetCode(EVENT_FLIP)
 	c:RegisterEffect(e5)
+
+	--replace counters
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e6:SetRange(LOCATION_FZONE)
+	e6:SetCountLimit(1)
+	e6:SetCode(EVENT_PHASE+PHASE_STANDBY)
+	e6:SetOperation(s.activate)
+	c:RegisterEffect(e6)
+
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
