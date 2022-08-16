@@ -134,12 +134,12 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+3)>0  then return end
 	--Boolean checks for the activation condition: b1, b2
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and ( Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,78394032)
+			and (( Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,78394032)
 						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,511002408))
 			or (Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,511002408)
 						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,77672444))
 			or (Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,77672444)
-						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,82556058))
+						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,82556058)))
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.motordiscardfilter,tp,LOCATION_HAND,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.motorbackrowfilter,tp,LOCATION_DECK,0,1,nil)
@@ -155,12 +155,12 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and ( Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,78394032)
+			and (( Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,78394032)
 						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,511002408))
 			or (Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,511002408)
 						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,77672444))
 			or (Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,77672444)
-						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,82556058))
+						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,82556058)))
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
 			and Duel.IsExistingMatchingCard(s.motordiscardfilter,tp,LOCATION_HAND,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.motorbackrowfilter,tp,LOCATION_DECK,0,1,nil)
