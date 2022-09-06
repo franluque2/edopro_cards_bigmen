@@ -70,8 +70,8 @@ e:SetLabel(1)
 	end
 
 	function s.checkcon(e,tp,eg,ep,ev,re,r,rp)
-		return (Duel.GetAttacker():IsControler(tp) and Duel.GetAttacker():IsCode(100000139))
-			or (Duel.GetAttackTarget() and Duel.GetAttackTarget():IsControler(tp) and Duel.GetAttackTarget():IsCode(100000139))
+		return Duel.GetAttacker():IsCode(100000139)
+			or Duel.GetAttackTarget():IsCode(100000139)
 	end
 
 	function s.checkop(e,tp,eg,ep,ev,re,r,rp)
