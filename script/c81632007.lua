@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--can only control 1 draghead
 	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsSetCard,1577),LOCATION_MZONE)
-	
+
 	--return to extra in ep, if possible, summon back dragrid
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_TODECK)
@@ -33,7 +33,7 @@ function s.initial_effect(c)
 	e5:SetCondition(s.rmcond)
 	e5:SetOperation(s.atkop)
 	c:RegisterEffect(e5)
-	
+
 end
 
 function s.rmcond(e)
