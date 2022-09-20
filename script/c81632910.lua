@@ -86,7 +86,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 		h1=Duel.IsExistingMatchingCard(s.summfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
 		h2=Duel.IsExistingMatchingCard(s.trap_filter,tp,LOCATION_DECK,0,1,nil,tp)
-		local m=aux.SelectEffect(tp, {h1,aux.Stringid(id,2)},
+		local m=Duel.SelectEffect(tp, {h1,aux.Stringid(id,2)},
 								  {h2,aux.Stringid(id,3)})
 		m=m-1
 		if m==0 then

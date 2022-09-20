@@ -336,7 +336,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			-- and Duel.IsExistingMatchingCard(s.mirrorfilter,tp,LOCATION_DECK,0,1,nil)
 
 
-		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+		local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 									  {b2,aux.Stringid(id,1)},
 										{b3,aux.Stringid(id,4)})
 		op=op-1
@@ -361,7 +361,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		local g1=Duel.IsExistingMatchingCard(s.serpentfilter,tp,LOCATION_DECK,0,1,nil)
 		local g2=Duel.IsExistingMatchingCard(s.dexiafilter,tp,LOCATION_DECK,0,1,nil) and Duel.IsExistingMatchingCard(s.aristerosfilter,tp,LOCATION_DECK,0,1,nil)
 
-		local op2=aux.SelectEffect(tp, {g1,aux.Stringid(id,2)},
+		local op2=Duel.SelectEffect(tp, {g1,aux.Stringid(id,2)},
 									  {g2,aux.Stringid(id,3)})
 
 		op2=op2-1

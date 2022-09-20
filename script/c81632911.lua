@@ -118,7 +118,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil)
 
 	--This auxiliary function should simplify what you did with all the Duel.SelectOption you used previously:
-	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b2,aux.Stringid(id,1)},
 								  {b3,aux.Stringid(id,2)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s

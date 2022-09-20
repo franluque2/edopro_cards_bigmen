@@ -137,7 +137,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b2=Duel.GetFlagEffect(tp, id+6)==0
 		and cg
 
-		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+		local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 									  {b2,aux.Stringid(id,5)})
 		op=op-1
 
@@ -229,7 +229,7 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 			and #g>=10
 			and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
-	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,1)},
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,1)},
 								  {b2,aux.Stringid(id,2)},
 								  {b3,aux.Stringid(id,3)})
 	op=op-1

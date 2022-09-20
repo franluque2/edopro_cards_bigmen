@@ -169,7 +169,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.IsExistingMatchingCard(Card.IsCode, tp, LOCATION_MZONE, 0, 1, nil, 57793869)
 		and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
 
-	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,1)},
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,1)},
 								  {b2,aux.Stringid(id,0)},
 									{b3, aux.Stringid(id, 6)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
@@ -195,7 +195,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	local b3=Duel.IsExistingMatchingCard(s.sendfilter,tp,LOCATION_MZONE,0,1,nil,77672444)
 				and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,82556058)
 
-	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,2)},
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,2)},
 													  {b2,aux.Stringid(id,3)},
 														{b3,aux.Stringid(id,4)})
 						op=op-1

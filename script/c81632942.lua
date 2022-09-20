@@ -146,7 +146,7 @@ local b2=Duel.GetFlagEffect(tp, id+6)==0
 		and Duel.IsExistingMatchingCard(s.arcanaforcehighlevelfilter,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.arcanaforcegravefilter,tp,LOCATION_GRAVE,0,1,nil,e,tp)
 
-		local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+		local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 									  {b2,aux.Stringid(id,1)})
 		op=op-1
 

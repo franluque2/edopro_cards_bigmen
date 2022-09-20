@@ -209,7 +209,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(tp,id+2)==0
 			and (c1 or c2 or c3 or c4 or c5)
 
-		local op=aux.SelectEffect(tp, {c1,aux.Stringid(id,0)},
+		local op=Duel.SelectEffect(tp, {c1,aux.Stringid(id,0)},
 									  {c2,aux.Stringid(id,1)},
 									{c3,aux.Stringid(id,2)},
 									{c4,aux.Stringid(id,3)},

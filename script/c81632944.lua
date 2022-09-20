@@ -245,7 +245,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(tp,id-100+2)==0
 			and Duel.IsExistingMatchingCard(aux.TRUE, tp, LOCATION_MZONE, 0, 1, nil)
 
-		-- local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+		-- local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 		-- 							  {b2,aux.Stringid(id,1)})
 		-- op=op-1
 
