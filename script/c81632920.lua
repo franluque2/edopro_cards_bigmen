@@ -125,7 +125,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 
 
-	local op=aux.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
 								  {b3,aux.Stringid(id,2)},
 								  {b4,aux.Stringid(id,4)})
 	op=op-1
