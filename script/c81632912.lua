@@ -23,7 +23,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	Duel.RegisterEffect(e3,tp)
-	--During the End Phase, switch all "Mutant Mindmaster" you control to Defense Position.
+	--During the End Phase, you can switch all "Mutant Mindmaster" you control to Defense Position.
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetTargetRange(LOCATION_MZONE,0)
@@ -33,8 +33,25 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetOperation(s.swapop)
 	Duel.RegisterEffect(e1,tp)
 
+	--while you control 2 or more monsters, your opponent cannot choose Mutant Mindmaster you control for attacks
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetTargetRange(0,LOCATION_MZONE)
+	e2:SetCode(EFFECT_CANNOT_SELECT_BATTLE_TARGET)
+	e2:SetCondition(s.cannottgcon)
+	e2:SetValue(s.cannotatk)
+	Duel.RegisterEffect(e2,tp)
 
 	Duel.RegisterFlagEffect(tp,id,0,0,0)
+end
+
+
+function s.cannottgcon(e)
+	return Duel.GetMatchingGroupCount(aux.TRUE,e:GetHandlerPlayer(),LOCATION_MZONE,0,nil)>1
+end
+
+function s.cannotatk(e,c)
+	return c:IsCode(11508758) and c:IsFaceup()
 end
 
 function s.flipconfilter(c)
@@ -106,9 +123,11 @@ function s.swapcon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.swapop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_CARD,tp,id)
-	local g=Duel.GetMatchingGroup(s.flipconfilter,tp,LOCATION_MZONE,0,nil)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
+	if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+		Duel.Hint(HINT_CARD,tp,id)
+		local g=Duel.GetMatchingGroup(s.flipconfilter,tp,LOCATION_MZONE,0,nil)
+		Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
+end
 	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
 

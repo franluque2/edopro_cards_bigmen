@@ -23,46 +23,49 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
 
+		--"Imperial Custom" you control cannot be destroyed by the effect of "Jester Queen".
 		local e2=Effect.CreateEffect(e:GetHandler())
 		e2:SetType(EFFECT_TYPE_FIELD)
 		e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
-		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 		e2:SetTargetRange(LOCATION_ONFIELD,0)
-		e2:SetTarget(s.sphinxfilter)
-		e2:SetValue(aux.TRUE)
+		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+		e2:SetValue(s.indval)
 		Duel.RegisterEffect(e2,tp)
 
+
+		--During your End Phase, you can return all monsters you control to the Hand.
+		local e3=Effect.CreateEffect(e:GetHandler())
+		e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e3:SetCountLimit(1)
+		e3:SetCode(EVENT_PHASE+PHASE_END)
+		e3:SetCondition(s.bouncecon)
+		e3:SetOperation(s.bounceop)
+		Duel.RegisterEffect(e3,tp)
 
 	end
 	e:SetLabel(1)
 end
 
-
-
-function s.sphinxfilter(_,c)
-	return (c:IsCode(15013468) or c:IsCode(51402177)) and c:IsFaceup()
-
+function s.atohandfilter(c)
+	return c:IsAbleToHand()
 end
 
-function s.pyramidfilter(c)
-	return c:IsCode(53569894) and c:IsFaceup()
+function s.bouncecon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()==tp and Duel.IsExistingMatchingCard(s.atohandfilter, tp, LOCATION_MZONE, 0, 1, nil)
 end
 
-function s.pyramidpop(e,tp,eg,ev,ep,re,r,rp)
-	if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
-		Duel.Hint(HINT_CARD, tp, id)
-
-		local oops=Duel.CreateToken(tp, 55573346)
-		Duel.SSet(tp, oops)
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
-		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
-		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		oops:RegisterEffect(e2)
-
-		Duel.RegisterFlagEffect(tp,id+4,0,0,0)
+function s.bounceop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.SelectYesNo(tp, aux.Stringid(id, 2)) then
+		Duel.Hint(HINT_CARD,tp,id)
+		local g=Duel.GetMatchingGroup(s.atohandfilter, tp, LOCATION_MZONE, 0, nil)
+		if g then
+			Duel.SendtoHand(g, tp, REASON_EFFECT)
+		end
 	end
+end
+
+function s.indval(e,re,rp)
+	return re:GetOwner():IsCode(511000026)
 end
 
 
@@ -73,138 +76,116 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
-	s.setpyramid(e,tp,eg,ep,ev,re,r,rp)
+	s.setcustom(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(ep,id,0,0,0)
 end
 
-function s.setpyramid(e,tp,eg,ep,ev,re,r,rp)
-	local pyramid=Duel.CreateToken(tp, 53569894)
-	Duel.SSet(tp, pyramid)
+--At the start of the duel, set 1 "Imperial Custom" from outside the duel to your Spell/Trap Zone. It can be activated this turn.
+function s.setcustom(e,tp,eg,ep,ev,re,r,rp)
+	local icustom=Duel.CreateToken(tp, 09995766)
+	Duel.SSet(tp, icustom)
+	local e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
+	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+	icustom:RegisterEffect(e2)
 end
 
-function s.sumfilter(c,e,tp)
-	return c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) and (c:IsCode(15013468) or c:IsCode(51402177))
+function s.isjesterfilter(c)
+	return c:IsSetCard(0x152c) or c:IsCode(62962630) or c:IsCode(25280974) or c:IsCode(80275707)
+	 or c:IsCode(511000000) or c:IsCode(511000026) or c:IsCode(08487449) or c:IsCode(72992744)
+	 or c:IsCode(100000195) or c:IsCode(511000810) or c:IsCode(88722973)
 end
 
-function s.fucodefilter(c,code)
-	return c:IsFaceup() and c:IsCode(code)
+function s.conttrapfiler(c)
+	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsSSetable()
 end
 
-function s.pyramidbanish(c)
-	return c:IsCode(53569894) and c:IsAbleToRemove()
+function s.icustomfilter(c)
+	return c:IsCode(09995766) and c:IsFaceup()
+end
+
+function s.cfilter(c,tp)
+	return not c:IsPublic() and s.isjesterfilter(c) and c:IsAbleToDeck() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
+end
+function s.thfilter(c,rc)
+	return s.isjesterfilter(c) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER) and not c:IsCode(rc:GetCode())
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	--OPT check
-	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0 and Duel.GetFlagEffect(tp, id+3)>0  then return end
+	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0  then return end
 	--Boolean checks for the activation condition: b1, b2
+
+	--Once per turn, if you control "Imperial Customs", you can set 1 Continuous Trap from your Deck to your Spell/Trap Zone. It can be activated this turn.
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and Duel.IsExistingMatchingCard(s.pyramidfilter,tp,LOCATION_ONFIELD,0,1,nil)
-						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.icustomfilter,tp,LOCATION_ONFIELD,0,1,nil)
+						and Duel.IsExistingMatchingCard(s.conttrapfiler,tp,LOCATION_DECK,0,1,nil)
 
+-- Once per turn, you can reveal 1 "Jester" monster in your hand, add 1 "Jester" monster from your Deck to your hand with a different name than the revealed card, then shuffle the revealed card into the Deck.
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,15013468)
-			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,51402177)
+			and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp)
 
-	local b3=Duel.GetFlagEffect(tp, id+3)==0
-		and Duel.IsExistingMatchingCard(s.fucodefilter, tp, LOCATION_MZONE, 0, 1, nil, 87997872)
-		and Duel.IsExistingMatchingCard(s.pyramidbanish,tp,LOCATION_GRAVE,0,1,nil)
 
-	return aux.CanActivateSkill(tp) and (b1 or b2 or b3)
+	return aux.CanActivateSkill(tp) and (b1 or b2)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Boolean check for effect 1:
+	--Once per turn, if you control "Imperial Customs", you can set 1 Continuous Trap from your Deck to your Spell/Trap Zone. It can be activated this turn.
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and Duel.IsExistingMatchingCard(s.pyramidfilter,tp,LOCATION_ONFIELD,0,1,nil)
-						and Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil,e,tp)
+			and Duel.IsExistingMatchingCard(s.icustomfilter,tp,LOCATION_ONFIELD,0,1,nil)
+						and Duel.IsExistingMatchingCard(s.conttrapfiler,tp,LOCATION_DECK,0,1,nil)
 
+-- Once per turn, you can reveal 1 "Jester" monster in your hand, add 1 "Jester" monster from your Deck to your hand with a different name than the revealed card, then shuffle the revealed card into the Deck.
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,15013468)
-			and Duel.IsExistingMatchingCard(s.fucodefilter,tp,LOCATION_ONFIELD,0,1,nil,51402177)
+			and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp)
 
-	local b3=Duel.GetFlagEffect(tp, id+3)==0
-		and Duel.IsExistingMatchingCard(s.fucodefilter, tp, LOCATION_MZONE, 0, 1, nil, 87997872)
-		and Duel.IsExistingMatchingCard(s.pyramidbanish,tp,LOCATION_GRAVE,0,1,nil)
 
-	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,1)},
-								  {b2,aux.Stringid(id,2)},
-									{b3, aux.Stringid(id, 3)})
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
+								  {b2,aux.Stringid(id,1)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
 		s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	elseif op==1 then
 		s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	elseif op==2 then
-		s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---Special Summon 1 "Andro Sphinx" or "Sphinx Teleia" that is banished or in your GY.
+--Set 1 Continuous Trap from your Deck to your Spell/Trap Zone. It can be activated this turn.
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-
-	local g=Duel.SelectMatchingCard(tp, s.sumfilter, tp, LOCATION_GRAVE+LOCATION_REMOVED, 0, 1,1,false,nil,e,tp)
-
-	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
+	local g=Duel.SelectMatchingCard(tp, s.conttrapfiler, tp, LOCATION_DECK, 0, 1,1,false,nil)
+	if g then
+		Duel.SSet(tp, g)
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
+		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+		g:GetFirst():RegisterEffect(e2)
 	end
 
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-
-
 end
 
-function s.filter(c)
-	return c:IsPosition(POS_FACEUP_ATTACK) and c:IsCanChangePosition()
-end
 
-function s.target(e,c)
-	return (c:IsCode(15013468) or c:IsCode(51402177)) and c:IsFaceup()
-end
--- Switch all monsters your opponent controls to DEF Position (if any), and until the end of this turn,
---when a "Sphinx" monster you control attacks a Defense Position monster your opponent controls, inflict piercing battle damage to your opponent.
+--reveal 1 "Jester" monster in your hand, add 1 "Jester" monster from your Deck to your hand with a different name than the revealed card, then shuffle the revealed card into the Deck.
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-
-	local g=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
-
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_PIERCE)
-	e1:SetTargetRange(LOCATION_MZONE,0)
-	e1:SetTarget(s.target)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
-
-
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
-end
-
-function s.efilter(e,re)
-	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
-end
-
-function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
-
-	local g=Duel.SelectMatchingCard(tp, s.pyramidbanish, tp, LOCATION_GRAVE, 0, 1,1,false,nil)
-
-	if Duel.Remove(g, POS_FACEUP, REASON_COST) then
-		local tc=Duel.SelectMatchingCard(tp, s.fucodefilter, tp,LOCATION_MZONE,0,1,1,false,nil,87997872):GetFirst()
-		if tc then
-			local e3=Effect.CreateEffect(e:GetHandler())
-			e3:SetDescription(3110)
-			e3:SetType(EFFECT_TYPE_SINGLE)
-			e3:SetCode(EFFECT_IMMUNE_EFFECT)
-			e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_CLIENT_HINT)
-			e3:SetRange(LOCATION_MZONE)
-			e3:SetValue(s.efilter)
-			e3:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
-			e3:SetOwnerPlayer(tp)
-			tc:RegisterEffect(e3)
-		end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+	local g=Duel.SelectMatchingCard(tp, s.cfilter, tp, LOCATION_HAND, 0, 1,1,false,nil,tp)
+	if g then
+		Duel.ConfirmCards(1-tp, g)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+		local tc=Duel.SelectMatchingCard(tp, s.thfilter, tp, LOCATION_DECK, 0, 1,1,false,nil,g:GetFirst())
+			if tc then
+				Duel.SendtoHand(tc, tp, REASON_EFFECT)
+				Duel.SendtoDeck(g, tp, SEQ_DECKSHUFFLE, REASON_EFFECT)
+			end
 	end
 
-	Duel.RegisterFlagEffect(tp,id+3,0,0,0)
+	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
