@@ -1,4 +1,7 @@
 --Tops Society
+Duel.LoadScript("big_aux.lua")
+
+
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -92,11 +95,6 @@ function s.setcustom(e,tp,eg,ep,ev,re,r,rp)
 	icustom:RegisterEffect(e2)
 end
 
-function s.isjesterfilter(c)
-	return c:IsSetCard(0x152c) or c:IsCode(62962630) or c:IsCode(25280974) or c:IsCode(80275707)
-	 or c:IsCode(511000000) or c:IsCode(511000026) or c:IsCode(08487449) or c:IsCode(72992744)
-	 or c:IsCode(100000195) or c:IsCode(511000810) or c:IsCode(88722973)
-end
 
 function s.conttrapfiler(c)
 	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsSSetable()
@@ -107,10 +105,10 @@ function s.icustomfilter(c)
 end
 
 function s.cfilter(c,tp)
-	return not c:IsPublic() and s.isjesterfilter(c) and c:IsAbleToDeck() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
+	return not c:IsPublic() and c:IsJester() and c:IsAbleToDeck() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
 end
 function s.thfilter(c,rc)
-	return s.isjesterfilter(c) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER) and not c:IsCode(rc:GetCode())
+	return c:IsJester() and c:IsAbleToHand() and c:IsType(TYPE_MONSTER) and not c:IsCode(rc:GetCode())
 end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
