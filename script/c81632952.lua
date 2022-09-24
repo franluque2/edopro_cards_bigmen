@@ -95,9 +95,34 @@ function s.setcustom(e,tp,eg,ep,ev,re,r,rp)
 	icustom:RegisterEffect(e2)
 end
 
+local MakeCheck=function(setcodes,archtable,extrafuncs)
+	return function(c,sc,sumtype,playerid)
+		sumtype=sumtype or 0
+		playerid=playerid or PLAYER_NONE
+		if extrafuncs then
+			for _,func in pairs(extrafuncs) do
+				if Card[func](c,sc,sumtype,playerid) then return true end
+			end
+		end
+		if setcodes then
+			for _,setcode in pairs(setcodes) do
+				if c:IsSetCard(setcode,sc,sumtype,playerid) then return true end
+			end
+		end
+		if archtable then
+			if c:IsSummonCode(sc,sumtype,playerid,table.unpack(archtable)) then return true end
+		end
+		return false
+	end
+end
+
+
+
+local set_traps={09995766}
+Card.hasbeenset=MakeCheck(nil,set_traps)
 
 function s.conttrapfiler(c)
-	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsSSetable()
+	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsSSetable() and not c:hasbeenset()
 end
 
 function s.icustomfilter(c)
@@ -105,7 +130,7 @@ function s.icustomfilter(c)
 end
 
 function s.cfilter(c,tp)
-	return not c:IsPublic() and c:IsJester() and c:IsAbleToDeck() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c)
+	return not c:IsPublic() and c:IsJester() and c:IsAbleToDeck() and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c) and c:IsType(TYPE_MONSTER)
 end
 function s.thfilter(c,rc)
 	return c:IsJester() and c:IsAbleToHand() and c:IsType(TYPE_MONSTER) and not c:IsCode(rc:GetCode())
@@ -153,19 +178,25 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+
+
 --Set 1 Continuous Trap from your Deck to your Spell/Trap Zone. It can be activated this turn.
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-	local g=Duel.SelectMatchingCard(tp, s.conttrapfiler, tp, LOCATION_DECK, 0, 1,1,false,nil)
+	local g=Duel.SelectMatchingCard(tp, s.conttrapfiler, tp, LOCATION_DECK, 0, 1,1,false,nil):GetFirst()
 	if g then
+		table.insert(set_traps,g:GetCode())
 		Duel.SSet(tp, g)
 		local e2=Effect.CreateEffect(e:GetHandler())
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
 		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-		g:GetFirst():RegisterEffect(e2)
+		g:RegisterEffect(e2)
+
 	end
+
+
 
 	Duel.RegisterFlagEffect(tp,id+1,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
 end
@@ -185,5 +216,5 @@ function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 			end
 	end
 
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 end
