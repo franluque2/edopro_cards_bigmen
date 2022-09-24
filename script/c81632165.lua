@@ -37,7 +37,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
 end
 function s.filter(c,e,tp)
-	return c:IsJester() and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(81632165)
+	return c:IsJester() and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(511002198)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc,e,tp) end
