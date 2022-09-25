@@ -32,6 +32,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 		e2:SetTargetRange(LOCATION_ONFIELD,0)
 		e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+		e2:SetTarget(s.indestg)
 		e2:SetValue(s.indval)
 		Duel.RegisterEffect(e2,tp)
 
@@ -51,6 +52,10 @@ end
 
 function s.atohandfilter(c)
 	return c:IsAbleToHand()
+end
+
+function s.indestg(e,c)
+	return c:IsCode(09995766)
 end
 
 function s.bouncecon(e,tp,eg,ep,ev,re,r,rp)
