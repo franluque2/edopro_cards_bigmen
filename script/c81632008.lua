@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(0x577)
 	--link summon
-	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),5,5,s.lcheck) --
+	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),3,5,s.lcheck) --
 	c:EnableReviveLimit()
 	--place
 	local e1=Effect.CreateEffect(c)
@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	e1:SetCondition(s.ctcon)
 	e1:SetOperation(s.ctop)
 	c:RegisterEffect(e1)
-	
+
 	--remove a counter, summon a random draghead
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,3))
@@ -52,7 +52,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return c:IsCanRemoveCounter(tp,0x577,1,REASON_COST) end
 	c:RemoveCounter(tp,0x577,1,REASON_COST)
 end
-function s.spcon(e) 
+function s.spcon(e)
 	return Duel.IsMainPhase() and e:GetHandler():IsInExtraMZone()
 end
 
@@ -124,37 +124,37 @@ function s.fieldfilter(c)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	
+
 		local d=Duel.TossDice(tp,1)
 		if d==1 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_earth,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==2 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_water,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==3 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_fire,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==4 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_wind,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif d==5 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_light,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		else
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local tc=Duel.SelectMatchingCard(tp,s.draghead_filter_dark,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then 
+		if tc and Duel.SendtoDeck(c,nil,0,REASON_EFFECT) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 end
 end

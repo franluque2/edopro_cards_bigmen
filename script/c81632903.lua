@@ -68,8 +68,8 @@ end
 
 local tableHydra_l1={511009711,511009713,511009714,511600223,511027009}
 local tableHydra_l2={511009716}
-local tableHydra_l3={511106013,511027010, 511009717}
-local tableHydra_l4={511106014}
+local tableHydra_l3={511106013,81632167, 81632168}
+local tableHydra_l4={81632169}
 
 function s.getcard1()
 return tableHydra_l1[ math.random( #tableHydra_l1 ) ]
@@ -158,7 +158,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 		--opt register
-		Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+		Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 
 	end
 end
