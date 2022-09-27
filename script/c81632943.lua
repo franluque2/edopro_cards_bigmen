@@ -75,7 +75,7 @@ function s.copyhand(e,tp,eg,ep,ev,re,r,rp)
 			local newcard=nil
 			while tc do
 
-				newcard=Duel.CreateToken(tp, tc:GetCode())
+				newcard=Duel.CreateToken(tp, tc:GetOriginalCode())
 				Duel.SendtoHand(newcard, tp, REASON_EFFECT)
 
 
@@ -99,7 +99,7 @@ function s.copyextra(e,tp,eg,ep,ev,re,r,rp)
 			local newcard=nil
 			while tc do
 
-				newcard=Duel.CreateToken(tp, tc:GetCode())
+				newcard=Duel.CreateToken(tp, tc:GetOriginalCode())
 				Duel.SendtoDeck(newcard, tp, SEQ_DECKTOP, REASON_EFFECT)
 
 				tc=oppcards:GetNext()
@@ -125,7 +125,7 @@ function s.copydeck(e,tp,eg,ep,ev,re,r,rp)
 			local newcard=nil
 			while tc do
 
-				newcard=Duel.CreateToken(tp, tc:GetCode())
+				newcard=Duel.CreateToken(tp, tc:GetOriginalCode())
 				Duel.SendtoDeck(newcard, tp, SEQ_DECKTOP, REASON_EFFECT)
 
 				tc=oppcards:GetNext()
