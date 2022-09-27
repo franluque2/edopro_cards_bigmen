@@ -50,7 +50,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(c,REASON_COST+REASON_DISCARD)
 end
 function s.thfilter1(c)
-	return (c:IsCode(450000110) or ((aux.IsCodeListed(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and not c:IsCode(id))) and c:IsAbleToHand()
+	return (c:IsCode(450000110) or ((Card.ListsCode(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and not c:IsCode(id))) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter1,tp,LOCATION_DECK,0,1,nil) end

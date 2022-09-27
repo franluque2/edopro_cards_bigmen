@@ -60,7 +60,7 @@ function s.failter(c)
 end
 
 function s.addfilter(c)
-	return c:IsAbleToHand() and c:IsType(TYPE_SPELL) and aux.IsCodeListed(c,100000650) and not (c:IsCode(100000650) or c:IsCode(100000664) or c:IsCode(100000663))
+	return c:IsAbleToHand() and c:IsType(TYPE_SPELL) and Card.ListsCode(c,100000650) and not (c:IsCode(100000650) or c:IsCode(100000664) or c:IsCode(100000663))
 end
 function s.atarget(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.addfilter, tp, LOCATION_DECK, 0, 1, nil)

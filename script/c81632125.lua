@@ -19,7 +19,7 @@ function s.tgfilter(c)
 end
 
 function s.tgfilter2(c)
-	return aux.IsCodeListed(c, 450000110) and (c:IsAbleToHand() or c:IsSSetable()) and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP)) and not c:IsCode(81000061)
+	return Card.ListsCode(c, 450000110) and (c:IsAbleToHand() or c:IsSSetable()) and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP)) and not c:IsCode(81000061)
 end
 
 function s.staddreamsfilter(c)

@@ -58,7 +58,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.spfilter(c,e,tp)
-	return c:IsType(TYPE_MONSTER) and (aux.IsCodeListed(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsType(TYPE_MONSTER) and (Card.ListsCode(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

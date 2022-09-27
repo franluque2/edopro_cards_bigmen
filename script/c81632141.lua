@@ -43,7 +43,7 @@ end
 s.listed_names={511000380}
 
 function s.filter(c)
-	return ((c:IsSetCard(0x51e) and c:IsType(TYPE_MONSTER)) or aux.IsCodeListed(c, 511000380)) and c:IsAbleToHand() and not c:IsCode(511000380)
+	return ((c:IsSetCard(0x51e) and c:IsType(TYPE_MONSTER)) or Card.ListsCode(c, 511000380)) and c:IsAbleToHand() and not c:IsCode(511000380)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

@@ -171,7 +171,7 @@ end
 
 
 function s.thfilter(c,tp)
-	return (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or aux.IsCodeListed(c, 64382840)) and c:IsLevelAbove(1)
+	return (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or Card.ListsCode(c, 64382840)) and c:IsLevelAbove(1)
 		and c:IsAbleToHand()
 		and Duel.IsCanRemoveCounter(tp,1,1,0x1109,c:GetLevel(),REASON_COST)
 end
@@ -204,7 +204,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.filter(c,lv)
-	return  (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or aux.IsCodeListed(c, 64382840)) and c:IsLevel(lv)
+	return  (c:IsCode(511009012) or c:IsCode(511009011) or c:IsCode(50263751) or c:IsCode(64382839) or Card.ListsCode(c, 64382840)) and c:IsLevel(lv)
 		and c:IsAbleToHand()
 end
 

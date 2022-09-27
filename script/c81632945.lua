@@ -255,7 +255,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.listsorisshunoros(c)
-	return (aux.IsCodeListed(c,7634581) or c:IsCode(7634581)) and c:IsAbleToDeck() and not c:IsPublic()
+	return (Card.ListsCode(c,7634581) or c:IsCode(7634581)) and c:IsAbleToDeck() and not c:IsPublic()
 end
 
 function s.kyutora_or_gigas(c)
