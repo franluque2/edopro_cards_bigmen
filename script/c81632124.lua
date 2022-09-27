@@ -39,7 +39,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thfilter(c)
-	return (aux.IsCodeListed(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return (Card.ListsCode(c, 450000110) or c:IsCode(450000111) or c:IsCode(450000112) or c:IsCode(810000059)) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 
 function s.activate(e,tp,eg,ep,ev,re,r,rp)

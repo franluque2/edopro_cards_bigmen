@@ -85,7 +85,7 @@ function s.subspainfilter(c)
 end
 
 function s.tgfilter(c)
-	return (aux.IsCodeListed(c,511004336) or c:IsCode(511004337) or c:IsCode(511004339) or c:IsCode(511004327) or c:IsCode(511004336) or c:IsCode(511004328)) and
+	return (Card.ListsCode(c,511004336) or c:IsCode(511004337) or c:IsCode(511004339) or c:IsCode(511004327) or c:IsCode(511004336) or c:IsCode(511004328)) and
 	c:IsType(TYPE_SPELL) and c:IsSSetable()
 end
 
