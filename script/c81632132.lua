@@ -22,14 +22,23 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 
 	--make 2x tribute
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_GRAVE)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetCost(aux.bfgcost)
-	e2:SetTarget(s.target2)
-	e2:SetOperation(s.operation2)
-	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_IGNITION)
+	e3:SetRange(LOCATION_GRAVE)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetCost(aux.bfgcost)
+	e3:SetTarget(s.target2)
+	e3:SetOperation(s.operation2)
+	c:RegisterEffect(e3)
+
+--Name becomes "Hot Sauce Bottle" while in Hand, Deck and GY
+    local e4=Effect.CreateEffect(c)
+    e4:SetType(EFFECT_TYPE_SINGLE)
+    e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+    e4:SetRange(LOCATION_GRAVE+LOCATION_DECK+LOCATION_HAND)
+    e4:SetCode(EFFECT_CHANGE_CODE)
+    e4:SetValue(100000320)
+    c:RegisterEffect(e4)
 
 end
 function s.tokenfilter(c)
