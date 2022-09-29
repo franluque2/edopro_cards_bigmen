@@ -41,7 +41,7 @@ function s.initial_effect(c)
 end
 
 function s.thfilter1(c)
-	return c:IsCode(511002458) and c:IsAbleToHand()
+	return c:IsOriginalCode(81632132) and c:IsAbleToHand()
 end
 
 function s.flipfliter(c)
