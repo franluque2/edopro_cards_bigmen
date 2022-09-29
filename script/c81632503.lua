@@ -94,6 +94,9 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 					local salmon=temp:Select(tp,1,1,nil)
 					if salmon then
 						Duel.SpecialSummon(salmon, SUMMON_TYPE_SPECIAL, tp, tp, false,false,POS_FACEUP)
+						if salmon:GetFirst():GetPreviousLocation()==LOCATION_HAND then
+							Duel.Draw(tp, 1, REASON_EFFECT)
+						end
 						tc=tc:RemoveCard(salmon)
 					end
 				end
