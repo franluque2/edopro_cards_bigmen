@@ -62,7 +62,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) and ct>=2 then ct=1 end
 	if ct>zones then ct=zones end
 	for i=1,ct do
-		local token=Duel.CreateToken(tp,id+1)
+		local token=Duel.CreateToken(tp,34479659)
 		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
