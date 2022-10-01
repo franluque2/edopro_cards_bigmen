@@ -1,4 +1,8 @@
 --Look Ma, No Hands!
+
+Duel.LoadScript("big_aux.lua")
+
+
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -84,9 +88,9 @@ end
 
 function s.upgrade(e,tp,eg,ep,ev,re,r,rp)
 	if ep~=tp then return end
-	if Duel.GetFlagEffect(tp, id+8)>0 then return end
+	if kdr.IsQuestDone(tp) then return end
 	if Duel.GetMatchingGroupCount(Card.IsCode, tp, LOCATION_GRAVE, 0, nil, CARD_SKULL_SERVANT)>2 then
-		Duel.RegisterFlagEffect(tp, id+8, 0, 0, 0)
+		kdr.CompleteQuest(tp)
 		e:GetHandler():Recreate(id+1)
 		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
 		Duel.Hint(HINT_SKILL,tp,id+1)
@@ -94,7 +98,7 @@ function s.upgrade(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.discard_from_starting_hand(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, id+8)>0 then
+	if kdr.IsQuestDone(tp) then
 		Duel.Hint(HINT_CARD,tp,id+1)
 	else
 		Duel.Hint(HINT_CARD,tp,id)
@@ -118,7 +122,7 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, id+8)>0 then
+	if kdr.IsQuestDone(tp) then
 		Duel.Hint(HINT_CARD,tp,id+1)
 	else
 		Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -168,7 +172,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	-- (QUEST) Once per turn, you can banish 1 “Skull Servant” from your GY to grant 1 “Skull Servant” you control 2000 ATK until the end of the next turn.
 	local b4=Duel.GetFlagEffect(tp,id+4)==0
-			and Duel.GetFlagEffect(tp,id+8)>0
+			and kdr.IsQuestDone(tp)
 			and Duel.IsExistingMatchingCard(s.efilter2,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.skull_servant_banish_filter,tp,LOCATION_GRAVE,0,1,nil)
 
@@ -176,7 +180,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	return aux.CanActivateSkill(tp) and (b1 or b2 or b3 or b4)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, id+8)>0 then
+	if kdr.IsQuestDone(tp) then
 		Duel.Hint(HINT_CARD,tp,id+1)
 	else
 		Duel.Hint(HINT_CARD,tp,id)
@@ -198,7 +202,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 
 	-- (QUEST) Once per turn, you can banish 1 “Skull Servant” from your GY to grant 1 “Skull Servant” you control 2000 ATK until the end of the next turn.
 	local b4=Duel.GetFlagEffect(tp,id+4)==0
-			and Duel.GetFlagEffect(tp,id+8)>0
+			and kdr.IsQuestDone(tp)
 			and Duel.IsExistingMatchingCard(s.efilter2,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.skull_servant_banish_filter,tp,LOCATION_GRAVE,0,1,nil)
 

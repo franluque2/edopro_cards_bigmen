@@ -134,3 +134,33 @@ function bRush.disabledzones(e,tp,eg,ep,ev,re,r,rp)
 			return 0x11110000
 	end
 end
+
+
+if not kdr then
+
+	kdr_aux={}
+
+	kdr=kdr_aux
+
+
+	function kdr.IsQuestDone(tp)
+		return Duel.GetFlagEffect(tp, 81632500)>0
+	end
+
+	function kdr.CompleteQuest(tp)
+		Duel.RegisterFlagEffect(tp, 81632500, 0, 0, 0)
+	end
+
+	function kdr.GetDex(tp)
+		return Duel.GetFlagEffect(tp, 81632650)
+	end
+
+	function kdr.GetCon(tp)
+		return Duel.GetFlagEffect(tp, 81632651)
+	end
+
+	function kdr.GetStr(tp)
+		return Duel.GetFlagEffect(tp, 81632652)
+	end
+
+end

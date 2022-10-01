@@ -1,5 +1,8 @@
 --Go Fishing
 
+Duel.LoadScript("big_aux.lua")
+
+
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -69,7 +72,7 @@ end
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
-		if Duel.GetFlagEffect(tp, id+8)>0 then
+		if kdr.IsQuestDone(tp) then
 			Duel.Hint(HINT_CARD,tp,id+1)
 		else
 			Duel.Hint(HINT_CARD,tp,id)
@@ -85,7 +88,7 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 		local tc=Duel.GetDecktopGroup(tp,g):Filter(s.adfil,nil)
 
 		if #tc>0 then
-			if #tc:Filter(Card.IsCode,nil,TERORKING_SALMON)>0 and (Duel.GetFlagEffect(tp, id+8)==0 ) then
+			if #tc:Filter(Card.IsCode,nil,TERORKING_SALMON)>0 and (not kdr.IsQuestDone(tp)) then
 				s.upgrade(e, tp, eg, ep, ev, re, r, rp)
 				if Duel.SelectYesNo(tp, aux.Stringid(id, 1)) then
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -106,12 +109,12 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 			local ath=tc:Select(tp,1,1,nil)
 			Duel.SendtoHand(ath, tp, REASON_EFFECT)
 
-			-- Debug.Message(Duel.GetFlagEffect(tp, id+8)>0)
+			-- Debug.Message(kdr.IsQuestDone(tp))
 			-- Debug.Message(Duel.IsExistingMatchingCard(s.futerrorkingfilter, tp, LOCATION_MZONE, 0, 1, nil))
 			-- Debug.Message(#tc:Filter(s.desfilter,nil)>0)
 			-- Debug.Message(Duel.GetFlagEffect(tp, id+2)==0)
 
-			if (Duel.GetFlagEffect(tp, id+8)>0 ) and Duel.IsExistingMatchingCard(s.futerrorkingfilter, tp, LOCATION_MZONE, 0, 1, nil) and (#tc:Filter(s.desfilter,nil)>0) and (Duel.GetFlagEffect(tp, id+2)==0) then
+			if (kdr.IsQuestDone(tp) ) and Duel.IsExistingMatchingCard(s.futerrorkingfilter, tp, LOCATION_MZONE, 0, 1, nil) and (#tc:Filter(s.desfilter,nil)>0) and (Duel.GetFlagEffect(tp, id+2)==0) then
 				if Duel.SelectYesNo(tp, aux.Stringid(id, 3)) then
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 					local descardgroup=tc:Filter(s.desfilter,nil)
@@ -152,7 +155,7 @@ end
 
 
 function s.upgrade(e,tp,eg,ep,ev,re,r,rp)
-		Duel.RegisterFlagEffect(tp, id+8, 0, 0, 0)
+		kdr.CompleteQuest(tp)
 		e:GetHandler():Recreate(id+1)
 		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
 		Duel.Hint(HINT_SKILL,tp,id+1)
@@ -166,7 +169,7 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, id+8)>0 then
+	if kdr.IsQuestDone(tp) then
 		Duel.Hint(HINT_CARD,tp,id+1)
 	else
 		Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
@@ -189,7 +192,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--Once per turn: You can discard 1 "Terrorking Salmon" to activate this skill's ➀ effect, and add 5 to the result of the dice roll.
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and (Duel.GetFlagEffect(tp, id+8)>0 ) and
+			and (kdr.IsQuestDone(tp) ) and
 			Duel.IsExistingMatchingCard(s.discardsalmonfilter, tp, LOCATION_HAND, 0, 1, nil)
 			and  Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,LOCATION_DECK,0,1,nil)
 
@@ -198,14 +201,14 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	return aux.CanActivateSkill(tp) and (b1)
 end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, id+8)>0 then
+	if kdr.IsQuestDone(tp) then
 		Duel.Hint(HINT_CARD,tp,id+1)
 	else
 		Duel.Hint(HINT_CARD,tp,id)
 	end
 	--Once per turn: You can discard 1 "Terrorking Salmon" to activate this skill's ➀ effect, and add 5 to the result of the dice roll.
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and (Duel.GetFlagEffect(tp, id+8)>0 ) and
+			and (kdr.IsQuestDone(tp) ) and
 			Duel.IsExistingMatchingCard(s.discardsalmonfilter, tp, LOCATION_HAND, 0, 1, nil) and
 			 Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,LOCATION_DECK,0,1,nil)
 
@@ -246,7 +249,7 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 				local ath=tc:Select(tp,1,1,nil)
 				Duel.SendtoHand(ath, tp, REASON_EFFECT)
 
-				if (Duel.GetFlagEffect(tp, id+8)>0 ) and Duel.IsExistingMatchingCard(s.futerrorkingfilter, tp, LOCATION_MZONE, 0, 1, nil) and (#tc:Filter(s.desfilter,nil)>0) and (Duel.GetFlagEffect(tp, id+2)==0) then
+				if (kdr.IsQuestDone(tp) ) and Duel.IsExistingMatchingCard(s.futerrorkingfilter, tp, LOCATION_MZONE, 0, 1, nil) and (#tc:Filter(s.desfilter,nil)>0) and (Duel.GetFlagEffect(tp, id+2)==0) then
 					if Duel.SelectYesNo(tp, aux.Stringid(id, 3)) then
 						Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 						local descard=tc:Filter(s.desfilter,nil):Select(tp,1,1,nil)
