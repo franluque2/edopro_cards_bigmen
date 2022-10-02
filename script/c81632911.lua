@@ -42,7 +42,7 @@ end
 
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,not_silent_pain_filter,tp,LOCATION_GRAVE,0,1,1,nil)
-	if #g then
+	if #g>0 then
 		Duel.Hint(HINT_CARD,tp,id)
 		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 	end
@@ -58,12 +58,13 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(ep,id,0,0,0)
 end
 function s.place_pain(e,tp,eg,ep,ev,re,r,rp)
-	local pain=Duel.CreateToken(tp,511002742)
+	local pain=Duel.CreateToken(tp,81632173)
 	Duel.SendtoGrave(pain,REASON_EFFECT)
 end
 function s.silent_pain_filter(c)
 	return c:IsCode(511002742)
 end
+
 
 function s.torment_or_space_filter(c)
 	return (c:IsCode(511002744) or c:IsCode(511002743)) and c:IsAbleToHand()
@@ -86,6 +87,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.silent_pain_filter,tp,LOCATION_GRAVE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.torment_or_space_filter,tp,LOCATION_DECK,0,1,nil)
+			and not Duel.IsExistingMatchingCard(not_silent_pain_filter,tp,LOCATION_GRAVE,0,1,nil)
 
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
 			and Duel.IsExistingMatchingCard(s.anchor_knight_filter,tp,LOCATION_MZONE,0,1,nil)
@@ -105,6 +107,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b1=Duel.GetFlagEffect(ep,id+1)==0
 			and Duel.IsExistingMatchingCard(s.silent_pain_filter,tp,LOCATION_GRAVE,0,1,nil)
 			and Duel.IsExistingMatchingCard(s.torment_or_space_filter,tp,LOCATION_DECK,0,1,nil)
+			and not Duel.IsExistingMatchingCard(not_silent_pain_filter,tp,LOCATION_GRAVE,0,1,nil)
 
 	--Boolean check for effect2:
 	local b2=Duel.GetFlagEffect(ep,id+2)==0
@@ -144,14 +147,14 @@ function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 
 end
 
---op=1, Once per turn, if you control "Anchor Knight" you can set 1 "Violent Salvage" from your Deck or GY to your Spell/Trap Zone.
+--op=1, Once per Duel, if you control "Anchor Knight" you can set 1 "Violent Salvage" from your Deck or GY to your Spell/Trap Zone.
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 	local g=Duel.SelectMatchingCard(tp,s.violent_salvage_filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
 	if #g>0 then
 		Duel.SSet(tp,g:GetFirst())
 	end
-	Duel.RegisterFlagEffect(tp,id+2,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,0)
+	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 end
 
 --op=2, Once per turn, if you control "Fool Clown", you can banish any number of cards from your GY, then Special Summon 1 "Rough Exploder" for every 3 cards banished, if you banished 6 or more cards, you can also place 1 "Rough Fight" in your GY from outside the duel.
