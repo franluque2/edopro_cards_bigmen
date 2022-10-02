@@ -13,12 +13,12 @@ function s.initial_effect(c)
 	e1:SetTarget(s.thtg2)
 	e1:SetOperation(s.thop2)
 	c:RegisterEffect(e1)
-	
+
 	local e3=e1:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
-	
-	
+
+
 
 	--target 1 monster, gain lp equal to its attack
 	local e2=Effect.CreateEffect(c)
@@ -30,14 +30,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.dessop)
 	c:RegisterEffect(e2)
 
-	--change name to anime fool clown
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e4:SetCode(EFFECT_CHANGE_CODE)
-	e4:SetRange(LOCATION_MZONE+LOCATION_HAND)
-	e4:SetValue(511009200)
-	c:RegisterEffect(e4) 
 end
 
 function s.desscon(e,tp,eg,ep,ev,re,r,rp)
@@ -47,7 +39,7 @@ end
 function s.desstg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-	Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil) 
+	Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 end
 
 function s.dessop(e,tp,eg,ep,ev,re,r,rp)
@@ -66,12 +58,20 @@ function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,nil)
 	local ct=e:GetLabel()
 	if chk==0 then return Duel.IsExistingTarget(s.thfilter2,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectTarget(tp,s.thfilter2,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,ct,ct,nil)
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
+	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,nil)
+	local g2=aux.SelectUnselectGroup(g,e,tp,0,ct,aux.dncheck,1,tp,HINTMSG_ATOHAND)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g2,#g2,0,0)
+	if #g2>0 then
+		g2:KeepAlive()
+		e:SetLabelObject(g2)
+		return true
+	end
+	return false
+
 end
 function s.thop2(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetTargetCards(e)
+	local g=e:GetLabelObject()
+	if not g then return end
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 	end

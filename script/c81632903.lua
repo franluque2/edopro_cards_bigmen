@@ -195,6 +195,10 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 		--opd register
 		Duel.RegisterFlagEffect(tp,id+3,0,0,0)
 
+		e:GetHandler():Recreate(id+1)
+		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
+		Duel.Hint(HINT_SKILL,tp,id+1)
+
 			local hydra1=Duel.CreateToken(tp,81632002)
 			 local hydra2=Duel.CreateToken(tp,81632003)
 			 local hydra3=Duel.CreateToken(tp,81632004)
@@ -214,7 +218,22 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 		g:AddCard(perfectron)
 		Duel.SendtoDeck(g,tp,SEQ_DECKTOP,REASON_EFFECT)
 
-local field=Duel.CreateToken(tp,81632904)
+local e2=Effect.CreateEffect(e:GetHandler())
+e2:SetType(EFFECT_TYPE_FIELD)
+e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+e2:SetTargetRange(LOCATION_MZONE,0)
+e2:SetTarget(s.target)
+e2:SetValue(1)
+Duel.RegisterEffect(e2,tp)
+local e3=e2:Clone()
+e3:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+Duel.RegisterEffect(e3,tp)
 
-	aux.PlayFieldSpell(field,e,tp,eg,ep,ev,re,r,rp)
+
+
+end
+
+function s.target(e,c)
+	return c:IsLink(5)
 end
