@@ -158,6 +158,7 @@ function s.upgrade(e,tp,eg,ep,ev,re,r,rp)
 		kdr.CompleteQuest(tp)
 		e:GetHandler():Recreate(id+1)
 		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
+		Duel.Hint(HINT_SKILL_FLIP,tp,(id+1)|(1<<32))
 		Duel.Hint(HINT_SKILL,tp,id+1)
 end
 
