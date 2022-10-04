@@ -1,3 +1,4 @@
+--Bodyguard For Hire
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -43,5 +44,11 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(), tp, -2, REASON_EFFECT)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
+	end
+
+	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
+	local guard=Duel.SelectMatchingCard(tp, Card.IsCode, tp, LOCATION_HAND+LOCATION_DECK, 0, 1,1,false,nil,91152256)
+	if #guard>0 then
+		Duel.SpecialSummon(guard, SUMMON_TYPE_SPECIAL, tp, tp, false,false, POS_FACEUP_ATTACK)
 	end
 end

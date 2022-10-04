@@ -1,3 +1,4 @@
+--Staff Of Avarice
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -10,6 +11,9 @@ function s.initial_effect(c)
 	e1:SetLabel(0)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
+
+	aux.AddSkillProcedure(c,1,false,s.flipcon2,s.flipop2)
+
 
 end
 
@@ -34,14 +38,37 @@ end
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-	aux.RegisterClientHint(e:GetHandler(),nil,tp,1,0,aux.Stringid(id,0),nil)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
-	Duel.RegisterFlagEffect(tp,id,0,0,0)
 	Duel.SendtoDeck(e:GetHandler(), tp, -2, REASON_EFFECT)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
 	end
+end
+
+
+function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
+
+	--OPD check
+	if Duel.GetFlagEffect(tp,id)>0  then return end
+
+	local b1=Duel.IsPlayerCanDraw(tp) and Duel.IsExistingMatchingCard(Card.IsAbleToDeck, tp, LOCATION_GRAVE, 0,1,nil)
+
+	return aux.CanActivateSkill(tp) and b1
+end
+
+function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
+	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_TODECK)
+
+	local g=Duel.SelectMatchingCard(tp, Card.IsAbleToDeck, tp, LOCATION_GRAVE, 0, 1,1,false,nil)
+
+	if Duel.SendtoDeck(g, tp, SEQ_DECKSHUFFLE, REASON_EFFECT) then
+		Duel.Draw(tp,1,REASON_EFFECT)
+	end
+
+	Duel.RegisterFlagEffect(tp, id, 0, 0, 0)
+
 end

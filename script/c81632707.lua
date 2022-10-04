@@ -1,3 +1,4 @@
+--Scapelamba
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -28,13 +29,13 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 
 
 
+
 	end
 	e:SetLabel(1)
 end
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-	aux.RegisterClientHint(e:GetHandler(),nil,tp,1,0,aux.Stringid(id,0),nil)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
@@ -44,4 +45,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
 	end
+
+	local lamba=Duel.CreateToken(tp, 81632651)
+	Duel.SpecialSummon(lamba, SUMMON_TYPE_SPECIAL, tp, tp, 0, 0, POS_FACEUP)
 end

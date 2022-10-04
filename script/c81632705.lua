@@ -1,3 +1,4 @@
+--Mulligan
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -34,7 +35,6 @@ end
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
-	aux.RegisterClientHint(e:GetHandler(),nil,tp,1,0,aux.Stringid(id,0),nil)
 	return Duel.GetCurrentChain()==0 and Duel.GetTurnCount()==1
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
@@ -43,5 +43,13 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(), tp, -2, REASON_EFFECT)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
+	end
+
+	local g=Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_HAND, 0, nil)
+
+	if #g>0 and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+		local num=#g
+		Duel.SendtoDeck(g, tp, SEQ_DECKSHUFFLE, REASON_EFFECT)
+		Duel.Draw(tp, num, REASON_EFFECT)
 	end
 end

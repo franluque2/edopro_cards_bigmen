@@ -1,3 +1,4 @@
+--Legendary Proposal
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -43,5 +44,11 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(), tp, -2, REASON_EFFECT)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
+	end
+
+	local g=Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_HAND, 0, nil)
+	if #g>0 then
+		local sg=g:RandomSelect(1-tp, 1)
+		Duel.SendtoDeck(sg, tp, SEQ_DECKSHUFFLE, REASON_EFFECT)
 	end
 end
