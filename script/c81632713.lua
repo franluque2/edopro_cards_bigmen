@@ -42,7 +42,6 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
-	Duel.RegisterFlagEffect(tp,id,0,0,0)
 	Duel.SendtoDeck(e:GetHandler(), tp, -2, REASON_EFFECT)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
@@ -86,7 +85,8 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SendtoHand(tc,nil,REASON_EFFECT)~=0 and tc:IsLocation(LOCATION_HAND) then
 		Duel.ConfirmCards(1-tp,tc)
 			if Duel.IsExistingMatchingCard(s.addpolyfilter, tp, LOCATION_DECK, 0, 1, nil) and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
-				local poly=Duel.GetFirstMatchingCard(s.addpolyfilter, tp, LOCATION_DECK, 0, nil)
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+				local poly=Duel.SelectMatchingCard(tp,s.addpolyfilter, tp, LOCATION_DECK, 0,1,1,false, nil)
 				Duel.SendtoHand(poly, tp, REASON_EFFECT)
 			end
 	end
