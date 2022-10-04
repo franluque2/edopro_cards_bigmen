@@ -55,10 +55,10 @@ end
 
 function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsAbleToHand() end
-	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,nil)
+	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED,0,nil)
 	local ct=e:GetLabel()
-	if chk==0 then return Duel.IsExistingTarget(s.thfilter2,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,1,nil) end
-	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,nil)
+	if chk==0 then return Duel.IsExistingTarget(s.thfilter2,tp,LOCATION_REMOVED,0,1,nil) end
+	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED,0,nil)
 	local g2=aux.SelectUnselectGroup(g,e,tp,0,ct,aux.dncheck,1,tp,HINTMSG_ATOHAND)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g2,#g2,0,0)
 	if #g2>0 then
@@ -81,7 +81,7 @@ function s.costfilter(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND,0,1,e:GetHandler()) end
-	local rt=Duel.GetTargetCount(Card.IsAbleToHand,tp,LOCATION_REMOVED+LOCATION_GRAVE,0,nil)
+	local rt=Duel.GetTargetCount(Card.IsAbleToHand,tp,LOCATION_REMOVED,0,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local cg=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_HAND,0,1,rt,nil)
 	Duel.SendtoGrave(cg,REASON_COST)
