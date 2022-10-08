@@ -27,6 +27,14 @@ if not CustomArchetype then
 	end
 
 
+	CustomArchetype.Kdr_legendary={
+    74677422,06368038,43793530,49563947,78060096,CARD_SKULL_SERVANT,
+		31447217,60862676,87322377, 47986555,78780140, 
+		58538870, 12143771, 85936485, --the trio of the peasant
+		03797883
+  }
+
+	Card.IsLegendary=MakeCheck(nil,CustomArchetype.Kdr_legendary)
 
 
   CustomArchetype.Jester={
@@ -147,10 +155,10 @@ if not kdr then
 		return Duel.GetFlagEffect(tp, 81632500)>0
 	end
 
-	function kdr.CompleteQuest(tp,card)
+	function kdr.CompleteQuest(tp,card,e)
 		Duel.RegisterFlagEffect(tp, 81632500, 0, 0, 0)
 
-		Duel.RaiseEvent(card, EVENT_CUSTOM+81632500, nil, REASON_RULE, tp, tp, 1)
+		Duel.RaiseEvent(card, EVENT_CUSTOM+81632500, e, REASON_RULE, tp, tp, 1)
 	end
 
 	function kdr.GetDex(tp)
@@ -164,5 +172,9 @@ if not kdr then
 	function kdr.GetStr(tp)
 		return Duel.GetFlagEffect(tp, 81632652)
 	end
+
+
+
+
 
 end
