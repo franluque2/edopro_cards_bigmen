@@ -147,8 +147,10 @@ if not kdr then
 		return Duel.GetFlagEffect(tp, 81632500)>0
 	end
 
-	function kdr.CompleteQuest(tp)
+	function kdr.CompleteQuest(tp,card)
 		Duel.RegisterFlagEffect(tp, 81632500, 0, 0, 0)
+
+		Duel.RaiseEvent(card, EVENT_CUSTOM+81632500, nil, REASON_RULE, tp, tp, 1)
 	end
 
 	function kdr.GetDex(tp)

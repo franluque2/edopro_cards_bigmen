@@ -88,13 +88,13 @@ end
 
 function s.upgrade(e,tp,eg,ep,ev,re,r,rp)
 	if ep~=tp then return end
-	if kdr.IsQuestDone(tp) then return end
+	if kdr.IsQuestDone(ep) then return end
 	if Duel.GetMatchingGroupCount(Card.IsCode, tp, LOCATION_GRAVE, 0, nil, CARD_SKULL_SERVANT)>2 then
-		kdr.CompleteQuest(tp)
+		kdr.CompleteQuest(ep,e:GetHandler(),e)
 		e:GetHandler():Recreate(id+1)
-		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
-		Duel.Hint(HINT_SKILL_FLIP,tp,(id+1)|(1<<32))
-		Duel.Hint(HINT_SKILL,tp,id+1)
+		Duel.Hint(HINT_SKILL_REMOVE,ep,id)
+		Duel.Hint(HINT_SKILL_FLIP,ep,(id+1)|(1<<32))
+		Duel.Hint(HINT_SKILL,ep,id+1)
 	end
 end
 
