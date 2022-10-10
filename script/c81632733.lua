@@ -25,12 +25,12 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
 
-
-
-
-
 	end
 	e:SetLabel(1)
+end
+
+function s.redfunc(c)
+	return c:IsOriginalCodeRule(21208154,62180201,57793869)
 end
 
 
@@ -45,4 +45,20 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
 		Duel.Draw(tp, 1, REASON_EFFECT)
 	end
+
+	if Duel.IsExistingMatchingCard(s.redfunc, tp, LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE, 0, 1,nil) then
+			 local gods=Duel.GetMatchingGroup(s.redfunc, tp, LOCATION_DECK+LOCATION_HAND+LOCATION_GRAVE, 0, nil)
+			 if #gods~=0 then
+			 local tc=gods:GetFirst()
+
+			 while tc do
+				 local e1=aux.AddNormalSummonProcedure(tc,true,false,2,2,nil,aux.Stringid(id, 1))
+				 local e2=aux.AddNormalSetProcedure(tc,true,false,2,2,nil,aux.Stringid(id, 1))
+
+				tc=gods:GetNext()
+			end
+
+
+	 end
+ end
 end
