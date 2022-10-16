@@ -90,7 +90,7 @@ if #hg>0 then
 end
 end
 function s.cfilter(c)
-	return c:IsCode(81632109) and c:IsSSetable()
+	return c:IsCode(100000323) and c:IsSSetable()
 end
 
 
