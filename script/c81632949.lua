@@ -164,7 +164,7 @@ end
 
 function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 	local cspace=Duel.CreateToken(tp,81632163)
-	aux.PlayFieldSpell(cspace,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(cspace,e,tp,eg,ep,ev,re,r,rp)
 end
 
 

@@ -189,10 +189,10 @@ function s.adcon(e,tp,eg,ep,ev,re,r,rp)
 			and not Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_FZONE,0,1,nil)
 
 	local b2=Duel.GetFlagEffect(tp,id+4)==0
-			and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,48179391),0,LOCATION_ONFIELD,0,1,nil)
+			and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,48179391),0,LOCATION_ONFIELD,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(tp,id+5)==0
-			and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,110000100),0,LOCATION_ONFIELD,0,1,nil)
+			and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,110000100),0,LOCATION_ONFIELD,0,1,nil)
 
 
 	return Duel.GetTurnPlayer()==tp and (b1 or b2 or b3)
@@ -205,10 +205,10 @@ function s.adop(e,tp,eg,ep,ev,re,r,rp)
 			and not Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_FZONE,0,1,nil)
 
 	local b2=Duel.GetFlagEffect(tp,id+4)==0
-			and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,48179391),0,LOCATION_ONFIELD,0,1,nil)
+			and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,48179391),0,LOCATION_ONFIELD,0,1,nil)
 
 	local b3=Duel.GetFlagEffect(tp,id+5)==0
-			and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,110000100),0,LOCATION_ONFIELD,0,1,nil)
+			and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,110000100),0,LOCATION_ONFIELD,0,1,nil)
 
 
 	if b1 then
@@ -225,19 +225,19 @@ end
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
 
 	local seal=Duel.CreateToken(tp, 48179391)
-	aux.PlayFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp, id+3, 0, 0, 0)
 end
 
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
 	local seal=Duel.CreateToken(tp, 110000100)
-	aux.PlayFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp, id+4, 0, 0, 0)
 end
 
 function s.operation_for_res2(e,tp,eg,ep,ev,re,r,rp)
 	local seal=Duel.CreateToken(tp, 110000101)
-	aux.PlayFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(seal,e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp, id+5, 0, 0, 0)
 end
 
@@ -298,7 +298,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 			--Once per Duel, if you control "Orichalcos Shunoros" you can add either add 1 "Divine Serpent Geh" or 1 "Orichalcos Dexia" and "Orichalcos Aristeros" from your Deck to your Hand.
 
 	local b2=Duel.GetFlagEffect(tp, id+1)==0
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
 		and (Duel.IsExistingMatchingCard(s.serpentfilter,tp,LOCATION_DECK,0,1,nil)
 		or (Duel.IsExistingMatchingCard(s.dexiafilter,tp,LOCATION_DECK,0,1,nil) and Duel.IsExistingMatchingCard(s.aristerosfilter,tp,LOCATION_DECK,0,1,nil))
 	)
@@ -325,7 +325,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 			--Once per Duel, if you control "Orichalcos Shunoros" you can add either add 1 "Divine Serpent Geh" or 1 "Orichalcos Dexia" and "Orichalcos Aristeros" from your Deck to your Hand.
 
 	local b2=Duel.GetFlagEffect(tp, id+1)==0
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,7634581),tp,LOCATION_MZONE,0,1,nil)
 		and (Duel.IsExistingMatchingCard(s.serpentfilter,tp,LOCATION_DECK,0,1,nil)
 		or (Duel.IsExistingMatchingCard(s.dexiafilter,tp,LOCATION_DECK,0,1,nil) and Duel.IsExistingMatchingCard(s.aristerosfilter,tp,LOCATION_DECK,0,1,nil))
 	)
