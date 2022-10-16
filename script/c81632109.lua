@@ -30,13 +30,6 @@ function s.initial_effect(c)
 	e3:SetOperation(s.setop)
 	c:RegisterEffect(e3)
 
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e4:SetCode(EFFECT_CHANGE_CODE)
-	e4:SetRange(LOCATION_SZONE+LOCATION_HAND)
-	e4:SetValue(100000323)
-	c:RegisterEffect(e4)
 end
 
 function s.dizzyfilter(c)
