@@ -55,7 +55,7 @@ end
 function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 	local field=Duel.SelectMatchingCard(tp, s.fieldfilter, tp, LOCATION_DECK, 0, 1, 1,false,nil)
 	if field then
-		aux.PlayFieldSpell(field:GetFirst(),e,tp,eg,ep,ev,re,r,rp)
+		Duel.(field:GetFirst(),e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
