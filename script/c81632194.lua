@@ -94,8 +94,8 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoDeck(c,nil,-2,REASON_EFFECT)
 
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELF)
-		local eqc=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.IsInfinity),tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
-		if Duel.Equip(tp,tc,eqc,true) then
+		local eqc=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.IsSetCard,0x3013),tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+		if eqc and Duel.Equip(tp,tc,eqc,true) then
 			--add equip limit
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)

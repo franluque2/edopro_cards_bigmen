@@ -50,6 +50,6 @@ function s.filter(c)
 	return not c:IsControler(c:GetOwner())
 end
 
-function s.indescon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.filter, tp, LOCATION_ONFIELD, 0, 1,nil)
+function s.indescon(e)
+	return Duel.IsExistingMatchingCard(s.filter, e:GetHandlerPlayer(), LOCATION_ONFIELD, 0, 1, nil)
 end

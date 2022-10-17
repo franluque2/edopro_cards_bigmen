@@ -117,6 +117,4 @@ function s.ctlop(e,tp,eg,ep,ev,re,r,rp)
 			sc:RegisterEffect(e3)
 		end
 	end
-	end
-
 end
