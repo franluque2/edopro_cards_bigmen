@@ -197,6 +197,7 @@ function s.flipop3(e,tp,eg,ep,ev,re,r,rp)
 
 		e:GetHandler():Recreate(id+1)
 		Duel.Hint(HINT_SKILL_REMOVE,tp,id)
+		Duel.Hint(HINT_SKILL_FLIP,tp,(id+1)|(1<<32))
 		Duel.Hint(HINT_SKILL,tp,id+1)
 
 			local hydra1=Duel.CreateToken(tp,81632002)

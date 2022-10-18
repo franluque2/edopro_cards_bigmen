@@ -75,7 +75,7 @@ end
 
 function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 	local relavfield=Duel.CreateToken(tp,511000479)
-	aux.PlayFieldSpell(relavfield,e,tp,eg,ep,ev,re,r,rp)
+	Duel.ActivateFieldSpell(relavfield,e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.addcontspellfilter(c)
