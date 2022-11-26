@@ -48,7 +48,7 @@ end
 function s.activate_field(e,tp,eg,ep,ev,re,r,rp)
 	local field=Duel.SelectMatchingCard(tp,s.field_filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil)
 	if #field>0 then
-		aux.PlayFieldSpell(field:GetFirst(),e,tp,eg,ep,ev,re,r,rp)
+		Duel.ActivateFieldSpell(field:GetFirst(),e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 

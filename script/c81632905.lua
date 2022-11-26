@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetLabel(0)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
-	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2) 
+	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
@@ -36,7 +36,7 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
-	s.swap_tables(e,tp,eg,ep,ev,re,r,rp)
+	-- s.swap_tables(e,tp,eg,ep,ev,re,r,rp)
 	s.set_table(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
@@ -71,7 +71,7 @@ if #ng>0 then
 			e1:SetValue(TYPE_TOKEN)
 			newtab:RegisterEffect(e1,true)
 			Duel.SendtoHand(newtab,tp,REASON_EFFECT)
-			
+
 	end
 end
 local hg=Duel.GetMatchingGroup(s.table_filter,tp,LOCATION_DECK,0,nil)
@@ -85,12 +85,12 @@ if #hg>0 then
 			e1:SetValue(TYPE_TOKEN)
 			newtab:RegisterEffect(e1,true)
 			Duel.SendtoDeck(newtab,tp,SEQ_DECKSHUFFLE,REASON_EFFECT)
-			
+
 	end
 end
 end
 function s.cfilter(c)
-	return c:IsCode(81632109) and c:IsSSetable()
+	return c:IsCode(100000323) and c:IsSSetable()
 end
 
 

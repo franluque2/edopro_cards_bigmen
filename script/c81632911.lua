@@ -96,7 +96,7 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.fool_clown_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
-			and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil)
+			and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil)
 
 	return aux.CanActivateSkill(tp) and (b1 or b2 or b3)
 end
@@ -118,7 +118,7 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 	local b3=Duel.GetFlagEffect(ep,id+3)==0
 			and Duel.IsExistingMatchingCard(s.fool_clown_filter,tp,LOCATION_MZONE,0,1,nil)
 			and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
-			and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,1,nil)
+			and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_GRAVE,0,3,nil)
 
 	--This auxiliary function should simplify what you did with all the Duel.SelectOption you used previously:
 	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
