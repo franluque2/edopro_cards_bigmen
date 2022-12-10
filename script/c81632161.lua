@@ -97,7 +97,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ShuffleSetCard(setg)
 	end
 end
+
 s.setfilter=aux.FaceupFilter(Card.IsType,TYPE_TRAP)
+
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local g=Duel.GetMatchingGroup(s.setfilter,tp,LOCATION_ONFIELD,0,nil)
