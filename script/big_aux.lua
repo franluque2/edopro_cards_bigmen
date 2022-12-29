@@ -75,6 +75,24 @@ CustomArchetype.ruler_backrow={
 
 Card.IsRulerBackrow=MakeCheck(nil,CustomArchetype.ruler_backrow)
 
+
+
+CustomArchetype.Toy={
+  56675280,37364101,1826676,57902462,70245411,58132856,
+  11471117,92607427,
+
+  511000006,01826676,511000005,511001399
+
+}
+
+Card.IsCTToy=MakeCheck({0x558,0xad,0x559},CustomArchetype.Toy)
+
+CustomArchetype.CTMantis={
+  58818411, 85505315, 51254980, 82738277, 100297002, 100297003, 94573223, 100297102
+}
+Card.IsCTMantis=MakeCheck({0x535},CustomArchetype.CTMantis)
+
+
 end
 
 
