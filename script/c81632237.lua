@@ -65,7 +65,7 @@ function s.cfilter(c,ft,tp)
 	return c:IsFaceup() and c:IsCTToy() and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5))
 end
 function s.filter(c,e,tp)
-	return c:IsCode(511000006) and c:IsCanBeSpecialSummoned(e,0,tp,true,true)
+	return (c:IsCode(511000006) or c:IsOriginalCode(81632229)) and c:IsCanBeSpecialSummoned(e,0,tp,true,true)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
