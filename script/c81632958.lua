@@ -1,5 +1,6 @@
---Duel Carnivalists: -Ultimate Knockout-
-Duel.LoadScript("c420.lua")
+--Venomous Bog
+--Duel.LoadScript("big_aux.lua")
+
 
 local s,id=GetID()
 function s.initial_effect(c)
@@ -15,6 +16,16 @@ function s.initial_effect(c)
 	e1:SetOperation(s.op)
 	c:RegisterEffect(e1)
 	aux.AddSkillProcedure(c,2,false,s.flipcon2,s.flipop2)
+end
+
+--change this to change the locations where this acts
+local LOCATIONS=LOCATION_ALL-LOCATION_OVERLAY
+
+--add archetype setcode here
+local ARCHETYPE=0x50
+
+function s.archetypefilter(c)
+  return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_REPTILE)
 end
 
 
@@ -37,9 +48,26 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCode(EFFECT_DESTROY_REPLACE)
 		e2:SetTarget(s.desreptg)
 		e2:SetValue(s.desrepval)
-		e2:SetCountLimit(1)
 		e2:SetOperation(s.desrepop)
 		Duel.RegisterEffect(e2,tp)
+
+
+		local e3=Effect.CreateEffect(e:GetHandler())
+		e3:SetType(EFFECT_TYPE_FIELD)
+		e3:SetCode(EFFECT_ADD_SETCODE)
+		e3:SetTargetRange(LOCATIONS,0)
+		e3:SetTarget(aux.TargetBoolFunction(s.archetypefilter))
+		e3:SetValue(ARCHETYPE)
+		Duel.RegisterEffect(e3,tp)
+
+
+		local e4=Effect.CreateEffect(e:GetHandler())
+		e4:SetType(EFFECT_TYPE_FIELD)
+		e4:SetCode(EFFECT_DECREASE_TRIBUTE)
+		e4:SetTargetRange(LOCATION_HAND,0)
+		e4:SetValue(0x1)
+		e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x50))
+		Duel.RegisterEffect(e4,tp)
 
 
 	end
@@ -49,7 +77,7 @@ end
 
 
 function s.repfilter(c,tp)
-	return c:IsControler(tp) and c:IsMagnet() and c:IsLevelBelow(4) and c:IsLocation(LOCATION_ONFIELD)
+	return c:IsControler(tp) and c:IsCode(54306223) and c:IsLocation(LOCATION_ONFIELD)
 		and c:IsReason(REASON_BATTLE+REASON_EFFECT) and not c:IsReason(REASON_REPLACE)
 end
 function s.desfilter(c,e,tp)
@@ -57,13 +85,13 @@ function s.desfilter(c,e,tp)
 		and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
 end
 function s.cfilter(c)
-	return c:IsMonster() and c:IsMagnet() and c:IsAbleToGrave()
+	return c:IsMonster() and c:IsRace(RACE_REPTILE) and c:IsAbleToGrave()
 end
 function s.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil)
 	if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp)
 		and g:IsExists(s.desfilter,1,nil,e,tp) end
-	if Duel.SelectYesNo(tp,aux.Stringid(id, 3)) then
+	if Duel.SelectYesNo(tp,aux.Stringid(id, 0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
 		local sg=g:FilterSelect(tp,s.desfilter,1,1,nil,e,tp)
 		e:SetLabelObject(sg:GetFirst())
@@ -91,29 +119,24 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 
 	--start of duel effects go here
 
+	s.startofdueleff(e,tp,eg,ep,ev,re,r,rp)
+
 	Duel.RegisterFlagEffect(ep,id,0,0,0)
 end
 
-
-function s.magnetsendfilter(c)
-    return c:IsMagnet() and c:IsAbleToGrave()
+function s.startofdueleff(e,tp,eg,ep,ev,re,r,rp)
+    local swamp=Duel.CreateToken(tp, 54306223)
+	Duel.ActivateFieldSpell(swamp,e,tp,eg,ep,ev,re,r,rp)
 end
 
-function s.magnetsumfilter(c,e,tp)
-    return c:IsMagnet() and c:IsCanBeSpecialSummoned(e, SUMMON_TYPE_SPECIAL, tp, false, false)
+function s.venomfilter(c,e,tp)
+	return (c:IsSetCard(0x50) or c:IsCode(72677437)) and not c:IsPublic() and c:IsCanBeSpecialSummoned(e, SUMMON_TYPE_SPECIAL, tp, false, false)
+		and Duel.IsCanRemoveCounter(tp,LOCATION_ONFIELD,LOCATION_ONFIELD,COUNTER_VENOM,c:GetLevel(),REASON_COST)
 end
 
-function s.magnetaddfilter(c)
-    return c:IsAbleToHand() and ((c:IsMagnet() and c:IsMonster()) or c:IsCode(450000357,100000571))
-end
-
-function s.magdragonfilter(c)
-    return c:IsCode(100000570) and c:IsFaceup()
-end
 
 --effects to activate during the main phase go here
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
-
 	--OPT check
 	--checks to not let you activate anything if you can't, add every flag effect used for opt/opd here
 	if Duel.GetFlagEffect(tp,id+1)>0 and Duel.GetFlagEffect(tp,id+2)>0  then return end
@@ -121,12 +144,10 @@ function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 --do bx for the conditions for each effect, and at the end add them to the return
 	local b1=Duel.GetFlagEffect(tp,id+1)==0
-			and Duel.IsExistingMatchingCard(s.magnetsendfilter,tp,LOCATION_DECK,0,1,nil)
-            and (Duel.IsExistingMatchingCard(s.magnetsumfilter,tp,LOCATION_HAND,0,1,nil,e,tp) or
-                 Duel.IsExistingMatchingCard(s.magnetaddfilter,tp,LOCATION_DECK,0,1,nil))
+			and Duel.IsExistingMatchingCard(s.venomfilter,tp,LOCATION_HAND,0,1,nil,e,tp)
 
 	local b2=Duel.GetFlagEffect(tp,id+2)==0
-			and Duel.IsExistingMatchingCard(s.magdragonfilter,tp,LOCATION_ONFIELD,0,1,nil)
+			and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode, 72677437),tp,LOCATION_ONFIELD,0,1,nil)
 			and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
 
 
@@ -141,17 +162,15 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
 --copy the bxs from above
 
 local b1=Duel.GetFlagEffect(tp,id+1)==0
-        and Duel.IsExistingMatchingCard(s.magnetsendfilter,tp,LOCATION_DECK,0,1,nil)
-        and (Duel.IsExistingMatchingCard(s.magnetsumfilter,tp,LOCATION_HAND,0,1,nil,e,tp) or
-            Duel.IsExistingMatchingCard(s.magnetaddfilter,tp,LOCATION_DECK,0,1,nil))
+	and Duel.IsExistingMatchingCard(s.venomfilter,tp,LOCATION_HAND,0,1,nil,e,tp)
 
 local b2=Duel.GetFlagEffect(tp,id+2)==0
-        and Duel.IsExistingMatchingCard(s.magdragonfilter,tp,LOCATION_ONFIELD,0,1,nil)
-        and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
+	and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode, 72677437),tp,LOCATION_ONFIELD,0,1,nil)
+	and Duel.GetLocationCount(tp, LOCATION_SZONE)>0
 
 --effect selector
-	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,0)},
-								  {b2,aux.Stringid(id,4)})
+	local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,1)},
+								  {b2,aux.Stringid(id,2)})
 	op=op-1 --SelectEffect returns indexes starting at 1, so we decrease the result by 1 to match your "if"s
 
 	if op==0 then
@@ -164,36 +183,13 @@ end
 
 
 function s.operation_for_res0(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_TOGRAVE)
-	local tc=Duel.SelectMatchingCard(tp, s.magnetsendfilter, tp, LOCATION_DECK, 0, 1,1,false,nil)
+	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
+	local tc=Duel.SelectMatchingCard(tp, s.venomfilter, tp, LOCATION_HAND, 0, 1,1,false,nil,e,tp)
 	if tc then
-		Duel.SendtoGrave(tc, REASON_EFFECT)
-		
-        local b1=Duel.IsExistingMatchingCard(s.magnetsumfilter,tp,LOCATION_HAND,0,1,nil,e,tp)
-            
-
-    local b2=Duel.IsExistingMatchingCard(s.magnetaddfilter,tp,LOCATION_DECK,0,1,nil)
-
-        local op=Duel.SelectEffect(tp, {b1,aux.Stringid(id,1)},
-                                    {b2,aux.Stringid(id,2)})
-        op=op-1
-
-        if op==0 then
-            Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
-            local sumcard=Duel.SelectMatchingCard(tp, s.magnetsumfilter, tp, LOCATION_HAND, 0, 1,1,false,nil,e,tp)
-            if sumcard then
-                Duel.SpecialSummon(sumcard, SUMMON_TYPE_SPECIAL, tp, tp, false, false, POS_FACEUP)
-            end
-        elseif op==1 then
-            Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_ATOHAND)
-            local addcard=Duel.SelectMatchingCard(tp, s.magnetaddfilter, tp, LOCATION_DECK, 0, 1,1,false,nil)
-            if addcard then
-                Duel.SendtoHand(addcard, tp, REASON_EFFECT)
-                Duel.ConfirmCards(1-tp, addcard)
-            end
-        end
-
-
+		Duel.ConfirmCards(1-tp, tc)
+		if Duel.RemoveCounter(tp, LOCATION_ONFIELD, LOCATION_ONFIELD, COUNTER_VENOM, tc:GetFirst():GetLevel(), REASON_COST) then
+			Duel.SpecialSummon(tc, SUMMON_TYPE_SPECIAL, tp, tp, false, false, POS_FACEUP)
+		end
 	end
 
 --sets the opt (replace RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END with 0 to make it an opd)
@@ -202,15 +198,12 @@ end
 
 
 function s.operation_for_res1(e,tp,eg,ep,ev,re,r,rp)
-	local dmagnet=Duel.CreateToken(tp, 511002567)
-	Duel.SSet(tp, dmagnet)
+	local rise=Duel.CreateToken(tp, 16067089)
+	Duel.SSet(tp, rise)
 
-    local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
-			e1:SetCode(EFFECT_QP_ACT_IN_SET_TURN)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-			dmagnet:RegisterEffect(e1)
+	local vnaga=Duel.CreateToken(tp, 08062132)
+	Duel.SendtoDeck(vnaga, tp, SEQ_DECKBOTTOM, REASON_RULE)
+
 	--sets the opd
 	Duel.RegisterFlagEffect(tp,id+2,0,0,0)
 end
