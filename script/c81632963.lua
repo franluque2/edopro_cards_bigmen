@@ -57,9 +57,8 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterEffect(e5, tp)
 
         local e3=Effect.CreateEffect(e:GetHandler())
-        e3:SetType(EFFECT_TYPE_FIELD)
+        e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
         e3:SetCode(EVENT_CHANGE_POS)
-        e3:SetCountLimit(1,id)
         e3:SetCondition(s.atkcon)
         e3:SetOperation(s.atkop)
         Duel.RegisterEffect(e3,tp)
@@ -76,7 +75,7 @@ function s.chanfilter(c)
 end
 
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.chanfilter,1,nil) and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,15914410,41309150), tp, LOCATION_ONFIELD, 0, 1, nil)
+	return eg:IsExists(s.chanfilter,1,nil) and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,15914410,41309158), tp, LOCATION_ONFIELD, 0, 1, nil)
 end
 
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
@@ -84,10 +83,11 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
     local tc=eg:GetFirst()
     while tc do
+		local val
         if tc:GetControler()==tp then
-            local val=1000
+            val=1000
         else
-            local val=-1000
+            val=-1000
         end
 
         local e1=Effect.CreateEffect(e:GetHandler())
@@ -99,11 +99,13 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_UPDATE_DEFENSE)
 		tc:RegisterEffect(e2)
+
+		tc=eg:GetNext()
     end
 end
 
 function s.tg(e,c)
-	if not c:IsCode(TOKEN_ENGINE) then return false end
+	if not c:IsCode(TOKEN_ENGINE,TOKEN_MOTOR_PARTS,511002412) then return false end
 	if c:GetFlagEffect(1)==0 then
 		c:RegisterFlagEffect(1,0,0,0)
 		local eff
@@ -121,7 +123,7 @@ end
 
 function s.enginetokenchange(e,tp,eg,ev,ep,re,r,rp)
 	local tc=eg:GetFirst()
-	if tc:IsSummonType(SUMMON_TYPE_SPECIAL) and tc:IsCode(TOKEN_ENGINE) and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
+	if tc:IsSummonType(SUMMON_TYPE_SPECIAL) and tc:IsCode(TOKEN_ENGINE,TOKEN_MOTOR_PARTS,511002412) and Duel.SelectYesNo(tp, aux.Stringid(id, 0)) then
 		Duel.ChangePosition(eg,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
 	end
 end
