@@ -55,8 +55,8 @@ function s.initial_effect(c)
 	e6:SetDescription(aux.Stringid(id, 1))
 	e6:SetCountLimit(1)
 	e6:SetRange(LOCATION_MZONE)
-	e6:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e6:SetCode(EVENT_ADJUST)
+	e6:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_UNCOPYABLE)
+	e6:SetCode(EVENT_FREE_CHAIN)
 	e6:SetCondition(s.cpcon)
 	e6:SetTarget(s.cptg)
 	e6:SetOperation(s.cpop)
@@ -92,7 +92,7 @@ if not table.includes then
 end
 
 function s.inffilter(c,tp)
-	return c:IsMonster() and not table.includes(s.name_list_sfg[tp],c:GetOriginalCode()) and c:IsAbleToRemove()
+	return c:IsMonster() and not table.includes(s.name_list_sfg[tp],c:GetOriginalCode()) and c:IsAbleToRemove() and not c:IsOriginalCode(id)
 end
 
 function s.cpcon(e, tp, eg, ep, ev, re, r, rp, chk)
@@ -116,7 +116,7 @@ function s.cpop(e, tp, eg, ep, ev, re, r, rp)
     end
 
 	if tg1 and tg2 and e:GetHandler():IsRelateToEffect(e) then
-		e:GetHandler():CopyEffect(tg2:GetOriginalCode(), RESET_EVENT + RESETS_STANDARD, 1)
+		e:GetHandler():CopyEffect(tg2:GetOriginalCode(),RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,1)
 		table.insert(s.name_list_sfg[tp],tg2:GetOriginalCode())
         table.insert(s.name_list_sfg[tp],tg1:GetOriginalCode())
 
@@ -129,7 +129,7 @@ function s.cpop(e, tp, eg, ep, ev, re, r, rp)
 
         local e2=e1:Clone()
         e2:SetCode(EFFECT_UPDATE_DEFENSE)
-        e2:SetValue(tg2:GetDefense())
+        e2:SetValue(tg1:GetDefense())
         e:GetHandler():RegisterEffect(e2)
 
 
@@ -183,9 +183,16 @@ function s.fuslimit(e,se,sp,st)
 end
 
 function s.ffilter(c,fc,sumtype,sump,sub,matg,sg)
-	return c:IsLevelBelow(12) and (not sg or sg:FilterCount(aux.TRUE,c)==0 or (not sg:IsExists(s.fusfilter,1,c,c:GetLevel())))
-end
-
-function s.fusfilter(c,lv)
-	return c:IsLevel(lv)
+	return c:IsCode(48343627,
+	95178994,
+	54040484,
+	30312361,
+	87917187,
+	23309606,
+	8794435,
+	102380,
+	19847532,
+	69890967,
+	25833572,
+	31764700)
 end
