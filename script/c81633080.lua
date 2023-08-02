@@ -34,6 +34,10 @@ function s.archetypefilter2(c)
   return c:IsType(TYPE_MONSTER) and c:IsLevelBelow(3)
 end
 
+function s.Drago(c)
+  return c:IsCode(21435914)
+end
+
 
 
 function s.op(e,tp,eg,ep,ev,re,r,rp)
@@ -105,13 +109,25 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 			
 				local e3=Effect.CreateEffect(e:GetHandler())
 				e3:SetType(EFFECT_TYPE_SINGLE)
-				e3:SetCode(id)
+				e3:SetCode(id+1)
 				tc:RegisterEffect(e3)
 
 
 			tc=g:GetNext()
 		end
 	end
+
+	local Nether=Duel.GetMatchingGroup(s.Drago, tp, LOCATION_EXTRA, 0, nil)
+	if #Nether>0 then
+	  local tc=Nether:GetFirst()
+		while tc do
+	  
+		--synchro summon
+		Synchro.AddProcedure(tc,nil,1,1,Synchro.NonTuner(nil),1,99)
+		  tc=Nether:GetNext()
+		end
+	end
+
 
 	g=Duel.GetMatchingGroup(Card.IsCode, tp, LOCATION_ALL, 0, nil,100000481)
 	if #g>0 then
