@@ -1,7 +1,10 @@
---Zealous Shackles of Fiction
+--Conscription of the Illusionist's Eye
+--add archetype Template
+Duel.LoadScript("big_aux.lua")
 Duel.LoadScript("c420.lua")
 
 Duel.EnableUnofficialProc(PROC_CANNOT_BATTLE_INDES)
+
 
 local s,id=GetID()
 function s.initial_effect(c)
@@ -18,6 +21,23 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 
+
+
+--change this to change the locations where this acts
+local LOCATIONS=LOCATION_ALL-LOCATION_OVERLAY
+
+--add archetype setcode here
+local ARCHETYPE=0x1186
+
+--add the conditions for the archetype swap here
+function s.archetypefilter(c)
+  return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_SPELLCASTER)
+end
+
+
+
+
+
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
 		local e1=Effect.CreateEffect(e:GetHandler())
@@ -27,44 +47,25 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(s.flipop)
 		Duel.RegisterEffect(e1,tp)
 
-		--other passive duel effects go here    
-        local e7=Effect.CreateEffect(e:GetHandler())
-        e7:SetType(EFFECT_TYPE_FIELD)
-        e7:SetCode(EFFECT_IMMUNE_EFFECT)
-        e7:SetTargetRange(0,LOCATION_MZONE)
-        e7:SetValue(s.efilter)
-        Duel.RegisterEffect(e7, tp)
+		--other passive duel effects go here
 
-        local e8=Effect.CreateEffect(e:GetHandler())
-        e8:SetType(EFFECT_TYPE_FIELD)
-        e8:SetCode(EFFECT_CANNOT_TRIGGER)
-        e8:SetTargetRange(LOCATION_HAND,0)
-        e8:SetCondition(s.discon)
-        e8:SetTarget(s.actfilter)
-        Duel.RegisterEffect(e8, tp)
+        local e5=Effect.CreateEffect(e:GetHandler())
+        e5:SetType(EFFECT_TYPE_FIELD)
+        e5:SetCode(EFFECT_ADD_RACE)
+        e5:SetTargetRange(LOCATIONS,0)
+        e5:SetTarget(function(_,c)  return c:IsHasEffect(id) end)
+        e5:SetValue(RACE_ILLUSION)
+        Duel.RegisterEffect(e5,tp)
+    
 
-        local e9=Effect.CreateEffect(e:GetHandler())
-        e9:SetType(EFFECT_TYPE_FIELD)
-        e9:SetCode(EFFECT_DISABLE)
-        e9:SetTargetRange(LOCATION_ONFIELD,0)
-        e9:SetTarget(aux.TargetBoolFunction(Card.IsCode,51522296))
-        Duel.RegisterEffect(e9, tp)
 	end
 	e:SetLabel(1)
 end
 
-function s.discon(e)
-	return Duel.GetTurnPlayer() ~=e:GetHandlerPlayer()
-end
 
-function s.actfilter(e,c)
-	return c:IsCode(69680031)
+function s.markedfilter(c,e)
+    return #c:IsHasEffect(e)>0
 end
-
-function s.efilter(e,te)
-	return e:GetOwnerPlayer()==te:GetOwnerPlayer() and te:GetHandler():IsCode(22073844)
-end
-
 
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
@@ -74,14 +75,29 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 
-    local g=Duel.GetMatchingGroup(Card.IsSetCard, tp, LOCATION_ALL, LOCATION_ALL, nil,0x146)
+    local g=Duel.GetMatchingGroup(s.archetypefilter, tp, LOCATION_ALL, LOCATION_ALL, nil)
+
+    if #g>0 then
+		local tc=g:GetFirst()
+		while tc do
+			
+				local e3=Effect.CreateEffect(e:GetHandler())
+				e3:SetType(EFFECT_TYPE_SINGLE)
+				e3:SetCode(id)
+				tc:RegisterEffect(e3)
+
+
+			tc=g:GetNext()
+		end
+	end
+
+	g=Duel.GetMatchingGroup(Card.IsOriginalRace, tp, LOCATION_ALL, LOCATION_ALL, nil,RACE_ILLUSION)
 
     if #g>0 then
 		local tc=g:GetFirst()
 		while tc do
 
 			local e1=Effect.CreateEffect(e:GetHandler())
-            e1:SetProperty(EFFECT_FLAG_CANNOT_NEGATE)
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_CANNOT_BATTLE_INDES)
 		e1:SetRange(LOCATION_MZONE)
@@ -93,11 +109,11 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
         end
     end
 
-
 	Duel.RegisterFlagEffect(tp,id,0,0,0)
 end
 
 
 function s.batval(e,re,c)
-	return re:GetHandler():IsSetCard(0x146)
+	return re:GetHandler():IsOriginalRace(RACE_ILLUSION)
 end
+
