@@ -26,6 +26,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 
 	--other passive duel effects go here
 
+	--adrian
 	local e5=Effect.CreateEffect(e:GetHandler())
 	e5:SetType(EFFECT_TYPE_FIELD)
 	e5:SetCode(EFFECT_ADD_RACE)
@@ -42,6 +43,42 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 	e6:SetTarget(function(_,c)  return c:IsHasEffect(id) end)
 	e6:SetValue(RACE_BEAST)
 	Duel.RegisterEffect(e6,tp)
+
+	--axel
+	local eaxel1=Effect.CreateEffect(e:GetHandler())
+	eaxel1:SetType(EFFECT_TYPE_FIELD)
+	eaxel1:SetCode(EFFECT_ADD_SETCODE)
+	eaxel1:SetTargetRange(LOCATION_ALL,0)
+	eaxel1:SetCondition(function(_,pl) return Duel.IsExistingMatchingCard(Card.IsCode, e:GetHandler():GetControler(), LOCATION_ALL, 0, 1, nil, 15033525) end)
+	eaxel1:SetTarget(function(_,c)  return c:IsRace(RACE_MACHINE) end)
+	eaxel1:SetValue(SET_RESCUE_ACE)
+	Duel.RegisterEffect(eaxel1,tp)
+
+	local eaxel2=Effect.CreateEffect(e:GetHandler())
+	eaxel2:SetType(EFFECT_TYPE_FIELD)
+	eaxel2:SetCode(EFFECT_ADD_SETCODE)
+	eaxel2:SetTargetRange(LOCATION_ALL,0)
+	eaxel2:SetCondition(function(_,pl) return Duel.IsExistingMatchingCard(Card.IsCode, e:GetHandler():GetControler(), LOCATION_ALL, 0, 1, nil, 15033525) end)
+	eaxel2:SetTarget(function(_,c)  return c:IsOriginalCode(100304006,511002337,511002338) end)
+	eaxel2:SetValue(SET_RESCUE_ACE)
+	Duel.RegisterEffect(eaxel2,tp)
+
+	local eaxel3=Effect.CreateEffect(e:GetHandler())
+	eaxel3:SetType(EFFECT_TYPE_FIELD)
+	eaxel3:SetCode(EFFECT_ADD_RACE)
+	eaxel3:SetTargetRange(LOCATION_ALL,0)
+	eaxel3:SetCondition(function(_,pl) return Duel.IsExistingMatchingCard(Card.IsCode, e:GetHandler():GetControler(), LOCATION_ALL, 0, 1, nil, 15033525) end)
+	eaxel3:SetTarget(function(_,c)  return c:IsOriginalCode(41443249) end)
+	eaxel3:SetValue(RACE_PYRO)
+	Duel.RegisterEffect(eaxel3,tp)
+
+	local eaxel4=Effect.CreateEffect(e:GetHandler())
+	eaxel4:SetType(EFFECT_TYPE_FIELD)
+	eaxel4:SetCode(EFFECT_DISABLE)
+	eaxel4:SetTargetRange(LOCATION_MZONE,0)
+	eaxel4:SetCondition(function(_,pl) return Duel.IsExistingMatchingCard(Card.IsCode, e:GetHandler():GetControler(), LOCATION_ALL, 0, 1, nil, 15033525) and not (Duel.GetTurnPlayer()==e:GetHandler():GetControler() and Duel.IsMainPhase()) end)
+	eaxel4:SetTarget(function(_,c)  return c:IsOriginalCode(41443249) end)
+	Duel.RegisterEffect(eaxel4,tp)
 
 	end
 	e:SetLabel(1)
@@ -75,7 +112,8 @@ end
 
 --add the conditions for the archetype swap here
 function s.archetypefilterforbbeast(c)
-  return c:IsSetCard(0x51e) and c:IsType(TYPE_MONSTER)
+  return c:IsSetCard(0x51e) 
+  and c:IsType(TYPE_MONSTER)
 end
 
 
