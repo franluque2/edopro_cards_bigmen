@@ -108,6 +108,19 @@ CustomArchetype.CTLamp={
 Card.IsCTLamp=MakeCheck({0xbc},CustomArchetype.CTLamp)
 
 
+CustomArchetype.CTDarkness={
+  18967507,79266769,31571902,22586618,
+		86229493,93709215,60417395,73018302,
+		18897163,6764709,47297616,96561011,
+		88264978, 160302004,160015001,160015004,160202036,160016018,
+    160003040,160428006,160428007,160011030,160015009,160428008,
+    160015010,160015003,160203027,160428020,160015036,160015040,
+    160015035,160204023
+}
+Card.IsCTDarkness=MakeCheck({0x316},CustomArchetype.CTDarkness)
+
+
+
 end
 
 
@@ -215,25 +228,25 @@ if not kdr then
 
 
 	function kdr.IsQuestDone(tp)
-		return Duel.GetFlagEffect(tp, 81632500)>0
+		return Duel.GetFlagEffect(tp, 881632500)>0
 	end
 
 	function kdr.CompleteQuest(tp,card,e)
-		Duel.RegisterFlagEffect(tp, 81632500, 0, 0, 0)
+		Duel.RegisterFlagEffect(tp, 881632500, 0, 0, 0)
 
-		Duel.RaiseEvent(card, EVENT_CUSTOM+81632500, e, REASON_RULE, tp, tp, 1)
+		Duel.RaiseEvent(card, EVENT_CUSTOM+881632500, e, REASON_RULE, tp, tp, 1)
 	end
 
 	function kdr.GetDex(tp)
-		return Duel.GetFlagEffect(tp, 81632650)
+		return Duel.GetFlagEffect(tp, 881632650)
 	end
 
 	function kdr.GetCon(tp)
-		return Duel.GetFlagEffect(tp, 81632651)
+		return Duel.GetFlagEffect(tp, 881632651)
 	end
 
 	function kdr.GetStr(tp)
-		return Duel.GetFlagEffect(tp, 81632652)
+		return Duel.GetFlagEffect(tp, 881632652)
 	end
 
 
