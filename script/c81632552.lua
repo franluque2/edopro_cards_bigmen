@@ -9,6 +9,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
+	e1:SetCost(s.spcost)
 	c:RegisterEffect(e1)
 
     -- Search "Ancient Key"
@@ -58,6 +59,7 @@ function s.initial_effect(c)
 	e5:SetCost(aux.bfgcost)
 	e5:SetTarget(s.drtg)
 	e5:SetOperation(s.drop)
+	e5:SetCondition(aux.exccon)
 	c:RegisterEffect(e5)
 
 end
@@ -66,6 +68,10 @@ function s.tdfilter(c)
 	return c:IsCode(511000123, 511000124, 511000125, 511000122, 51100127, 511000126, 38520918, 76232340, 47986555, 32012841, 10667321) and c:IsAbleToHand()
 end
 
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
+	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD,nil)
+end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.tdfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,1,tp,LOCATION_HAND+LOCATION_DECK)
@@ -119,7 +125,7 @@ function s.filter3(c)
 	return c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost()
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter3,tp,LOCATION_ONFIELD+LOCATION_HAND,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter3,tp,LOCATION_ONFIELD+LOCATION_HAND,0,2,nil) end
 	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.filter3,tp,LOCATION_ONFIELD+LOCATION_HAND,0,2,2,nil)
