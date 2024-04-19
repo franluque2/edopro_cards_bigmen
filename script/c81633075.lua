@@ -27,11 +27,11 @@ local ARCHETYPE=0x1186
 
 --add the conditions for the archetype swap here
 function s.archetypefilter(c)
-  return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH)
+  return c:IsCode(42851643, 511002686, 511002687, 29515122)
 end
 
 function s.archetypefilter2(c)
-  return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH) and c:IsLevelBelow(5)
+  return c:IsCode(42851643, 511002686, 511002687, 511007013, 511002940, 511000298, 511002568, 29515122)
 end
 
 --Spells
@@ -71,35 +71,9 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
         e8:SetType(EFFECT_TYPE_FIELD)
         e8:SetCode(EFFECT_ADD_SETCODE)
         e8:SetTargetRange(LOCATIONS,0)
-        e8:SetTarget(function(_,c)  return c:IsHasEffect(id) end)
+        e8:SetTarget(function(_,c)  return c:IsHasEffect(id+3) end)
         e8:SetValue(0x529)
         Duel.RegisterEffect(e8,tp)
-
-        local e9=Effect.CreateEffect(e:GetHandler())
-        e9:SetType(EFFECT_TYPE_FIELD)
-        e9:SetCode(EFFECT_CHANGE_LEVEL)
-        e9:SetTargetRange(LOCATION_GRAVE,0)
-        e9:SetTarget(function(_,c)  return c:IsHasEffect(id+3) end)
-        e9:SetValue(3)
-        Duel.RegisterEffect(e9,tp)
-
-        --Stuff becomes Outrigger Expansion
-        local e6=Effect.CreateEffect(e:GetHandler())
-        e6:SetType(EFFECT_TYPE_FIELD)
-        e6:SetCode(EFFECT_ADD_CODE)
-        e6:SetTargetRange(LOCATIONS,0)
-        e6:SetTarget(function(_,c)  return c:IsHasEffect(id+1) end)
-        e6:SetValue(96462121)
-        Duel.RegisterEffect(e6,tp)
-        
-        --Stuff become Spin Turn
-        local e7=Effect.CreateEffect(e:GetHandler())
-        e7:SetType(EFFECT_TYPE_FIELD)
-        e7:SetCode(EFFECT_ADD_CODE)
-        e7:SetTargetRange(LOCATIONS,0)
-        e7:SetTarget(function(_,c)  return c:IsHasEffect(id+2) end)
-        e7:SetValue(22866836)
-        Duel.RegisterEffect(e7,tp)
     
 
 	end
