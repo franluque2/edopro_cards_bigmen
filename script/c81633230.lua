@@ -1,4 +1,4 @@
---A HERO Emerges!
+--A Taste of Supreme Power
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill

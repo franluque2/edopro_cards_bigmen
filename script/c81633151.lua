@@ -1,6 +1,4 @@
---Action Field - Crossover
-Duel.LoadScript("c151000000.lua")
-
+--The Tower of Hanoi
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -18,13 +16,6 @@ function s.initial_effect(c)
 
 end
 
-local tableActionCards={
-	150000024,150000033,
-	150000042,
-	150000011,150000044,
-	150000020
-}
-
 
 
 function s.op(e,tp,eg,ep,ev,re,r,rp)
@@ -37,26 +28,12 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterEffect(e1,tp)
 
 
-		local e6=Effect.CreateEffect(e:GetHandler())
-		e6:SetType(EFFECT_TYPE_FIELD)
-		e6:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_RANGE+EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE)
-		e6:SetCode(EFFECT_BECOME_QUICK)
-		e6:SetTargetRange(0xff,0)
-		e6:SetTarget(aux.TargetBoolFunction(Card.IsActionSpell))
-		Duel.RegisterEffect(e6,tp)
-		local e7=e6:Clone()
-		e7:SetDescription(aux.Stringid(id,7))
-		e7:SetCode(EFFECT_QP_ACT_IN_NTPHAND)
-		Duel.RegisterEffect(e7,tp)
-		local e8=e6:Clone()
-		e8:SetDescription(aux.Stringid(id,7))
-		e8:SetCode(EFFECT_QP_ACT_IN_SET_TURN)
-		Duel.RegisterEffect(e8,tp)
 
 
 	end
 	e:SetLabel(1)
 end
+
 
 function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
 	aux.RegisterClientHint(e:GetHandler(),nil,tp,1,0,aux.Stringid(id,0),nil)
@@ -71,13 +48,22 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+local oldfunc=Link.ConditionFilter
+
+function Link.ConditionFilter(c,fc,og,sg,lv)
+	if c:GetFlagEffect(id)>0 then
+		return true
+	end
+	return oldfunc(c,fc,og,sg,lv)
+end
 
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPD check
-	if Duel.GetFlagEffect(tp,id)>1 or Duel.GetFlagEffect(tp, id+500)>1  then return end
+	if Duel.GetFlagEffect(tp,id)>1  then return end
 
-	return aux.CanActivateSkill(tp)
+	return aux.CanActivateSkill(tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+    and Duel.IsPlayerCanSpecialSummonMonster(tp,881632758,0,TYPES_TOKEN,0,0,1,RACE_MACHINE,ATTRIBUTE_DARK,POS_FACEUP)
 end
 
 
@@ -85,9 +71,9 @@ end
 function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
        
 	Duel.Hint(HINT_CARD,tp,id)
-	local token=Duel.CreateToken(tp,tableActionCards[Duel.GetRandomNumber(1,#tableActionCards)])
-	Duel.SendtoHand(token, tp, REASON_RULE)
-	Duel.RegisterFlagEffect(tp, id, RESET_PHASE+PHASE_END, 0, 0)
-	Duel.RegisterFlagEffect(tp, id+500, 0, 0, 0)
+	local token=Duel.CreateToken(tp,881632758)
+	Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+	token:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,0,0)
+	Duel.RegisterFlagEffect(tp, id, 0, 0, 0)
 
 end
