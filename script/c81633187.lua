@@ -1,4 +1,4 @@
---A HERO Emerges!
+--Crew in the Schoolyard!
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate Skill
@@ -17,8 +17,13 @@ function s.initial_effect(c)
 
 end
 local xyzmats={}
+xyzmats[31801517]={93717133,93717133}
+xyzmats[66506689]={42969214,18063928}
 local fusmats={}
-local mons={}
+fusmats[25366484]={35809262, 20721928}
+fusmats[160428025]={160001028,160428042}
+fusmats[96897184]={10163855,89943723}
+local mons={25366484, 52240819, 27520594,87460579,96897184,160428025,31801517,66506689,97489701,31833038}
 local monstosummon={}
 monstosummon[0]=Group.CreateGroup()
 monstosummon[1]=Group.CreateGroup()
@@ -73,7 +78,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPD check
-	if Duel.GetFlagEffect(tp,id)>0  then return end
+	if Duel.GetFlagEffect(tp,id)>1  then return end
 
 	local b1=Duel.CheckLPCost(tp, 2000)
 
@@ -110,13 +115,19 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
                 Duel.Overlay(tar, mat)
             end
         end
-    
+    elseif tar:IsType(TYPE_SYNCHRO) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_SYNCHRO, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
+    elseif tar:IsType(TYPE_LINK) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_LINK, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
+    elseif tar:IsType(TYPE_RITUAL) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_RITUAL, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
     else
-
         Duel.SpecialSummon(tar, SUMMON_TYPE_SPECIAL, tp, tp, true, true, POS_FACEUP)
         Card.CompleteProcedure(tar)
     end
-
     --add additional handling for stuff like parasite queen here later
 
 	

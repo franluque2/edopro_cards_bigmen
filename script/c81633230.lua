@@ -18,7 +18,14 @@ function s.initial_effect(c)
 end
 local xyzmats={}
 local fusmats={}
-local mons={}
+
+fusmats[22160245]={58932615, 21844576}
+fusmats[160012035]={160012003,160012003}
+fusmats[83866861]={40636712,85545073,10383554}
+fusmats[160016039]={160016008,160425001}
+
+local mons={22160245, 31829185,82556058,511009366,31764700,
+            30270176,160012035,83866861,160016039,513000004}
 local monstosummon={}
 monstosummon[0]=Group.CreateGroup()
 monstosummon[1]=Group.CreateGroup()
@@ -73,7 +80,7 @@ end
 function s.flipcon2(e,tp,eg,ep,ev,re,r,rp)
 
 	--OPD check
-	if Duel.GetFlagEffect(tp,id)>0  then return end
+	if Duel.GetFlagEffect(tp,id)>1  then return end
 
 	local b1=Duel.CheckLPCost(tp, 2000)
 
@@ -110,9 +117,16 @@ function s.flipop2(e,tp,eg,ep,ev,re,r,rp)
                 Duel.Overlay(tar, mat)
             end
         end
-    
+    elseif tar:IsType(TYPE_SYNCHRO) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_SYNCHRO, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
+    elseif tar:IsType(TYPE_LINK) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_LINK, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
+    elseif tar:IsType(TYPE_RITUAL) then
+        Duel.SpecialSummon(tar, SUMMON_TYPE_RITUAL, tp, tp, true, true, POS_FACEUP)
+        Card.CompleteProcedure(tar)
     else
-
         Duel.SpecialSummon(tar, SUMMON_TYPE_SPECIAL, tp, tp, true, true, POS_FACEUP)
         Card.CompleteProcedure(tar)
     end
