@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_CHANGE_CODE)
 	e1:SetRange(LOCATION_DECK)
-	e1:SetValue(101208071)
+	e1:SetValue(28903523)
 	c:RegisterEffect(e1)
 
 	--Activate
@@ -39,6 +39,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={CARD_ANCIENT_FAIRY_DRAGON}
+
 function s.CardFilter(c)
     return c:IsMonster() and c:ListsCode(CARD_ANCIENT_FAIRY_DRAGON)
 end
